@@ -1,10 +1,9 @@
 <template>
   <div class="lottery_info">
     <div class="vplh" v-if="!currentLottery.code"><p></p><p></p><p></p></div>
-    <!-- <img class="_img" v-show="videoIcon" src="../assets/images/pk10/video.svg" @click="live"> -->
     <router-view name="result"></router-view>
     <div class="time">
-      <p>{{openInfo.nextLotteryNum | issueDisplay}}期</p>
+      <p>{{openInfo.currFullExpect | issueDisplay}}期</p>
       <p>{{status === '已封盘' ? '开奖' : status}}</p>
       <p :class="{three: fTime.length === 3, stop: status.includes('已')}"><span v-for="(it, i) in fTime" :key="i"><i v-if="i!==0">:</i>{{it}}</span></p>
     </div>
@@ -49,9 +48,6 @@ export default {
       const url = process.env.NODE_ENV === 'production' ? `${location.origin}${mod}` : process.env.VUE_APP_LOTTERY_BASE_API
       return `${process.env.VUE_APP_LOTTERY_VIDEO_URL}?label=${label}&code=${code}&fcode=${fcode}&siteCode=${getSiteCode()}&url=${url}`
     },
-    videoIcon() {
-      return ['ssc', 'xgc', 'pk10', 'k3', 'c11x5'].includes(this.currentLottery.fcode) && !['fflhc'].includes(this.currentLottery.code)
-    },
     fTime() { // 格式化时间 方便页面展示
       const time = this.sealTime > 0 ? this.sealTime : 0
       const sec = time % 60
@@ -71,26 +67,26 @@ export default {
     },
     openInfo({ nextStopTime, nextOpenTime }) { // 处理当前彩种开奖信息 判断和设置状态 和 计时功能
       clearInterval(this.timeId)
-      // this.sealTime = 0
+      this.sealTime = 0
       // if (!this.currentLottery.status) return this.setStatus('已停售')
-      // if (nextOpenTime < 0) return this.setStatus('已关盘')
-      // let tr = nextStopTime <= 0
-      // this.nextStopTime = nextOpenTime
-      // this.sealTime = tr ? nextOpenTime : nextStopTime
-      // this.setStatus(tr ? '已封盘' : '封盘')
-      // this.timeId = setInterval(() => {
-      //   --this.nextStopTime
-      //   if (--this.sealTime <= 0) {
-      //     if (tr) {
-      //       clearInterval(this.timeId)
-      //       this.$emit('getOpenInfo', this.showHistory)
-      //     } else {
-      //       this.setStatus('已封盘')
-      //       tr = 1
-      //       this.sealTime = nextOpenTime - nextStopTime
-      //     }
-      //   }
-      // }, 1000)
+      if (nextOpenTime < 0) return this.setStatus('已关盘')
+      let tr = nextStopTime <= 0
+      this.nextStopTime = nextOpenTime
+      this.sealTime = tr ? nextOpenTime : nextStopTime
+      this.setStatus(tr ? '已封盘' : '封盘')
+      this.timeId = setInterval(() => {
+        --this.nextStopTime
+        if (--this.sealTime <= 0) {
+          if (tr) {
+            clearInterval(this.timeId)
+            this.$emit('getOpenInfo', this.showHistory)
+          } else {
+            this.setStatus('已封盘')
+            tr = 1
+            this.sealTime = nextOpenTime - nextStopTime
+          }
+        }
+      }, 1000)
     }
   },
   methods: {

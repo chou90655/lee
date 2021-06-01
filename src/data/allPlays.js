@@ -1,5 +1,5 @@
 export default {
-  '3d': [{ 'label': '快捷', 'value': 'kj' },
+  'dpc': [{ 'label': '快捷', 'value': 'kj' },
     { 'label': '两面盘', 'value': 'lm' },
     { 'label': '主势盘', 'value': 'zsp' },
     { 'label': '第一球', 'value': '1' },
@@ -15,7 +15,7 @@ export default {
     { 'label': '组选三', 'value': 'zxs' },
     { 'label': '组选六', 'value': 'zxl' }],
 
-  'c11x5': [{ 'label': '快捷', 'value': 'kj' },
+  'x5': [{ 'label': '快捷', 'value': 'kj' },
     { 'label': '两面', 'value': 'lm' },
     { 'label': '第一球', 'value': '1' },
     { 'label': '第二球', 'value': '2' },
@@ -34,8 +34,8 @@ export default {
     { 'label': '三连号', 'value': 'slh' },
     { 'label': '三不同号', 'value': 'sbth' }],
 
-  'kl8': [{ 'label': '两面盘', 'value': 'lm' },
-    { 'label': '正码', 'value': 'zm' }],
+  'keno': [{ 'label': '任选', 'value': 'rx' },
+    { 'label': '趣味', 'value': 'qw' }],
 
   'klc': [{ 'label': '点数', 'value': 'ds' },
     { 'label': '两面', 'value': 'lm' },
@@ -88,7 +88,7 @@ export default {
     { 'label': '跨度', 'value': 'kd' },
     { 'label': '和数', 'value': 'hs' }],
 
-  'xgc': [{ 'label': '快捷', 'value': 'kj' },
+  'lhc': [{ 'label': '快捷', 'value': 'kj' },
     { 'label': '特码', 'value': 'tm' },
     { 'label': '正码', 'value': 'zm' },
     { 'label': '正码特', 'value': 'zmt' },

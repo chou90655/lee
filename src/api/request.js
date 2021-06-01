@@ -23,6 +23,7 @@ request.interceptors.response.use(res => {
   const { data } = res
   if (res) {
     if (data.code === 0) return data.data
+    if (data.code === 995) return {}
     else if (data.code === '401') {
       toast(data.msg)
       window.location.href = '#/login'

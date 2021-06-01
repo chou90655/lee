@@ -23,8 +23,7 @@ import PlayArea from './PlayArea' // 玩法及下注组件
 import BetArea from './BetArea' // 金额和投注组件
 import MoreList from './MoreList' // 右侧划入组件
 import allPlays from '../data/allPlays' // 所有大彩种玩法数据
-// import { pcLoadKgGameResult, getStatus } from '../api/interface'
-import { pcLoadKgGameResult } from '../api/interface'
+import { getLotterytimes, getChartList } from '../api/interface'
 import { mapState, mapMutations, mapActions } from '../util/tools'
 export default {
   components: {
@@ -41,10 +40,9 @@ export default {
   },
   created() {
     this.currentLottery.code && this.lotterChange() // 开始时拉取当前彩种信息
-    window.addEventListener('focus', this.getOpenInfo) // 页面激活时自动更新开奖信息
   },
   computed: {
-    ...mapState(['currentLottery', 'status']),
+    ...mapState(['currentLottery', 'status', 'openInfo']),
     plays() {
       return allPlays[this.currentLottery.lcode] || [{}]
     }
@@ -59,7 +57,6 @@ export default {
   },
   beforeDestroy() {
     clearTimeout(this.timerId)
-    window.removeEventListener('focus', this.getOpenInfo)
   },
   methods: {
     ...mapMutations(['setOpenInfo']),
@@ -84,11 +81,19 @@ export default {
       // this.currentLottery.status = await getStatus({ lotteryCode }).then(res => lotteryCode === this.currentLottery.code ? res : this.currentLottery.status)
       this.pcLoadKgGameResult()
     },
+    getresult(val) {
+      getChartList(val).then(res1 => {
+        if (res1 && res1[0]) this.setOpenInfo({ ...this.openInfo, result: res1[0].opencode })
+        else this.tid1 = setTimeout(() => this.getresult(val), 3000)
+      })
+    },
     pcLoadKgGameResult() { // 获取开奖信息
       const { fcode, code } = this.currentLottery
-      pcLoadKgGameResult({ cptype: fcode, lotteryname: code }).then(res => {
+      getLotterytimes({ cptype: fcode, lotteryname: code }).then(res => {
         if (code === this.currentLottery.code) {
           this.setOpenInfo(res || {})
+          clearTimeout(this.tid1)
+          this.getresult({ expect: res.expect, lotteryname: code })
           // if (res.result && this.loadHis === 1) this.getGameList() // 如果历史记录为展示状态，则同步更新历史记录
           // if (!res.result && this.currentLottery.status && this.status !== '已关盘') this.timerId = setTimeout(this.pcLoadKgGameResult, 3000)
         }

@@ -11,35 +11,39 @@
       </ul>
     </cube-scroll>
     <cube-scroll class="main_play" :data="rD.data" :options="options" ref=mainPlay>
-      <p v-if="rD.odds" class="odds t_bc"> 赔率：{{rD.rodio ? rD.rodio[rodioIndex].odds : rD.odds}}</p>
+      <!-- <p v-if="rD.odds" class="odds t_bc"> 赔率：{{rD.rodio ? rD.rodio[rodioIndex].odds : rD.odds}}</p> -->
       <ul v-if='rD.ball || (rD.balls && rD.balls[rodioIndex])' :class="['ball', rD.odds && 'hasOdd']">
         <li v-for="(it, i) in rD.ball || (rD.balls && rD.balls[rodioIndex])" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose}">
           <p :class="it.choose && !change ? 't_b': 't_bd'">{{it.name}}</p>
-          <i :class="[it.choose ? 't_bc' : '', !change && 't_bd']">{{it.odds}}</i>
+          <i v-if="it.odds" :class="[it.choose ? 't_bc' : '', !change && 't_bd']">{{it.odds}}</i>
         </li>
       </ul>
-      <ul v-for="(item, i) in rD.sort || (rD.sorts && rD.sorts[rodioIndex]) || []" :key="i" :class="{square: item.square, ball: item.ball, _first: i===0}">
-          <div class="sprt_title"><span></span>{{item.title}}</div>
-          <li v-for="(it, i) in item.square || item.ball" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose}">
-            <p :class="it.choose && !change ? 't_b': 't_bd'">{{it.name}}</p>
-            <i :class="[it.choose ? 't_bc' : '', !change && 't_bd']">{{it.odds}}</i>
-          </li>
+      <ul v-for="(item, i) in rD.sort || (rD.sorts && rD.sorts[rodioIndex]) || []" :key="i" :class="{square: item.square, ball: item.ball, _first: i===0, hasOdd:rD.odds}">
+        <div class="sprt_title"><span></span>{{item.title}}</div>
+        <li v-for="(it, i) in item.square || item.ball" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose}">
+          <p :class="it.choose && !change ? 't_b': 't_bd'">{{it.name}}</p>
+          <i :class="[it.choose ? 't_bc' : '', !change && 't_bd']">{{it.odds}}</i>
+        </li>
       </ul>
     </cube-scroll>
   </div>
 </template>
 <script>
-import { filter, hndleData } from './util'
+import { hndleData, handleZx, getnum } from './util'
 import { mixin } from '../mixin'
+import { toast } from '../../util/tools'
 export default {
   mixins: [mixin],
+  created() {
+    window.__this = this
+  },
   computed: {
     rD() {
       const agr = (this.rodioIndex + this.hleper) && this.play && this.lotteryData && this.rightData
       let result = {}
       if (agr) {
         try {
-          result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
+          result = this.storeRD || hndleData(this, this.lotteryData, this.play)
         } catch (e) {
           setTimeout(() => (this.hleper = Math.random() + 1), 500)
         }
@@ -50,8 +54,27 @@ export default {
   methods: {
     handleChose(it) {
       it.choose = !it.choose
-      this.hleper = Math.random() + 1
-      this.setBetData(this.rD.data.filter(_ => _.choose))
+      const Chosedata = this.rD.data.filter(_ => _.choose)
+      if (this.rodioIndex && Chosedata.length > 8) {
+        toast('最多选择8个号码', false)
+        it.choose = !it.choose
+      } else {
+        this.hleper = Math.random() + 1
+        this.setBetData(this.CalcLen(Chosedata))
+      }
+    },
+    hdqw(arr) {
+      const side = this.rD.sort.map(_ => ({ number: getnum(_.square, 'num'), label: getnum(_.square), playid: _.square[0].playid, name: _.title })).filter(_ => _.label)
+      console.log(side)
+      arr.side = side
+    },
+    CalcLen(Chosedata) {
+      let finalData = []
+      switch (this.play) {
+        case 'rx': handleZx(Chosedata, this.rodioIndex, finalData, this.rD); break
+        default: finalData = Chosedata; this.hdqw(finalData); break
+      }
+      return finalData
     }
   }
 }

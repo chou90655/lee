@@ -70,7 +70,6 @@ export default {
     }
   },
   created() {
-    console.log(232323)
     this.getGameList() // 获取开奖历史
   },
   filters: {

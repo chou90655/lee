@@ -29,7 +29,15 @@
             <p>下注明细</p>
           </div>
           <cube-scroll :data="copyBetData" class="bet_display" :options="{ scrollbar: true }">
-            <ul>
+            <ul v-if="side.length" class="side">
+              <li class="_headline"><i v-for="(it, i) in headerSide" :key="i">{{it}}</i></li>
+              <li v-for="(it, i) in side" :key=i>
+                <i>{{it.name}}</i>
+                <i>{{it.label||it.number}}</i>
+                <i>￥{{betAmount}}</i>
+              </li>
+            </ul>
+            <ul v-else>
               <li class="_headline"><i v-for="(it, i) in headerData" :key="i">{{it}}</i></li>
               <li v-for="(it, i) in copyBetData" :key=i>
                 <i>{{it.typeName + ' ' + it.name}}</i>
@@ -64,9 +72,11 @@ export default {
     return {
       betAmount: '',
       trigger: 0,
+      headerSide: ['玩法', '内容', '金额'],
       headerData: ['号码', '赔率', '金额', '操作'],
       showBetDetail: false,
       copyBetData: [],
+      side: [],
       keylist: [
         [1, 2, 3, '+200'],
         [4, 5, 6, '+300'],
@@ -92,6 +102,7 @@ export default {
   watch: {
     betData() {
       this.copyBetData = this.betData.filter(_ => _)
+      this.side = this.betData.side
     }
   },
   beforeDestroy() {

@@ -35,14 +35,14 @@ export function getDewdropList(data) {
 // 获取开奖历史
 export function getChartList(data) {
   return request({
-    url: '/web/result/listPage',
+    url: '/apijiekou.getLotteryOpencodes.do',
     method: 'post',
     data
   })
 }
 
 // 获取开奖信息
-export function pcLoadKgGameResult(data) {
+export function getLotterytimes(data) {
   return request({
     url: '/apijiekou.getLotterytimes.do',
     method: 'post',

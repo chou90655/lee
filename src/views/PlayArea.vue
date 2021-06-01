@@ -147,6 +147,7 @@ export default {
           height 48px!important
         i
           display none
+
       ul
         display flex
         flex-wrap wrap
@@ -188,12 +189,13 @@ export default {
         border-radius 2px
       p
         font-size 15px
-        height 30px
-        line-height 31px
         white-space nowrap
         color #333
         font-weight 600
         border-radius 2px 2px 0 0
+      &:not(.hasOdd) p
+        height 30px
+        line-height 31px
         border-bottom none
       i
         border-radius 0 0 2px 2px

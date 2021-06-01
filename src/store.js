@@ -2,7 +2,7 @@
 import { toast } from './util/tools'
 // import lotteryData from './data/lotteryData' // 本地保存的彩票赔率信息简化版数据
 import { getToken, setToken, setSiteCode, setRequstInfo, getUrl, setLotteryList, getLotteryList, getLotteryData, setLotteryData, setCurrentLottery, getCurrentLottery } from './util/cach'
-import { getGameList, queryOddsByCode, getChartList, getDewdropList } from './api/interface'
+import { getGameList, queryOddsByCode, getChartList } from './api/interface'
 import { list, baselist } from './data/data'
 export const lotteryList = getLotteryList() || list
 export default {
@@ -45,7 +45,7 @@ export default {
       state.betData = val
     },
     setOpenInfo(state, val) {
-      state.openInfo = val
+      state.openInfo = { ...val, nextStopTime: +val.remainTime - val.openRemainTime, nextOpenTime: +val.remainTime, nextLotteryNum: val.currFullExpect }
     },
     setUserInfo(state, val) {
       state.userInfo = val
@@ -75,8 +75,8 @@ export default {
             if (item) item.children.push(_)
             _.path = _.typeid + '/' + _.name // 储存父级的code 用于后台传参
             _.fcode = _.typeid // 储存父级的code 用于后台传参
-            _.lcode = _.name // 本地化code 用于添加类名 写样式
-            _.icode = _.name // 前端处理后生成列表的父级code
+            _.lcode = _.typeid // 本地化code 用于添加类名 写样式
+            _.icode = _.typeid // 前端处理后生成列表的父级code
             _.code = _.name // 前端处理后生成列表的父级code
             _.label = _.title // 前端处理后生成列表的父级code
             _.url = process.env.VUE_APP_LOTTERY_BASE_API + _.iconUrl // 前端处理后生成列表的父级code
@@ -94,28 +94,22 @@ export default {
       // commit('setLotteryData', storeDate)
       if (getToken()) {
         const data = getLotteryData(code) || await queryOddsByCode({ typeid: fcode }).then(res => {
-          if (Array.isArray(res)) {
-            setLotteryData(code, res)
-            return res
-          } else toast('网络不给力！', false, 5000)
+          setLotteryData(code, res.rates)
+          return res
         })
         data && state.currentLottery.code === code && commit('setLotteryData', data)
       }
     },
-    getGameList({ state, commit }) { // 获取历史开奖和走珠信息
-      const { code: lotteryCode, lcode } = state.currentLottery
-      const par = { pageNumber: 1, pageSize: 20, lotteryCode }
-      let hasDrop = ['c11x5', 'pk10', 'ssc', 'klsf'].includes(lcode) // 判断彩种是否有走珠信息
-      commit('setHistory', { historyList: [], lcode, dropList: hasDrop ? 1 : '' })
-      if (hasDrop) {
-        Promise.all([getChartList(par), getDewdropList({ lotteryCode })]).then(res => {
-          if (res) commit('setHistory', { historyList: res[0].list, dropList: res[1], lcode })
+    getGameList({ state, commit }, params) { // 获取历史开奖和走珠信息
+      const { code, lcode } = state.currentLottery
+      const par = { num: 50, lotteryname: code, ...params }
+      getChartList(par).then(res => {
+        res.forEach(_ => {
+          _.result = _.opencode
+          _.lotteryNum = _.expect
         })
-      } else {
-        getChartList(par).then(res => {
-          if (res) commit('setHistory', { historyList: res.list, lcode })
-        })
-      }
+        if (res) commit('setHistory', { historyList: res, lcode })
+      })
     }
   }
 }
