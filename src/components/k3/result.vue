@@ -1,0 +1,25 @@
+<template>
+  <div class="result">
+   <p>{{openInfo.lotteryNum}}期</p>
+    <ul class="ball" v-if="openInfo.result">
+      <li v-for="(it, i) in openInfo.result.split(',')" :key="i" :class="'_t' + it"></li>
+    </ul>
+    <p v-else class="msg">{{openInfo.message || '正在开奖……'}}</p>
+    <ul class="attach" v-if="openInfo.resultProperty">
+      <li v-for="(it, i) in openInfo.resultProperty.split(',')" :key="i">{{it}}</li>
+    </ul>
+  </div>
+</template>
+<script>
+import { resultMixin } from '../mixin'
+export default {
+  mixins: [resultMixin]
+}
+</script>
+<style lang="stylus" scoped>
+  .lottery_info .result .ball li
+    width 24px
+    height 24px
+    border-radius 0px
+    margin-right 8px
+</style>

@@ -1,0 +1,147 @@
+body,html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.l_icon
+  width: 1em; height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+i
+  font-style normal
+.f_m
+  font-weight 600
+.f_mn
+  font-weight 500
+.e_l
+  -webkit-font-smoothing antialiased
+  -moz-osx-font-smoothing grayscale
+  .bscroll-vertical-scrollbar
+    width 2px!important
+  .bscroll-indicator
+    border none!important
+    background-color #C8C8C8!important
+  .result
+    .red_b
+      background-image: radial-gradient(12px at 4px 4px, #fff 5%, #FF3A39 86%)!important;
+    .blue_b
+      background-image: radial-gradient(12px at 4px 4px, #fff 5%, #54B1FF 86%)!important;
+    .green_b
+      background-image: radial-gradient(12px at 4px 4px, #fff 5%, #0EBF29 86%)!important;
+    .yellow_b
+      background-image: radial-gradient(12px at 4px 4px, #fff 5%, #fc9900 86%)!important;
+  .rodio
+    flex-shrink 0
+    height 40px
+    background-color #f8f8f8
+    ul
+      font-size 16px
+      white-space nowrap
+    .cube-scroll-content
+      position absolute
+    li
+      display inline-block
+      box-sizing border-box
+      width 98px
+      height 40px
+      line-height 40px
+      text-align center
+      position relative
+      &:after
+        content ''
+        width 8px
+        height 8px
+        background-color #fff
+        position absolute
+        bottom -5px
+        left calc(50% - 4px)
+        transform rotate(45deg)
+        opacity 0
+      &.t_bc
+        background-color #D3EBFF
+        &:after
+          opacity 1
+  .layout
+    .slide-enter-active, .slide-leave-active
+      transition right .5s
+    .slide-enter, .slide-leave-to
+      right -100%
+#e_l
+  .fade-enter-active, .fade-leave-active
+    transition opacity .5s
+  .fade-enter, .fade-leave-to
+    opacity 0
+  .scale-enter-active
+    animation scale .25s ease-out
+  .scale-leave-active
+    animation scale .35s reverse
+  .fall-enter-active, .fall-leave-active
+      transition top .5s
+  .fall-enter, .fall-leave-to
+    top -100%
+  .cube-dialog-btns
+    display none
+  .cube-popup-mask
+    opacity 0.6
+  .cube-picker-panel
+    overflow hidden
+    border-radius 6px 6px 0 0
+  .cube-picker-choose
+    height 50px !important
+    background-color #F8F8F8
+  .cube-picker-cancel
+    color #666666 !important
+    line-height 50px !important
+  .cube-picker-confirm
+    color #4390ff !important
+    line-height 50px !important
+  @keyframes scale 
+    0%
+      transform: scale(0)
+    100%
+      transform: scale(1)
+  .t_a
+    position relative
+    background-color #fff
+    color #333
+    font-weight 500
+    &:after
+      content ''
+      position absolute
+      width 4.2px
+      height 25px
+      left 0
+      top calc(50% - 12.5px)
+      border-radius 0 104px 104px 0
+      font-weight 600
+  .result
+    ._pk1
+      background-color #F7DD00
+    ._pk2
+      background-color #349BF2
+    ._pk3
+      background-color #505050
+    ._pk4
+      background-color #F79000
+    ._pk5
+      background-color #32FEF7
+    ._pk6
+      background-color #6534F2
+    ._pk7
+      background-color #C1C1C1
+    ._pk8
+      background-color #FF3A39
+    ._pk9
+      background-color #9E0C0C
+    ._pk10
+      background-color #0AD429
+    [class^="_pk"]
+      background-image: inherit;
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+      font-family: Roboto-BlackItalic;
+      font-size: 16px;
+      border-radius: 1.67px;
+      margin-right 2px
