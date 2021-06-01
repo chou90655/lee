@@ -10,7 +10,7 @@
       <cube-scroll v-if="gameList[active] && gameList[active].children" :data="gameList[active].children" :options="options" class="kind">
         <ul>
           <li v-for="(item, i) in gameList[active].children" :class="{active: item.chosen}" @click="choose(item)" :key=i>
-            <i class="lty_icon" :style="{background: 'url('+ iconbg[item.code] +')'}"></i><span>{{item.label}}<icon href='in'/></span>
+            <i class="lty_icon" :style="{background: 'url('+item.url +')'}"></i><span>{{item.title}}<icon href='in'/></span>
           </li>
         </ul>
       </cube-scroll>
@@ -35,12 +35,8 @@ export default {
     ...mapState(['lotteryList', 'url']),
     ...mapGetters(['lotterys']),
     gameList() { // 组合彩种列表和热门
-      return [{ children: this.lotterys.filter(_ => _.hot), label: '热门' }, ...this.lotteryList]
-    },
-    iconbg() { // 引入彩种图标文件
-      let obj = {}
-      this.lotterys.forEach(_ => (obj[_.code] = require('../assets/images/lottery-icon/' + _.code + '.jpg')))
-      return obj
+      // return [{ children: this.lotterys.filter(_ => _.hot), label: '热门' }, ...this.lotteryList]
+      return [...this.lotteryList]
     }
   },
   watch: {

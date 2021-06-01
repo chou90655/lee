@@ -71,26 +71,26 @@ export default {
     },
     openInfo({ nextStopTime, nextOpenTime }) { // 处理当前彩种开奖信息 判断和设置状态 和 计时功能
       clearInterval(this.timeId)
-      this.sealTime = 0
-      if (!this.currentLottery.status) return this.setStatus('已停售')
-      if (nextOpenTime < 0) return this.setStatus('已关盘')
-      let tr = nextStopTime <= 0
-      this.nextStopTime = nextOpenTime
-      this.sealTime = tr ? nextOpenTime : nextStopTime
-      this.setStatus(tr ? '已封盘' : '封盘')
-      this.timeId = setInterval(() => {
-        --this.nextStopTime
-        if (--this.sealTime <= 0) {
-          if (tr) {
-            clearInterval(this.timeId)
-            this.$emit('getOpenInfo', this.showHistory)
-          } else {
-            this.setStatus('已封盘')
-            tr = 1
-            this.sealTime = nextOpenTime - nextStopTime
-          }
-        }
-      }, 1000)
+      // this.sealTime = 0
+      // if (!this.currentLottery.status) return this.setStatus('已停售')
+      // if (nextOpenTime < 0) return this.setStatus('已关盘')
+      // let tr = nextStopTime <= 0
+      // this.nextStopTime = nextOpenTime
+      // this.sealTime = tr ? nextOpenTime : nextStopTime
+      // this.setStatus(tr ? '已封盘' : '封盘')
+      // this.timeId = setInterval(() => {
+      //   --this.nextStopTime
+      //   if (--this.sealTime <= 0) {
+      //     if (tr) {
+      //       clearInterval(this.timeId)
+      //       this.$emit('getOpenInfo', this.showHistory)
+      //     } else {
+      //       this.setStatus('已封盘')
+      //       tr = 1
+      //       this.sealTime = nextOpenTime - nextStopTime
+      //     }
+      //   }
+      // }, 1000)
     }
   },
   methods: {

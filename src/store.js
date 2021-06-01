@@ -1,9 +1,9 @@
 
 import { toast } from './util/tools'
-import lotteryData from './data/lotteryData' // 本地保存的彩票赔率信息简化版数据
+// import lotteryData from './data/lotteryData' // 本地保存的彩票赔率信息简化版数据
 import { getToken, setToken, setSiteCode, setRequstInfo, getUrl, setLotteryList, getLotteryList, getLotteryData, setLotteryData, setCurrentLottery, getCurrentLottery } from './util/cach'
 import { getGameList, queryOddsByCode, getChartList, getDewdropList } from './api/interface'
-import { list } from './data/data'
+import { list, baselist } from './data/data'
 export const lotteryList = getLotteryList() || list
 export default {
   namespaced: true,
@@ -65,36 +65,35 @@ export default {
   actions: {
     initLottery({ commit }, params) { // 获取彩种列表
       const { siteCode, token } = params
-      setToken(token)
+      setToken(token || '$2y$10$FMWa7Q.1/m0d5UadxMeq2ul04nkYMNGaMtex0ktndWwoukv5VHU9a')
       setSiteCode(siteCode)
       setRequstInfo(params)
       return getGameList().then(res => {
         if (Array.isArray(res)) {
-          res.forEach(_ => _.children.forEach(i => {
-            i.path = _.code + '/' + i.code // 储存父级的code 用于后台传参
-            i.fcode = _.code // 储存父级的code 用于后台传参
-            i.lcode = _.code // 本地化code 用于添加类名 写样式
-            i.icode = _.code // 前端处理后生成列表的父级code
-          }))
-          // 下面将 飞艇 从 pk10 系列里面抽取出来
-          const pk10 = res.find(_ => _.code === 'pk10')
-          const ft = { code: 'ft', label: '飞艇', children: pk10.children.filter(_ => _.code.includes('ft')) }
-          ft.children.forEach(_ => (_.icode = 'ft'))
-          res.splice(res.findIndex(_ => _.code === 'pk10') + 1, 0, ft)
-          pk10.children = pk10.children.filter(_ => !_.code.includes('ft'))
-          commit('setLotteryList', res)
-          return res
+          res.forEach(_ => {
+            const item = baselist.find(i => i.code === _.typeid)
+            if (item) item.children.push(_)
+            _.path = _.typeid + '/' + _.name // 储存父级的code 用于后台传参
+            _.fcode = _.typeid // 储存父级的code 用于后台传参
+            _.lcode = _.name // 本地化code 用于添加类名 写样式
+            _.icode = _.name // 前端处理后生成列表的父级code
+            _.code = _.name // 前端处理后生成列表的父级code
+            _.label = _.title // 前端处理后生成列表的父级code
+            _.url = process.env.VUE_APP_LOTTERY_BASE_API + _.iconUrl // 前端处理后生成列表的父级code
+          })
+          commit('setLotteryList', baselist)
+          return baselist
         } else {
           toast()
           return []
         }
       })
     },
-    async getLotteryData({ commit, state }, { code, lcode }) { // 获取并设置赔率
-      const storeDate = lotteryData[lcode].map(_ => { const [playCode, typeCode] = _.split(' '); return { playCode, typeCode } })
-      commit('setLotteryData', storeDate)
+    async getLotteryData({ commit, state }, { code, fcode }) { // 获取并设置赔率
+      // const storeDate = lotteryData[lcode].map(_ => { const [playCode, typeCode] = _.split(' '); return { playCode, typeCode } })
+      // commit('setLotteryData', storeDate)
       if (getToken()) {
-        const data = getLotteryData(code) || await queryOddsByCode({ lotteryCode: code }).then(res => {
+        const data = getLotteryData(code) || await queryOddsByCode({ typeid: fcode }).then(res => {
           if (Array.isArray(res)) {
             setLotteryData(code, res)
             return res

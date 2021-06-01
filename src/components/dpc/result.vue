@@ -1,6 +1,6 @@
 <template>
   <div class="result">
-   <p>{{openInfo.lotteryNum}}期</p>
+   <p>{{openInfo.currFullExpect}}期</p>
     <ul class="ball" v-if="openInfo.result">
       <li v-for="(it, i) in openInfo.result.split(',')" :key="i">{{it}}</li>
     </ul>

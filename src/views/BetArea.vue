@@ -80,8 +80,8 @@ export default {
   },
   mounted() {
     this.$refs.input.$el.querySelector('input').setAttribute('readonly', 1)
-    this.getUserInfo()
-    this.timeId = setInterval(() => this.getUserInfo(), 8000)
+    // this.getUserInfo()
+    // this.timeId = setInterval(() => this.getUserInfo(), 8000)
   },
   computed: {
     ...mapState(['betData', 'openInfo', 'sealTime', 'status', 'currentLottery', 'userInfo']),

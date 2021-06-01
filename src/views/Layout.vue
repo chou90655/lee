@@ -85,12 +85,12 @@ export default {
       this.pcLoadKgGameResult()
     },
     pcLoadKgGameResult() { // 获取开奖信息
-      const { code: lotteryCode } = this.currentLottery
-      pcLoadKgGameResult({ lotteryCode }).then(res => {
-        if (lotteryCode === this.currentLottery.code) {
-          this.setOpenInfo(res)
-          if (res.result && this.loadHis === 1) this.getGameList() // 如果历史记录为展示状态，则同步更新历史记录
-          if (!res.result && this.currentLottery.status && this.status !== '已关盘') this.timerId = setTimeout(this.pcLoadKgGameResult, 3000)
+      const { fcode, code } = this.currentLottery
+      pcLoadKgGameResult({ cptype: fcode, lotteryname: code }).then(res => {
+        if (code === this.currentLottery.code) {
+          this.setOpenInfo(res || {})
+          // if (res.result && this.loadHis === 1) this.getGameList() // 如果历史记录为展示状态，则同步更新历史记录
+          // if (!res.result && this.currentLottery.status && this.status !== '已关盘') this.timerId = setTimeout(this.pcLoadKgGameResult, 3000)
         }
       })
     },

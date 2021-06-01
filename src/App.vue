@@ -26,32 +26,27 @@ export default {
   },
   computed: mapGetters(['lotterys']),
   created() {
-    if (this.$route.path.indexOf('/login') === 0) {
-      const { siteCode, token } = this.$route.params
-      if (siteCode && token) {
-        this.initLottery(this.$route.params).then(list => {
-          this.$router.addRoutes(createRouterFunction(list))
-          let item = this.lotterys[0]
-          // eslint-disable-next-line camelcase
-          const { code, resourceUrl, is_app } = this.$route.query
-          if (code) { // 根据传入的code 在列表中找到对应彩种 未找到则跳入默认彩种并提示
-            const co = decodeURIComponent(code)
-            item = this.lotterys.find(_ => _.path === co) || item
-            if (!item) toast('抱歉，该彩种已下架!')
-          }
-          // eslint-disable-next-line camelcase
-          if (resourceUrl && +is_app === 1) {
-            setUrl(resourceUrl)
-            this.setUrl(resourceUrl)
-          } else {
-            setUrl('')
-          }
-          this.setCurrentLottery(item)
-          this.$router.push(mod + '/play/' + item.fcode + '/' + item.code, () => {})
-          setTimeout(() => this.$router.push(mod + '/play/' + item.fcode + '/' + item.code, () => {}), 300)
-        })
-      } else toast('缺少必要信息！')
-    }
+    this.initLottery(this.$route.params).then(list => {
+      this.$router.addRoutes(createRouterFunction(list))
+      let item = this.lotterys[0]
+      // eslint-disable-next-line camelcase
+      const { code, resourceUrl, is_app } = this.$route.query
+      if (code) { // 根据传入的code 在列表中找到对应彩种 未找到则跳入默认彩种并提示
+        const co = decodeURIComponent(code)
+        item = this.lotterys.find(_ => _.path === co) || item
+        if (!item) toast('抱歉，该彩种已下架!')
+      }
+      // eslint-disable-next-line camelcase
+      if (resourceUrl && +is_app === 1) {
+        setUrl(resourceUrl)
+        this.setUrl(resourceUrl)
+      } else {
+        setUrl('')
+      }
+      this.setCurrentLottery(item)
+      this.$router.push(mod + '/play/' + item.fcode + '/' + item.code, () => {})
+      setTimeout(() => this.$router.push(mod + '/play/' + item.fcode + '/' + item.code, () => {}), 300)
+    })
 
     // 禁止双击缩放相关
     document.addEventListener('touchstart', this.scaleStr)

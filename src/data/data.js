@@ -9,3 +9,17 @@ export const list = [{ 'code': 'xgc', 'label': '六合彩', 'status': true, 'chi
   { 'code': 'kl8', 'label': '快8', 'status': true, 'children': [{ 'code': 'bjkl8', 'label': '北京快8', 'status': false, 'hot': false, 'fcode': 'kl8', 'lcode': 'kl8', 'icode': 'kl8' }] },
   { 'code': 'ssl', 'label': '时时乐', 'status': true, 'children': [{ 'code': 'shssl', 'label': '上海时时乐', 'status': true, 'hot': true, 'fcode': 'ssl', 'lcode': 'ssl', 'icode': 'ssl' }] },
   { 'code': '3d', 'label': '3D', 'status': true, 'children': [{ 'code': 'fc3d', 'label': '福彩3D', 'status': true, 'hot': true, 'fcode': '3d', 'lcode': '3d', 'icode': '3d' }, { 'code': 'pl3', 'label': '排列3', 'status': true, 'hot': true, 'fcode': '3d', 'lcode': '3d', 'icode': '3d' }] }]
+
+export const baselist = [
+  // { 'code': 'ft', 'label': '飞艇', 'children': [] },
+  // { 'code': 'klsf', 'label': '快乐十分', 'status': true, 'children': [] },
+  // { 'code': 'klc', 'label': 'PC蛋蛋', 'status': true, 'children': [] },
+  // { 'code': 'ssl', 'label': '时时乐', 'status': true, 'children': [] },
+
+  { 'code': 'keno', 'label': '快8', 'status': true, 'children': [] },
+  { 'code': 'lhc', 'label': '六合彩', 'status': true, 'children': [] },
+  { 'code': 'x5', 'label': '11选5', 'status': true, 'children': [] },
+  { 'code': 'ssc', 'label': '时时彩', 'status': true, 'children': [] },
+  { 'code': 'k3', 'label': '快3', 'status': true, 'children': [] },
+  { 'code': 'pk10', 'label': 'PK10', 'status': true, 'children': [] },
+  { 'code': 'dpc', 'label': '3D', 'status': true, 'children': [] }]

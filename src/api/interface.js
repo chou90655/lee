@@ -17,7 +17,7 @@ export function getGameList(data) {
 // 获取赔率及页面渲染相关的
 export function queryOddsByCode(data) {
   return request({
-    url: '/web/odds/list',
+    url: '/game.getCpDetails.do',
     method: 'post',
     data
   })
@@ -44,7 +44,7 @@ export function getChartList(data) {
 // 获取开奖信息
 export function pcLoadKgGameResult(data) {
   return request({
-    url: '/web/result/latest/get',
+    url: '/apijiekou.getLotterytimes.do',
     method: 'post',
     data
   })
