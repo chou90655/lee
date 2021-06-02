@@ -24,7 +24,7 @@ request.interceptors.response.use(res => {
   if (res) {
     if (data.code === 0) return data.data
     if (data.code === 995 && config.url.includes('apijiekou.getLotteryOpencodes.do')) return {}
-    else if (data.code === '401') {
+    else if (data.code === 999) {
       toast(data.message)
       window.location.href = '#/login'
     } else toast(data.message)

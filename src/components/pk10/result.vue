@@ -4,7 +4,7 @@
     <ul class="ball" v-if="gameResult">
       <li v-for="(it, i) in gameResult" :key="i" :class="'_pk' + it">{{it}}</li>
     </ul>
-    <p v-else>{{openInfo.message || '正在开奖……'}}</p>
+    <p v-else>{{'正在开奖……'}}</p>
     <ul class="attach" v-if="openInfo.resultProperty">
       <li v-for="(it, i) in openInfo.resultProperty.split(',')" :key="i">{{it}}</li>
     </ul>

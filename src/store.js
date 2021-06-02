@@ -45,7 +45,7 @@ export default {
       state.betData = val
     },
     setOpenInfo(state, val) {
-      state.openInfo = { ...val, nextStopTime: +val.remainTime - val.openRemainTime, nextOpenTime: +val.remainTime, nextLotteryNum: val.currFullExpect }
+      state.openInfo = { ...val, nextStopTime: +val.remainTime - val.openRemainTime, nextOpenTime: +val.remainTime, nextLotteryNum: val.currFullExpect, lotteryNum: val.lastFullExpect }
     },
     setUserInfo(state, val) {
       state.userInfo = val
@@ -93,7 +93,7 @@ export default {
       // const storeDate = lotteryData[lcode].map(_ => { const [playCode, typeCode] = _.split(' '); return { playCode, typeCode } })
       // commit('setLotteryData', storeDate)
       if (getToken()) {
-        const data = getLotteryData(code) || await queryOddsByCode({ typeid: fcode }).then(res => {
+        const data = getLotteryData(code) || await queryOddsByCode({ typeid: fcode, username: 'test1007' }).then(res => {
           setLotteryData(code, res.rates)
           return res
         })

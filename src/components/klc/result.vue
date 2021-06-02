@@ -6,7 +6,7 @@
       <i>=</i>
       <li :class="getColor(sum)">{{sum}}</li>
     </ul>
-    <p v-else class="msg">{{openInfo.message || '正在开奖……'}}</p>
+    <p v-else class="msg">{{'正在开奖……'}}</p>
     <ul class="attach" v-if="openInfo.resultProperty">
       <li v-for="(it, i) in openInfo.resultProperty.split(',')" :key="i">{{it}}</li>
     </ul>
