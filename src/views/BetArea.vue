@@ -86,6 +86,7 @@ export default {
     issueDisplay
   },
   mounted() {
+    window.__this = this
     this.$refs.input.$el.querySelector('input').setAttribute('readonly', 1)
     // this.getUserInfo()
     // this.timeId = setInterval(() => this.getUserInfo(), 8000)

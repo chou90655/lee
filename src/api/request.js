@@ -1,7 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
-// import { getRequstInfo } from '../util/cach'
 import { toast } from '../util/tools'
+import Store from '../store'
 
 const request = axios.create({
   baseURL: process.env.VUE_APP_LOTTERY_BASE_API,
@@ -9,9 +9,9 @@ const request = axios.create({
   headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
 })
 request.interceptors.request.use(config => {
-  // const base = getRequstInfo()
-  config.headers.token = '$2y$10$FMWa7Q.1/m0d5UadxMeq2ul04nkYMNGaMtex0ktndWwoukv5VHU9a'
-  config.data = qs.stringify({ ...config.data })
+  const { userInfo } = Store.state
+  config.headers.token = userInfo.token
+  config.data = qs.stringify({ ...config.data, username: userInfo.username })
   return config
 }, err => {
   console.log(err)

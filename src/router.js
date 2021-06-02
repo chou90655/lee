@@ -4,7 +4,7 @@ import { createRouterFunction, mod } from './util/tools'
 
 export default [
   {
-    path: '/login/:siteCode/:token/:parentcode?'
+    path: '/login/:token/:username'
   },
   ...createRouterFunction(lotteryList), // 初始化时用彩种列表生成彩票路由
   { // 生成右侧划出列表路由
