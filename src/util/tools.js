@@ -30,6 +30,9 @@ export function createRouterFunction(lotteryList, home) {
   return home ? [home] : children
 }
 
+export function copy(data) {
+  return JSON.parse(JSON.stringify(data))
+}
 // 格式化时间 只支持 'YYYY-MM-DDD'
 export function format(time) {
   return time.getFullYear() + '-' + ('0' + (time.getMonth() + 1)).slice(-2) + '-' + ('0' + time.getDate()).slice(-2)
