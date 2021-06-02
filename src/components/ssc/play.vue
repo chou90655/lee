@@ -25,7 +25,7 @@
         </li>
       </ul>
       <ul v-for="(item, i) in rD.sort || (rD.sorts && rD.sorts[rodioIndex]) || []" :key="i" :class="{square: item.square, ball: item.ball, _first: i===0}">
-          <div class="sprt_title"><span></span>{{item.title}}</div>
+          <div class="sprt_title" v-if="item.title"><span></span>{{item.title}}</div>
           <li v-for="(it, i) in item.square || item.ball" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose}">
             <p :class="it.choose && !change ? 't_b': 't_bd'">{{it.name}}</p>
             <i :class="[it.choose ? 't_bc' : '', !change && 't_bd']">{{it.odds}}</i>
@@ -44,11 +44,12 @@ export default {
       const agr = (this.rodioIndex + this.hleper) && this.play && this.lotteryData && this.rightData
       let result = {}
       if (agr) {
-        try {
-          result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
-        } catch (e) {
-          setTimeout(() => (this.hleper = Math.random() + 1), 500)
-        }
+        result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
+        // try {
+        //   result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
+        // } catch (e) {
+        //   // setTimeout(() => (this.hleper = Math.random() + 1), 500)
+        // }
       }
       return result
     }

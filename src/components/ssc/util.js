@@ -1,29 +1,29 @@
-import { handleRDChange } from '../../util/tools'
-const handleDxdszh = (res, _, troggle) => {
-  const code = _.playCode
-  const pre = troggle ? '总和' : ''
+/* eslint-disable object-property-newline */
+import { handleRDChange, copy } from '../../util/tools'
+const handleDxdszh = (res, _) => {
+  const code = _.playid
   switch (true) {
-    case code.includes('single') : _.name = pre + '单'; break
-    case code.includes('double') : _.name = pre + '双'; break
-    case code.includes('big') : _.name = pre + '大'; break
-    case code.includes('small') : _.name = pre + '小'; break
-    default: _.name = +code.slice(2); break
+    case code.includes('_dan') : _.name = '单'; break
+    case code.includes('_shuang') : _.name = '双'; break
+    case code.includes('_da') : _.name = '大'; break
+    case code.includes('_xiao') : _.name = '小'; break
+    default: _.name = +code.slice(10); break
   }
   res.push(_)
 }
 const handleLs = (res, _) => {
-  const code = _.playCode
+  const code = _.playid
   switch (true) {
-    case code.includes('bao') : _.name = '豹子'; break
-    case code.includes('ban') : _.name = '半顺'; break
-    case code.includes('shun') : _.name = '顺子'; break
-    case code.includes('dui') : _.name = '对子'; break
-    case code.includes('za') : _.name = '杂六'; break
+    case code.includes('bz') : _.name = '豹子'; break
+    case code.includes('bs') : _.name = '半顺'; break
+    case code.includes('sz') : _.name = '顺子'; break
+    case code.includes('dz') : _.name = '对子'; break
+    case code.includes('z6') : _.name = '杂六'; break
   }
   res.push(_)
 }
 const handleDn = (res, _) => {
-  const code = _.playCode
+  const code = _.playid
   switch (true) {
     case code.includes('none') : _.name = '没牛'; break
     case code.includes('0') : _.name = '牛牛'; break
@@ -49,31 +49,52 @@ const handleSh = (res, _) => {
   }
   res.push(_)
 }
-
-export const filter = (data) => {
-  if (!data) return
-  let res = { 1: [], 2: [], 3: [], 4: [], 5: [], sum: [], lhh: [], qsq: [], zsq: [], hsq: [], dn: [], sh: [] }
-  const indexObj = { w: 1, q: 2, b: 3, s: 4, g: 5 }
+const hddxds = (item) => {
+  return ['大', '小', '单', '双'].map((_, i) => ({ ...item, name: _, num: i }))
+}
+const hdhl = (item) => {
+  return ['龙', '虎', '和'].map((_, i) => ({ ...item, name: _, num: i }))
+}
+const yxfs = (item, i = 10) => {
+  return Array(i).fill(1).map((_, i) => ({ ...item, name: i, num: i }))
+}
+export const filter = (data1) => {
+  if (!data1) return
+  const data = Object.values(data1)
+  let res = { 1: [], 2: [], 3: [], 4: [], 5: [], sum: [], lhh: [], qsq: [], zsq: [], hsq: [], dn: [], sh: [], lm1: [], lm2: [], lm3: [], lm4: [], lm5: [],
+    lh: [], dxds: [], dwd: []
+  }
+  // const indexObj = { w: 1, q: 2, b: 3, s: 4, g: 5 }
   data.forEach(_ => {
     _.choose = false
-    _.odds = _.odds || '0.00'
-    const code = _.playCode
-    const tcode = _.typeCode
+    _.odds = +_.rate ? _.rate : _.maxjj
+    const tcode = _.playid
     switch (true) {
-      case code[1] === '-' : handleDxdszh(res[indexObj[tcode[0]]], _); break // 一至五球
-      case tcode.includes('sum'): handleDxdszh(res.sum, _, 1); break // 总和大小单双
-      case tcode === 'lhh':_.name = code.includes('tiger') ? '虎' : code.includes('dragon') ? '龙' : '和'; res.lhh.push(_); break // 龙虎斗
-      case tcode === 'qsq': handleLs(res.qsq, _); break // 前三球
-      case tcode === 'zsq': handleLs(res.zsq, _); break // 中三球
-      case tcode === 'hsq': handleLs(res.hsq, _); break // 后三球
-      case tcode === 'dn': handleDn(res.dn, _); break // 斗牛
-      case tcode === 'sh': handleSh(res.sh, _); break // 梭哈
+      case tcode.includes('dan_d'): handleDxdszh(res[tcode[5]], _); break // 一至五球
+      case tcode.includes('lmp_d'): handleDxdszh(res['lm' + tcode[5]], _); break // 一至五球 大小单双
+      case tcode.includes('lmp_zongh'): handleDxdszh(res.sum, _); break // 总和大小单双
+      case tcode.includes('lmp_lh'):_.name = tcode.includes('hu') ? '虎' : tcode.includes('he') ? '和' : '龙'; res.lhh.push(_); break // 龙虎斗
+      case tcode.includes('lmp_qs'): handleLs(res.qsq, _); break // 前三球
+      case tcode.includes('lmp_zs'): handleLs(res.zsq, _); break // 中三球
+      case tcode.includes('lmp_hs'): handleLs(res.hsq, _); break // 后三球
+      case tcode.includes('dweid'):res.dwd = yxfs(_); break // 定位胆
+      case ['exzhixfsh', 'exzhixfsq', 'sxzhixfsz', 'sxzhixfsq', 'sxzhixfsh', 'sxzhixdsh', 'sxzhixdsq', 'sxzhixdsz'].includes(tcode): res[_.playid] = yxfs(_); break // 后二 前二 前三 中三 后三
+      case ['kuaduqe', 'exzuxfsh'].includes(tcode): res[_.playid] = yxfs(_); break // 后二 前二 前三 中三 后三 组选
+      case ['exzuxfsq', 'kuaduhe', 'kuaduhs', 'kuaduqs', 'kuaduzs'].includes(tcode): res[_.playid] = yxfs(_); break // 后二 前二 前三 中三 后三 跨度
+      case ['zhixhzhe', 'zhixhzqe', 'zhixhzhs', 'zhixhzqs', 'zhixhzzs'].includes(tcode): res[_.playid] = yxfs(_); break // 后二 前二 前三 中三 后三 和值直选
+      case ['zuxhzhe', 'zuxhzqe', 'zuxhzhs', 'zuxhzqs', 'zuxhzzs'].includes(tcode): res[_.playid] = yxfs(_); break // 后二 前二 前三 中三 后三 和值组选
+      case ['zuxzsbd', 'zuxqsbd', 'zuxhsbd', 'zuxcebd', 'zuxhebd'].includes(tcode): res[_.playid] = yxfs(_); break // 后二 前二 前三 中三 后三 包胆
+      case ['dxdshe', 'dxdshs', 'dxdsqe', 'dxdsqs'].includes(tcode): res[_.playid] = hddxds(_); break // 大小单双
+      case ['lhbg', 'lhbs', 'lhqb', 'lhqg', 'lhqs', 'lhsg', 'lhwb', 'lhwg', 'lhwq', 'lhws'].includes(tcode): res[_.playid] = hdhl(_); break // 龙虎
+      // case tcode === 'dn': handleDn(res.dn, _); break // 斗牛
+      // case tcode === 'sh': handleSh(res.sh, _); break // 梭哈
     }
   })
   return res
 }
 export const hndleData = (_this, data, key) => {
   let result = {}
+  console.log(data)
   if (!data) return result
   _this.storeData = data
   switch (key) {
@@ -84,38 +105,91 @@ export const hndleData = (_this, data, key) => {
       break
     case 'lm':
       result.sort = []
-      result.sort.push({ title: '万第一球', square: data[1].filter(_ => _.typeCode.indexOf('w-') === 0) })
-      result.sort.push({ title: '千第二球', square: data[2].filter(_ => _.typeCode.indexOf('q-') === 0) })
-      result.sort.push({ title: '百第三球', square: data[3].filter(_ => _.typeCode.indexOf('b-') === 0) })
-      result.sort.push({ title: '十第四球', square: data[4].filter(_ => _.typeCode.indexOf('s-') === 0) })
-      result.sort.push({ title: '个第五球', square: data[5].filter(_ => _.typeCode.indexOf('g-') === 0) })
-      result.sort.push({ title: '总和/龙虎', square: [...data.sum, ...data.lhh] })
+      result.sort.push({ title: '万第一球', square: data.lm1 })
+      result.sort.push({ title: '千第二球', square: data.lm2 })
+      result.sort.push({ title: '百第三球', square: data.lm3 })
+      result.sort.push({ title: '十第四球', square: data.lm4 })
+      result.sort.push({ title: '个第五球', square: data.lm5 })
+      result.sort.push({ title: '总和', square: data.sum })
       break
     case '1':
-      result.ball = data[1].filter(_ => _.typeCode === 'w')
-      result.square = data[1].filter(_ => _.typeCode.indexOf('w-') === 0)
+      result.ball = data[1]
       break
     case '2':
-      result.ball = data[2].filter(_ => _.typeCode === 'q')
-      result.square = data[2].filter(_ => _.typeCode.indexOf('q-') === 0)
+      result.ball = data[2]
       break
     case '3':
-      result.ball = data[3].filter(_ => _.typeCode === 'b')
-      result.square = data[3].filter(_ => _.typeCode.indexOf('b-') === 0)
+      result.ball = data[3]
       break
     case '4':
-      result.ball = data[4].filter(_ => _.typeCode === 's')
-      result.square = data[4].filter(_ => _.typeCode.indexOf('s-') === 0)
+      result.ball = data[4]
       break
     case '5':
-      result.ball = data[5].filter(_ => _.typeCode === 'g')
-      result.square = data[5].filter(_ => _.typeCode.indexOf('g-') === 0)
+      result.ball = data[5]
       break
-    case 'sq':
+    case 'dxds':
+      result.rodio = [{ name: '前二' }, { name: '后二' }, { name: '前三' }, { name: '后三' }]
+      result.sorts = []
+      result.sorts.push([{ title: '个位', square: copy(data.dxdsqe) }, { title: '十位', square: copy(data.dxdsqe) }])
+      result.sorts.push([{ title: '千位', square: copy(data.dxdshe) }, { title: '万位', square: copy(data.dxdshe) }])
+      result.sorts.push([{ title: '个位', square: copy(data.dxdsqs) }, { title: '十位', square: copy(data.dxdsqs) }, { title: '百位', square: copy(data.dxdsqs) }])
+      result.sorts.push([{ title: '百位', square: copy(data.dxdshs) }, { title: '千位', square: copy(data.dxdshs) }, { title: '万位', square: copy(data.dxdshs) }])
+      break
+    case 'qe':
+      result.rodio = [{ name: '直选复式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选和值' }, { name: '组选包胆' }]
+      result.sorts = []
+      result.sorts.push([{ title: '个位', ball: copy(data.exzhixfsq) }, { title: '十位', ball: copy(data.exzhixfsq) }])
+      result.sorts.push([{ ball: copy(data.zhixhzqe) }]) // 和值
+      result.sorts.push([{ ball: copy(data.kuaduqe) }]) // 跨度
+      result.sorts.push([{ title: '个位', ball: copy(data.exzuxfsq) }, { title: '十位', ball: copy(data.exzuxfsq) }])
+      result.sorts.push([{ ball: copy(data.zuxhzqe) }]) // 和值
+      result.sorts.push([{ ball: copy(data.zuxcebd) }]) // 包胆
+      break
+    case 'he':
+      result.rodio = [{ name: '直选复式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选和值' }, { name: '组选包胆' }]
+      result.sorts = []
+      result.sorts.push([{ title: '个位', ball: copy(data.exzhixfsh) }, { title: '十位', ball: copy(data.exzhixfsh) }])
+      result.sorts.push([{ ball: copy(data.zhixhzhe) }]) // 和值
+      result.sorts.push([{ ball: copy(data.kuaduhe) }]) // 跨度
+      result.sorts.push([{ title: '个位', ball: copy(data.exzuxfsh) }, { title: '十位', ball: copy(data.exzuxfsh) }])
+      result.sorts.push([{ ball: copy(data.zuxhzhe) }]) // 和值
+      result.sorts.push([{ ball: copy(data.zuxhebd) }]) // 包胆
+      break
+    case 'qs':
+      result.rodio = [{ name: '直选复式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选和值' }, { name: '组选包胆' }]
+      result.sorts = []
+      result.sorts.push([{ title: '个位', square: copy(data.exzhixfsq) }, { title: '十位', square: copy(data.exzhixfsq) }])
+      result.sorts.push([{ title: '千位', square: copy(data.dxdshe) }, { title: '万位', square: copy(data.dxdshe) }])
+      result.sorts.push([{ title: '个位', square: copy(data.dxdsqs) }, { title: '十位', square: copy(data.dxdsqs) }, { title: '百位', square: copy(data.dxdsqs) }])
+      result.sorts.push([{ title: '百位', square: copy(data.dxdshs) }, { title: '千位', square: copy(data.dxdshs) }, { title: '万位', square: copy(data.dxdshs) }])
+      break
+    case 'qzh':
       result.sort = []
       result.sort.push({ title: '前三球', square: data.qsq })
       result.sort.push({ title: '中三球', square: data.zsq })
       result.sort.push({ title: '后三球', square: data.hsq })
+      result.sort.push({ title: '龙虎', square: data.lhh })
+      break
+    case 'dwd':
+      result.sort = []
+      result.sort.push({ title: '个位', ball: copy(data.dwd) })
+      result.sort.push({ title: '十位', ball: copy(data.dwd) })
+      result.sort.push({ title: '百位', ball: copy(data.dwd) })
+      result.sort.push({ title: '千位', ball: copy(data.dwd) })
+      result.sort.push({ title: '万位', ball: copy(data.dwd) })
+      break
+    case 'lh':
+      result.sort = []
+      result.sort.push({ title: '百个', square: data.lhbg })
+      result.sort.push({ title: '百十', square: data.lhbs })
+      result.sort.push({ title: '千百', square: data.lhqb })
+      result.sort.push({ title: '千个', square: data.lhqg })
+      result.sort.push({ title: '千十', square: data.lhqs })
+      result.sort.push({ title: '十个', square: data.lhsg })
+      result.sort.push({ title: '万百', square: data.lhwb })
+      result.sort.push({ title: '万个', square: data.lhwg })
+      result.sort.push({ title: '万千', square: data.lhwq })
+      result.sort.push({ title: '万十', square: data.lhws })
       break
     case 'dn':result.square = data.dn; break
     case 'sh':result.square = data.sh; break

@@ -101,7 +101,6 @@ export default {
   },
   watch: {
     betData() {
-      console.log(this.betData)
       this.copyBetData = [...this.betData]
     }
   },
