@@ -91,10 +91,9 @@ export function chooseDataPl(arr, le, re, item = []) { // 排列投注
 export function handleRDChange(_this, result) {
   _this.storeRD = JSON.parse(JSON.stringify(result))
   _this.storeRD.data = getData(_this.storeRD, _this.rodioIndex)
-  const path = _this.$route.path
   setTimeout(() => {
     const scroll = _this.$refs.mainPlay
-    if (scroll && path === _this.$route.path) {
+    if (scroll) {
       scroll.scrollTo(0, 0, 0)
       scroll.refresh()
     }

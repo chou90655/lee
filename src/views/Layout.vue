@@ -48,10 +48,8 @@ export default {
     }
   },
   watch: {
-    $route(v) { // 路由变化时 隐藏右侧划入组件
-      setTimeout(() => (this.showMore = 0), 130)
-    },
     currentLottery() { // 当前彩种变化时 拉取当前彩种信息
+      setTimeout(() => (this.showMore = 0), 130)
       this.lotterChange()
     }
   },

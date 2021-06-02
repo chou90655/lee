@@ -54,7 +54,7 @@ export const mixin = {
   computed: {
     ...mapState(['lotteryData', 'isReset', 'currentLottery']),
     rightData() {
-      return this.currentLottery.fcode === this.$route.path.split('/')[3]
+      return this.currentLottery.fcode
     }
   },
   methods: mapMutations(['setBetData', 'setIsReset'])

@@ -1,7 +1,6 @@
 <template>
   <div class="more">
     <heade :title='title' @config="config++" />
-    <router-view class="more_view" :config = 'config'></router-view>
   </div>
 </template>
 <script>

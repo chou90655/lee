@@ -1,9 +1,6 @@
 <template>
   <div id="e_l" ref="e_l" :class="['e_l', tran && 'tran', showlsit && 'ready']">
     <lottery-list @choose='tran = 0' :path='path' v-if="showlsit"/>
-    <transition name="page-move">
-      <router-view></router-view>
-    </transition>
     <layout @showLotteryList='tran = 1'/>
     <transition name="fade">
       <div class="mask" v-if="tran" @click="tran = 0"></div>
@@ -13,7 +10,7 @@
 <script>
 import LotteryList from './views/LotteryList' // 彩票种类展示和选择组件
 import Layout from './views/Layout.vue' // 页面布局组件
-import { toast, mapGetters, mapMutations, mapActions, createRouterFunction } from './util/tools'
+import { toast, mapGetters, mapMutations, mapActions, mapState } from './util/tools'
 export default {
   components: { LotteryList, Layout },
   data() {
@@ -23,21 +20,21 @@ export default {
       showlsit: 0
     }
   },
-  computed: mapGetters(['lotterys']),
+  computed: {
+    ...mapGetters(['lotterys']),
+    ...mapState(['status', 'currentLottery', 'openInfo'])
+  },
   created() {
-    this.initLottery(this.$route.params).then(list => {
-      this.$router.addRoutes(createRouterFunction(list))
+    this.initLottery(this.currentLottery).then(list => {
       let item = this.lotterys[0]
       // eslint-disable-next-line camelcase
-      const { code } = this.$route.query
+      const { code } = this.currentLottery
       if (code) { // 根据传入的code 在列表中找到对应彩种 未找到则跳入默认彩种并提示
         const co = decodeURIComponent(code)
         item = this.lotterys.find(_ => _.path === co) || item
         if (!item) toast('抱歉，该彩种已下架!')
       }
       // this.setCurrentLottery(item)
-      // this.$router.push(mod + '/play/' + item.fcode + '/' + item.code, () => {})
-      // setTimeout(() => this.$router.push(mod + '/play/' + item.fcode + '/' + item.code, () => {}), 300)
     })
 
     // 禁止双击缩放相关

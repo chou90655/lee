@@ -1,7 +1,7 @@
 <template>
   <div class="lottery_info">
     <div class="vplh" v-if="!currentLottery.code"><p></p><p></p><p></p></div>
-    <router-view name="result"></router-view>
+    <component :is="com[currentLottery.fcode]" ></component>
     <div class="time">
       <p>{{openInfo.currFullExpect | issueDisplay}}期</p>
       <p>{{status === '已封盘' ? '开奖' : status}}</p>
@@ -27,6 +27,13 @@
 import { issueDisplay, mapState, mapMutations, toast, mod } from '../util/tools'
 import { getSiteCode } from '../util/cach'
 import History from './History'
+import keno from '../components/keno/result'
+import lhc from '../components/lhc/result'
+import x5 from '../components/x5/result'
+import ssc from '../components/ssc/result'
+import k3 from '../components/k3/result'
+import pk10 from '../components/pk10/result'
+import dpc from '../components/dpc/result'
 export default {
   components: { History },
   filters: {
@@ -34,6 +41,7 @@ export default {
   },
   data() {
     return {
+      com: { keno, lhc, x5, ssc, k3, pk10, dpc },
       sealTime: 0,
       showHistory: 0,
       nextStopTime: 0,
@@ -62,7 +70,7 @@ export default {
     clearInterval(this.timeId)
   },
   watch: {
-    $route() {
+    currentLottery() {
       this.showHistory = 0
     },
     openInfo({ nextStopTime, nextOpenTime }) { // 处理当前彩种开奖信息 判断和设置状态 和 计时功能

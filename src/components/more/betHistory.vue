@@ -21,9 +21,6 @@
       </ul>
       <div v-else class="nodata"><i></i><p>暂无数据</p><i></i></div>
     </cube-scroll>
-    <transition name="page-move">
-      <router-view :item = item></router-view>
-    </transition>
   </div>
 </template>
 <script>

@@ -64,9 +64,8 @@ export default {
   },
   actions: {
     initLottery({ commit }, params) { // 获取彩种列表
-      const { siteCode, token } = params
+      const { token } = params
       setToken(token || '$2y$10$FMWa7Q.1/m0d5UadxMeq2ul04nkYMNGaMtex0ktndWwoukv5VHU9a')
-      setSiteCode(siteCode)
       setRequstInfo(params)
       return getGameList().then(res => {
         if (Array.isArray(res)) {

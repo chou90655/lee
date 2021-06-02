@@ -5,13 +5,23 @@
         <li v-for="(it, i) in plays" :class="{t_a: active === it.value}" @click="active = it.value" :key=i>{{it.label}}</li>
       </ul>
     </cube-scroll>
-    <router-view class="cube-view" name="play" :play='active' :change='change' ref="plays"></router-view>
+    <component class="cube-view" :is="com[currentLottery.fcode]" name="play" :play='active' :change='change' ref="plays"></component>
   </div>
 </template>
 <script>
+import { mapState } from '../util/tools'
+import keno from '../components/keno/play'
+import lhc from '../components/lhc/play'
+import x5 from '../components/x5/play'
+import ssc from '../components/ssc/play'
+import k3 from '../components/k3/play'
+import pk10 from '../components/pk10/play'
+import dpc from '../components/dpc/play'
 export default {
   data() {
+    window.__this2 = this
     return {
+      com: { keno, lhc, x5, ssc, k3, pk10, dpc },
       active: this.plays[0].value
     }
   },
@@ -19,9 +29,15 @@ export default {
     plays: Array,
     change: Number
   },
+  computed: {
+    ...mapState(['lotteryList', 'currentLottery'])
+  },
   watch: {
     plays() {
       this.active = this.plays[0].value
+    },
+    currentLottery(b) {
+      console.log(b)
     }
   },
   mounted() {
