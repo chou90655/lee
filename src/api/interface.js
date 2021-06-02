@@ -62,7 +62,7 @@ export function userAmount(data) {
 // 投注接口
 export function lotteryBet(data) {
   return request({
-    url: '/web/bet/save',
+    url: '/apijiekou.getCpBuy.do',
     method: 'post',
     data
   })

@@ -1,18 +1,20 @@
 import { handleRDChange, chooseDataZh } from '../../util/tools'
 const hdArr = (arr, playid) => arr.map((_, i) => ({ name: _, choose: false, playid, num: i }))
 const hdArr1 = (k) => Array(40).fill(1).map((_, i) => ({ name: i + k, choose: false }))
-export const getnum = (arr, k) => arr.filter(_ => _.choose).map(_ => _[k || 'name']).join()
-export const handleZx = (data, index, list, rD) => {
+export const getKey = (arr, k) => arr.map(_ => _[k || 'name']).join()
+export const filter = (arr) => arr.filter(_ => _.choose)
+export const hditem = (arr, name, playid, zhushu, beishu = 1, yjf = 1) => ({ number: getKey(arr, 'num'), label: getKey(arr), playid, zhushu, name, beishu, yjf })
+export const handleZx = (data, index, rD) => {
+  let list = []
   const realIndex = index + 1
   if (data.length >= realIndex) {
     const combination = []
     chooseDataZh(data, realIndex, combination)
     list.push(...combination)
-    const chsdata = rD.sorts[index]
-    list.side = [{ ...rD.rodio[index], number: getnum(chsdata[0].ball) + '|' + getnum(chsdata[1].ball) }]
-  } else {
-    list.err = '选择不能少于' + realIndex + '个'
-  }
+    const [arr0, arr1] = rD.sorts[index]
+    list = [{ ...rD.rodio[index], number: getKey(filter(arr0.ball)) + '|' + getKey(filter(arr1.ball)), zhushu: list.length, beishu: 1, yjf: 1 }]
+  } else list.err = '选择不能少于' + realIndex + '个'
+  return list
 }
 export const hndleData = (_this, data, key) => {
   let result = {}

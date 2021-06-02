@@ -29,7 +29,7 @@
   </div>
 </template>
 <script>
-import { hndleData, handleZx, getnum } from './util'
+import { hndleData, handleZx, hditem } from './util'
 import { mixin } from '../mixin'
 import { toast } from '../../util/tools'
 export default {
@@ -64,16 +64,20 @@ export default {
       }
     },
     hdqw(arr) {
-      const side = this.rD.sort.map(_ => ({ number: getnum(_.square, 'num'), label: getnum(_.square), playid: _.square[0].playid, name: _.title })).filter(_ => _.label)
-      console.log(side)
-      arr.side = side
+      const ar = []
+      this.rD.sort.forEach(_ => {
+        const sq = _.square.filter(_ => _.choose)
+        if (sq.length) ar.push(hditem(sq, _.title, sq[0].playid, sq.length))
+      })
+      return ar
     },
     CalcLen(Chosedata) {
       let finalData = []
       switch (this.play) {
-        case 'rx': handleZx(Chosedata, this.rodioIndex, finalData, this.rD); break
-        default: finalData = Chosedata; this.hdqw(finalData); break
+        case 'rx':finalData = handleZx(Chosedata, this.rodioIndex, this.rD); break
+        default: finalData = this.hdqw(Chosedata); break
       }
+      console.log(finalData)
       return finalData
     }
   }

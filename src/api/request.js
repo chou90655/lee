@@ -20,14 +20,14 @@ request.interceptors.request.use(config => {
 })
 
 request.interceptors.response.use(res => {
-  const { data } = res
+  const { data, config } = res
   if (res) {
     if (data.code === 0) return data.data
-    if (data.code === 995) return {}
+    if (data.code === 995 && config.url.includes('apijiekou.getLotteryOpencodes.do')) return {}
     else if (data.code === '401') {
-      toast(data.msg)
+      toast(data.message)
       window.location.href = '#/login'
-    } else toast(data.msg)
+    } else toast(data.message)
   } else toast()
 }, err => {
   console.log(err)

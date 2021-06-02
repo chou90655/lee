@@ -2,7 +2,7 @@
   <div class="bet_area">
     <div class="inner">
       <div class="betinfo">
-        <p>已选中{{copyBetData.length}}注：<i>{{copyBetData.length * betAmount}}</i>元</p>
+        <p>已选中{{total}}注：<i>{{total * betAmount}}</i>元</p>
         <p>余额：<i>{{userInfo.memberBal || 0}}</i>元</p>
       </div>
       <div class="handle_bet">
@@ -29,15 +29,16 @@
             <p>下注明细</p>
           </div>
           <cube-scroll :data="copyBetData" class="bet_display" :options="{ scrollbar: true }">
-            <ul v-if="side.length" class="side">
+            <ul class="side">
               <li class="_headline"><i v-for="(it, i) in headerSide" :key="i">{{it}}</i></li>
-              <li v-for="(it, i) in side" :key=i>
+              <li v-for="(it, i) in copyBetData" :key=i>
                 <i>{{it.name}}</i>
                 <i>{{it.label||it.number}}</i>
                 <i>￥{{betAmount}}</i>
+                <i @click="del(i)"><icon href='cancel'/></i>
               </li>
             </ul>
-            <ul v-else>
+            <!-- <ul v-else>
               <li class="_headline"><i v-for="(it, i) in headerData" :key="i">{{it}}</i></li>
               <li v-for="(it, i) in copyBetData" :key=i>
                 <i>{{it.typeName + ' ' + it.name}}</i>
@@ -45,11 +46,11 @@
                 <i>￥{{betAmount}}</i>
                 <i @click="del(i)"><icon href='cancel'/></i>
               </li>
-            </ul>
+            </ul> -->
           </cube-scroll>
           <div class="info">
             <p>{{isStop ? '开奖' : '封盘'}}时间：<i>{{sealTime.join(':')}}</i></p>
-            <p class="amount">共{{copyBetData.length}}注：<i>{{copyBetData.length * betAmount}}</i>元</p>
+            <p class="amount">共{{total}}注：<i>{{total * betAmount}}</i>元</p>
           </div>
           <div class="btn">
             <cube-button class="t_bd" light inline @click="cancel">取消</cube-button>
@@ -62,21 +63,17 @@
 </template>
 <script>
 import { issueDisplay, toast, mapState, mapMutations } from '../util/tools'
-import { getToken, getSiteCode } from '../util/cach'
+import { getToken } from '../util/cach'
 import { lotteryBet, getUser } from '../api/interface'
-import CryptoJS from 'crypto-js'
-const key = CryptoJS.enc.Utf8.parse('57b3ce2a8c65128d')
-const basePara = { iv: CryptoJS.enc.Utf8.parse('1234567898745621'), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.ZeroPadding }
 export default {
   data() {
     return {
       betAmount: '',
       trigger: 0,
-      headerSide: ['玩法', '内容', '金额'],
+      headerSide: ['玩法', '内容', '金额', '操作'],
       headerData: ['号码', '赔率', '金额', '操作'],
       showBetDetail: false,
       copyBetData: [],
-      side: [],
       keylist: [
         [1, 2, 3, '+200'],
         [4, 5, 6, '+300'],
@@ -95,14 +92,17 @@ export default {
   },
   computed: {
     ...mapState(['betData', 'openInfo', 'sealTime', 'status', 'currentLottery', 'userInfo']),
+    total() {
+      return this.copyBetData.reduce((a, c) => a + c.zhushu, 0)
+    },
     isStop() {
       return this.status.includes('已')
     }
   },
   watch: {
     betData() {
-      this.copyBetData = this.betData.filter(_ => _)
-      this.side = this.betData.side
+      console.log(this.betData)
+      this.copyBetData = [...this.betData]
     }
   },
   beforeDestroy() {
@@ -122,7 +122,7 @@ export default {
       } else if (!this.betAmount) {
         this.click()
         return toast('请选择下注金额！', false)
-      } else if (!this.copyBetData.length) {
+      } else if (!this.total) {
         return toast('无效的投注！', false)
       }
       this.$refs.keyboard.classList.remove('show')
@@ -135,23 +135,19 @@ export default {
     },
     del(index) {
       this.copyBetData.splice(index, 1)
-      if (!this.copyBetData.length) this.cancel()
+      if (!this.total) this.cancel()
     },
     confirm() {
-      if (this.userInfo.memberBal < this.copyBetData.length * this.betAmount) return toast('当前余额不足！', false)
-      const betList = this.copyBetData.map(_ => { _.amount = this.betAmount; return _ })
+      if (this.userInfo.memberBal < this.total * this.betAmount) return toast('当前余额不足！', false)
+      const orderList = this.copyBetData.map(_ => ({ ..._, price: _.zhushu * this.betAmount }))
+      let data = { orderList, lotteryname: this.currentLottery.code, expect: this.openInfo.nextLotteryNum, username: 'test1007' }
+      console.log(JSON.stringify(data))
       if (this.trigger) return
       this.trigger = 1
-      let data = { betList, lotteryCode: this.currentLottery.code, lotteryNum: this.openInfo.nextLotteryNum }
-      if (getSiteCode() !== 'jeroa') {
-        data = { requestData: CryptoJS.enc.Base64.stringify(CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(JSON.stringify(data)), key, basePara).ciphertext) }
-      }
       lotteryBet(data).then(res => {
-        if (res) {
-          toast('投注成功！', false)
-          this.reset()
-          this.getUserInfo()
-        }
+        toast('投注成功！', false)
+        this.reset()
+        this.getUserInfo()
       }).finally(() => (this.trigger = 0))
     },
     click() {
