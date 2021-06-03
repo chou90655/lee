@@ -38,7 +38,7 @@ export const filter = (data) => {
   let res = { 1: [], 2: [], 3: [], 4: [], 5: [], sum: [], lhh: [], qsq: [], zsq: [], hsq: [], lm1: [], lm2: [], lm3: [], lm4: [], lm5: [], dwd: [] }
   data.forEach(_ => {
     _.choose = false
-    _.odds = (+_.rate ? +_.rate : +_.maxjj).toFixed(2)
+    _.odds = (+_.rate ? +_.rate : (+_.maxjj / 2))
     const tcode = _.playid
     switch (true) {
       case tcode.includes('dan_d'): handleDxdszh(res[tcode[5]], _); break // 一至五球
@@ -70,7 +70,6 @@ export const filter = (data) => {
 export const hndleData = (_this, data, key) => {
   let result = {}
   let oddk
-  console.log(data)
   if (!data) return result
   _this.storeData = data
   switch (key) {

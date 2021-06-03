@@ -88,8 +88,8 @@ export default {
   mounted() {
     window.__this = this
     this.$refs.input.$el.querySelector('input').setAttribute('readonly', 1)
-    // this.getUserInfo()
-    // this.timeId = setInterval(() => this.getUserInfo(), 8000)
+    this.getUserInfo()
+    this.timeId = setInterval(() => this.getUserInfo(), 8000)
   },
   computed: {
     ...mapState(['betData', 'openInfo', 'sealTime', 'status', 'currentLottery', 'userInfo']),
@@ -139,7 +139,7 @@ export default {
     },
     confirm() {
       if (this.userInfo.memberBal < this.total * this.betAmount) return toast('当前余额不足！', false)
-      const orderList = this.copyBetData.map(_ => ({ ..._, price: _.zhushu * this.betAmount }))
+      const orderList = this.copyBetData.map(_ => ({ ..._, price: _.zhushu * this.betAmount, beishu: this.betAmount / 2, yjf: 1 }))
       let data = { orderList, lotteryname: this.currentLottery.code, expect: this.openInfo.nextLotteryNum, username: 'test1007' }
       console.log(JSON.stringify(data))
       if (this.trigger) return

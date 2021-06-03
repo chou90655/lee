@@ -1,6 +1,6 @@
 import { handleRDChange, chooseDataZh, filt } from '../../util/tools'
 const hdArr = (arr, playid) => arr.map((_, i) => ({ name: _, choose: false, playid, num: i }))
-const hdArr1 = (k) => Array(40).fill(1).map((_, i) => ({ name: i + k, choose: false }))
+const hdArr1 = (k) => Array(40).fill(1).map((_, i) => ({ name: ('0' + (i + k)).slice(-2), choose: false, num: i + k }))
 export const getKey = (arr, k) => arr.map(_ => _[k || 'name']).join()
 export const hditem = (arr, name, playid, zhushu, beishu = 1, yjf = 1) => ({ number: getKey(arr, 'num'), label: getKey(arr), playid, zhushu, name, beishu, yjf })
 export const handleZx = (data, index, rD) => {
@@ -20,7 +20,7 @@ export const hndleData = (_this, data, key) => {
   switch (key) {
     case 'rx':
       result.odds = 1
-      result.sorts = Array(7).fill(1).map(_ => [{ title: '上盘', ball: hdArr1(1) }, { title: '下盘', ball: hdArr1(40) }])
+      result.sorts = Array(7).fill(1).map(_ => [{ title: '上盘', ball: hdArr1(1) }, { title: '下盘', ball: hdArr1(41) }])
       result.rodio = ['一', '二', '三', '四', '五', '六', '七'].map((_, i) => ({ name: '任选' + _, playid: 'bjkl8rx' + (i + 1) }))
       break
     case 'qw':

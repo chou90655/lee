@@ -3,7 +3,7 @@
     <div class="user t_b">
       <div class="ava" @click="!token && $router.push('/login', () => {})"></div>
       <div class="info">
-        <p class="name">{{userInfo.memberAcct}}</p>
+        <p class="name">{{userInfo.username}}</p>
         <p v-if="token">余额：{{userInfo.memberBal || '0.00'}}元</p>
         <p v-if="!token" class="log" @click="!token && $router.push('/login', () => {})">登陆</p>
       </div>
@@ -77,7 +77,7 @@ export default {
     click({ to, icon, needLogin, state }) { // 处理点击列表方法
       if (needLogin) {
         if (getToken()) {
-          if (state !== undefined) this.$router.push(mod + '/more/betHistory?state=' + state , () => {})
+          if (state !== undefined) this.$router.push(mod + '/more/betHistory?state=' + state, () => {})
           else this.$router.push(mod + '/more/' + to, () => {})
         } else {
           toast('请登陆！')

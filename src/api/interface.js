@@ -1,7 +1,7 @@
 import request from './request'
 export function getUser() {
   return request({
-    url: '/web/user/get',
+    url: '/member.getPersonalInfo.do',
     method: 'post'
   })
 }
