@@ -24,7 +24,7 @@
           <i :class="[it.choose ? 't_bc' : '', !change && 't_bd']">{{it.odds}}</i>
         </li>
       </ul>
-      <ul v-for="(item, i) in rD.sort || (rD.sorts && rD.sorts[rodioIndex]) || []" :key="i" :class="{square: item.square, ball: item.ball, _first: i===0}">
+      <ul v-for="(item, i) in rD.sort || (rD.sorts && rD.sorts[rodioIndex]) || []" :key="i" :class="{square: item.square, ball: item.ball, _first: i===0, hasOdd:rD.odds}">
           <div class="sprt_title" v-if="item.title"><span></span>{{item.title}}</div>
           <li v-for="(it, i) in item.square || item.ball" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose}">
             <p :class="it.choose && !change ? 't_b': 't_bd'">{{it.name}}</p>

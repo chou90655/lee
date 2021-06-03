@@ -23,8 +23,8 @@ export function createRouterFunction(lotteryList, home) {
   const children = lotteryList.map(_ => ({
     path: mod + `/play/${_.code}/:gameCode`,
     components: {
-      play: () => import(`../components/${_.code === 'ft' ? 'pk10' : _.code}/play.vue`),
-      result: () => import(`../components/${_.code === 'ft' ? 'pk10' : _.code}/result.vue`)
+      play: () => import(`../components/${_.code}/play.vue`),
+      result: () => import(`../components/${_.code}/result.vue`)
     }
   }))
   if (home) home.children[0].children = [{ path: mod, component: () => import('../App.vue'), children }]
