@@ -1,7 +1,6 @@
 
 import { toast } from './util/tools'
-// import lotteryData from './data/lotteryData' // 本地保存的彩票赔率信息简化版数据
-import { getToken, setToken, getUrl, setLotteryList, getLotteryList, getLotteryData, setLotteryData, setCurrentLottery, getCurrentLottery } from './util/cach'
+import { setToken, getUrl, setLotteryList, getLotteryList, getLotteryData, setLotteryData, setCurrentLottery, getCurrentLottery } from './util/cach'
 import { getGameList, queryOddsByCode, getChartList } from './api/interface'
 import { list, baselist } from './data/data'
 export const lotteryList = getLotteryList() || list
@@ -89,8 +88,7 @@ export default {
       })
     },
     async getLotteryData({ commit, state }, { code, fcode }) { // 获取并设置赔率
-      // const storeDate = lotteryData[lcode].map(_ => { const [playCode, typeCode] = _.split(' '); return { playCode, typeCode } })
-      // commit('setLotteryData', storeDate)
+      commit('setLotteryData', null)
       const data = getLotteryData(code) || await queryOddsByCode({ typeid: fcode }).then(({ rates }) => {
         const rt = Object.values(rates)
         setLotteryData(code, rt)
