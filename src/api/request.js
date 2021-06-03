@@ -29,6 +29,7 @@ request.interceptors.response.use(res => {
       window.location.href = '#/login'
     } else toast(data.message)
   } else toast()
+  return Promise.reject(data)
 }, err => {
   console.log(err)
   return Promise.resolve(err)

@@ -35,7 +35,7 @@
   </div>
 </template>
 <script>
-import { filter, hndleData } from './util'
+import { filter, hndleData, hdwx, hdsprd, hdarrdl } from './util'
 import { mixin } from '../mixin'
 export default {
   mixins: [mixin],
@@ -56,22 +56,87 @@ export default {
   },
   methods: {
     handleChose(it) {
-      it.choose = !it.choose
+      if ((['qs', 'zs', 'hs'].includes(this.play) && this.rodioIndex === 6) || (['qe', 'he'].includes(this.play) && this.rodioIndex === 5)) {
+        this.rD.sorts[this.rodioIndex][0].ball.forEach(_ => (_.choose = false))
+        it.choose = !0
+      } else it.choose = !it.choose
       this.hleper = Math.random() + 1
       this.setBetData(this.CalcLen(this.rD.data.filter(_ => _.choose)))
     },
+
     CalcLen(Chosedata) {
+      const { sort, ball, sorts } = this.rD
+      const da = ball ? [this.rD] : sort || sorts[this.rodioIndex]
       let finalData = []
-      switch (this.play) {
-        case 'kj':
-          const checkedArr = this.rD.checkbox.filter(_ => _.choose)
-          if (checkedArr.length) {
-            checkedArr.forEach(_ => Chosedata.forEach(i => finalData.push(this.storeData[_.value].find(_i => _i.playCode === i.playCode.replace('w', _.id)))))
-          } else finalData.err = '请选择顶部投注类型'
+      switch (true) {
+        case this.play === 'lm': finalData = hdsprd(da); break
+        case this.play === 'lh': finalData = hdarrdl(da); break
+        case this.play === 'qzh': finalData = hdsprd(da); break
+        case this.play === 'dwd': finalData = hdwx(da, Array(5).fill({ n: 0 }), 1); break
+        case [1, 2, 3, 4, 5].includes(+this.play): finalData = hdsprd(da); break
+        case ['dxds'].includes(this.play):
+          switch (this.rodioIndex) {
+            case 0: finalData = hdwx(da, Array(2).fill({ n: 1 })); break
+            case 1: finalData = hdwx(da, Array(2).fill({ n: 1 })); break
+            case 2: finalData = hdwx(da, Array(3).fill({ n: 1 })); break
+            case 3: finalData = hdwx(da, Array(3).fill({ n: 1 })); break
+          }
+          break
+        case ['qe', 'he'].includes(this.play):
+          switch (this.rodioIndex) {
+            case 0: finalData = hdwx(da, Array(2).fill({ n: 1 })); break
+            case 1: finalData = hdwx(da, [{ n: 1, k: 'zxhz2', t: 5 }]); break
+            case 2: finalData = hdwx(da, [{ n: 1, k: 'zxkd2', t: 5 }]); break
+            case 3: finalData = hdwx(da, [{ n: 2 }]); break
+            case 4: finalData = hdwx(da, [{ n: 1, k: 'zuxhz2', t: 5 }]); break
+            case 5: finalData = hdwx(da, [{ n: 1, num: 9 }]); break // 包胆
+          }
+          break
+        case ['qs', 'zs', 'hs'].includes(this.play):
+          switch (this.rodioIndex) {
+            case 0: finalData = hdwx(da, Array(3).fill({ n: 1 })); break
+            case 1: finalData = hdwx(da, [{ n: 1, k: 'zxhz3', t: 5 }]); break
+            case 2: finalData = hdwx(da, [{ n: 1, k: 'zxkd3', t: 5 }]); break
+            case 3: finalData = hdwx(da, [{ n: 1, k: 'zuxhz3', t: 5 }]); break
+            case 4: finalData = hdwx(da, [{ n: 2, t: 6 }]); break
+            case 5: finalData = hdwx(da, [{ n: 3 }]); break
+            case 6: finalData = hdwx(da, [{ n: 1, num: 54 }]); break // 包胆
+            case 7: finalData = hdwx(da, [{ n: 1 }]); break
+            case 8: finalData = hdwx(da, [{ n: 2 }]); break
+          }
+          break
+        case this.play === 'sx':
+          switch (this.rodioIndex) {
+            case 0: finalData = hdwx(da, Array(4).fill({ n: 1 })); break
+            case 1: finalData = hdwx(da, [{ n: 4 }]); break
+            case 2: finalData = hdwx(da, [{ n: 1 }, { n: 2 }]); break
+            case 3: finalData = hdwx(da, [{ n: 2 }]); break
+            case 4: finalData = hdwx(da, [{ n: 1 }, { n: 1 }]); break
+            case 5: finalData = hdwx(da, [{ n: 1 }]); break
+            case 6: finalData = hdwx(da, [{ n: 2 }]); break
+          }
+          break
+        case this.play === 'wx':
+          switch (this.rodioIndex) {
+            case 0: finalData = hdwx(da, Array(5).fill({ n: 1 })); break
+            case 1: finalData = hdwx(da, [{ n: 5 }]); break
+            case 2: finalData = hdwx(da, [{ n: 1 }, { n: 3 }]); break
+            case 3: finalData = hdwx(da, [{ n: 2 }, { n: 1 }]); break
+            case 4: finalData = hdwx(da, [{ n: 1 }, { n: 2 }]); break
+            case 5: finalData = hdwx(da, [{ n: 1 }, { n: 1 }]); break
+            case 6: finalData = hdwx(da, [{ n: 1 }, { n: 1 }]); break
+            case 7: finalData = hdwx(da, [{ n: 1 }]); break // 定位
+            case 8: finalData = hdwx(da, [{ n: 2 }]); break
+            case 9: finalData = hdwx(da, [{ n: 3 }]); break
+            case 10: finalData = hdwx(da, [{ n: 1 }]); break // 一帆风顺
+            case 11: finalData = hdwx(da, [{ n: 1 }]); break
+            case 12: finalData = hdwx(da, [{ n: 1 }]); break
+            case 13: finalData = hdwx(da, [{ n: 1 }]); break
+          }
           break
         default: finalData = Chosedata; break
       }
-      return finalData
+      return finalData || []
     }
   }
 }

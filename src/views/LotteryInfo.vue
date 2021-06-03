@@ -54,7 +54,7 @@ export default {
       const hou = Math.floor(time / 3600)
       const min = (time - hou * 3600 - sec) / 60
       const re = this.handleTime(hou ? [hou, min, sec] : [min, sec])
-      this.setSealTime(re)
+      // this.setSealTime(re)
       return re
     }
   },

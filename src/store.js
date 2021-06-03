@@ -64,7 +64,6 @@ export default {
   },
   actions: {
     initLottery({ commit }, params) { // 获取彩种列表
-      console.log(params, 232323)
       const { token } = params
       setToken(token)
       commit('setUserInfo', params)
@@ -92,9 +91,10 @@ export default {
     async getLotteryData({ commit, state }, { code, fcode }) { // 获取并设置赔率
       // const storeDate = lotteryData[lcode].map(_ => { const [playCode, typeCode] = _.split(' '); return { playCode, typeCode } })
       // commit('setLotteryData', storeDate)
-      const data = getLotteryData(code) || await queryOddsByCode({ typeid: fcode }).then(res => {
-        setLotteryData(code, res.rates)
-        return res
+      const data = getLotteryData(code) || await queryOddsByCode({ typeid: fcode }).then(({ rates }) => {
+        const rt = Object.values(rates)
+        setLotteryData(code, rt)
+        return rt
       })
       data && state.currentLottery.code === code && commit('setLotteryData', data)
     },

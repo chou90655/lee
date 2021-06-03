@@ -32,7 +32,7 @@
             <ul class="side">
               <li class="_headline"><i v-for="(it, i) in headerSide" :key="i">{{it}}</i></li>
               <li v-for="(it, i) in copyBetData" :key=i>
-                <i>{{it.name}}</i>
+                <i>{{it.title||it.name}}</i>
                 <i>{{it.label||it.number}}</i>
                 <i>￥{{betAmount}}</i>
                 <i @click="del(i)"><icon href='cancel'/></i>

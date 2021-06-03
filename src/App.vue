@@ -26,15 +26,19 @@ export default {
   },
   computed: mapGetters(['lotterys']),
   created() {
-    this.initLottery(this.$route.query).then(list => {
+    const msg = { token: '$2y$10$3mkNg0krnqTqaPkv/WT00uyNsfqXW277RP65./Sg6LD28pl1qj8Im', username: 'test1007' }
+    this.initLottery(msg).then(list => {
+    // this.initLottery(this.$route.query).then(list => {
       this.$router.addRoutes(createRouterFunction(list))
-      let item = this.lotterys[0]
-      const { code, resourceUrl } = this.$route.query
+      let item = ''
+      const { resourceUrl } = this.$route.query
+      const code = this.$route.query.code || this.$route.params.gameCode
       if (code) { // 根据传入的code 在列表中找到对应彩种 未找到则跳入默认彩种并提示
         const co = decodeURIComponent(code)
-        item = this.lotterys.find(_ => _.path === co) || item
+        item = this.lotterys.find(_ => _.code === co)
         if (!item) toast('抱歉，该彩种已下架!')
       }
+      item = item || this.lotterys[0]
       // eslint-disable-next-line camelcase
       if (resourceUrl) {
         setUrl(resourceUrl)

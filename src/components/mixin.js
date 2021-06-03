@@ -5,6 +5,7 @@ export const resultMixin = {
 }
 export const mixin = {
   data() {
+    window.__this1 = this
     return {
       options: { scrollbar: true },
       hleper: 1 + Math.random(),

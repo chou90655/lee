@@ -1,8 +1,7 @@
-import { handleRDChange, chooseDataZh } from '../../util/tools'
+import { handleRDChange, chooseDataZh, filt } from '../../util/tools'
 const hdArr = (arr, playid) => arr.map((_, i) => ({ name: _, choose: false, playid, num: i }))
 const hdArr1 = (k) => Array(40).fill(1).map((_, i) => ({ name: i + k, choose: false }))
 export const getKey = (arr, k) => arr.map(_ => _[k || 'name']).join()
-export const filter = (arr) => arr.filter(_ => _.choose)
 export const hditem = (arr, name, playid, zhushu, beishu = 1, yjf = 1) => ({ number: getKey(arr, 'num'), label: getKey(arr), playid, zhushu, name, beishu, yjf })
 export const handleZx = (data, index, rD) => {
   let list = []
@@ -12,7 +11,7 @@ export const handleZx = (data, index, rD) => {
     chooseDataZh(data, realIndex, combination)
     list.push(...combination)
     const [arr0, arr1] = rD.sorts[index]
-    list = [{ ...rD.rodio[index], number: getKey(filter(arr0.ball)) + '|' + getKey(filter(arr1.ball)), zhushu: list.length, beishu: 1, yjf: 1 }]
+    list = [{ ...rD.rodio[index], number: getKey(filt(arr0.ball)) + '|' + getKey(filt(arr1.ball)), zhushu: list.length, beishu: 1, yjf: 1 }]
   } else list.err = '选择不能少于' + realIndex + '个'
   return list
 }

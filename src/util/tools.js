@@ -6,6 +6,7 @@ Vue.use(Toast)
 
 export const mod = process.env.VUE_APP_REGIST_MODULE
 
+export const filt = (arr) => arr.filter(_ => _.choose)
 // 封装彩票自己的store 避免与外面的项目冲突
 export const { mapState, mapActions, mapMutations, mapGetters } = createNamespacedHelpers(mod)
 
