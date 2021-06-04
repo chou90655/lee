@@ -75,7 +75,7 @@ export const hndleData = (_this, data, key) => {
   switch (key) {
     case 'sx':
       oddk = ['sixzhixfsh', 'hsizxes', 'hsizxye', 'hsizxl', 'hsizxs', 'bdw4x1m', 'bdw4x2m']
-      result.rodio = ['复式', '组选24', '组选12', '组选6', '组选4', '一码不定位', '二码不定位'].map((name, i) => ({ name, odds: data[oddk[i]][0].maxjj }))
+      result.rodio = ['复式', '组选24', '组选12', '组选6', '组选4', '一码不定位', '二码不定位'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
       result.sorts = []
       result.odds = 1
       result.sorts.push(['千位', '百位', '十位', '个位'].map(_ => ({ title: _, ball: copy(data.sixzhixfsh) }))) // 复式
@@ -89,7 +89,7 @@ export const hndleData = (_this, data, key) => {
     case 'wx':
       oddk = ['wxzhixfs', 'wxzxyel', 'wxzxls', 'wxzxsl', 'wxzxel', 'wxzxyl', 'wxzxw', 'bdw5x1m', 'bdw5x2m', 'bdw5x3m', 'qwyffs', 'qwhscs', 'qwsxbx', 'qwsjfc']
       result.rodio = ['复式', '组选120', '组选60', '组选30', '组选20', '组选10', '组选5', '一码不定位',
-        '二码不定位', '三码不定位', '一帆风顺', '好事成双', '三星报喜', '四季发财'].map((name, i) => ({ name, odds: data[oddk[i]][0].maxjj }))
+        '二码不定位', '三码不定位', '一帆风顺', '好事成双', '三星报喜', '四季发财'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
       result.sorts = []
       result.odds = 1
       result.sorts.push(['万位', '千位', '百位', '十位', '个位'].map(_ => ({ title: _, ball: copy(data.wxzhixfs) }))) // 复式
@@ -161,7 +161,7 @@ export const hndleData = (_this, data, key) => {
       break
     case 'qs':
       oddk = ['sxzhixfsq', 'zhixhzqs', 'kuaduqs', 'zuxhzqs', 'sxzuxzsq', 'sxzuxzlq', 'zuxcsbd', 'bdwqs', 'bdwqs2m']
-      result.rodio = ['直选复式', '直选和值', '跨度', '组选和值', '组选三', '组选六', '组选包胆', '一码不定位', '二码不定位'].map((name, i) => ({ name, odds: data[oddk[i]][0].maxjj }))
+      result.rodio = ['直选复式', '直选和值', '跨度', '组选和值', '组选三', '组选六', '组选包胆', '一码不定位', '二码不定位'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
       result.odds = 1
       result.sorts = []
       result.sorts.push([{ title: '万位', ball: copy(data.sxzhixfsq) }, { title: '千位', ball: copy(data.sxzhixfsq) }, { title: '百位', ball: copy(data.sxzhixfsq) }])
@@ -176,10 +176,10 @@ export const hndleData = (_this, data, key) => {
       break
     case 'zs':
       oddk = ['sxzhixfsz', 'zhixhzzs', 'kuaduzs', 'zuxhzzs', 'sxzuxzsz', 'sxzuxzlz', 'zuxzsbd', 'bdwzs', 'bdwzs2m']
-      result.rodio = ['直选复式', '直选和值', '跨度', '组选和值', '组选三', '组选六', '组选包胆', '一码不定位', '二码不定位'].map((name, i) => ({ name, odds: data[oddk[i]][0].maxjj }))
+      result.rodio = ['直选复式', '直选和值', '跨度', '组选和值', '组选三', '组选六', '组选包胆', '一码不定位', '二码不定位'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
       result.odds = 1
       result.sorts = []
-      result.sorts.push([{ title: '万位', ball: copy(data.sxzhixfsz) }, { title: '千位', ball: copy(data.sxzhixfsz) }, { title: '百位', ball: copy(data.sxzhixfsz) }])
+      result.sorts.push([{ title: '千位', ball: copy(data.sxzhixfsz) }, { title: '百位', ball: copy(data.sxzhixfsz) }, { title: '十位', ball: copy(data.sxzhixfsz) }])
       result.sorts.push([{ ball: copy(data.zhixhzzs) }]) // 直选和值
       result.sorts.push([{ ball: copy(data.kuaduzs) }]) // 跨度
       result.sorts.push([{ ball: copy(data.zuxhzzs) }]) // 组选和值
@@ -191,10 +191,10 @@ export const hndleData = (_this, data, key) => {
       break
     case 'hs':
       oddk = ['sxzhixfsh', 'zhixhzhs', 'kuaduhs', 'zuxhzhs', 'sxzuxzsh', 'sxzuxzlh', 'zuxhsbd', 'bdwhs', 'bdwhs2m']
-      result.rodio = ['直选复式', '直选和值', '跨度', '组选和值', '组选三', '组选六', '组选包胆', '一码不定位', '二码不定位'].map((name, i) => ({ name, odds: data[oddk[i]][0].maxjj }))
+      result.rodio = ['直选复式', '直选和值', '跨度', '组选和值', '组选三', '组选六', '组选包胆', '一码不定位', '二码不定位'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
       result.odds = 1
       result.sorts = []
-      result.sorts.push([{ title: '万位', ball: copy(data.sxzhixfsh) }, { title: '千位', ball: copy(data.sxzhixfsh) }, { title: '百位', ball: copy(data.sxzhixfsh) }])
+      result.sorts.push([{ title: '百位', ball: copy(data.sxzhixfsh) }, { title: '十位', ball: copy(data.sxzhixfsh) }, { title: '个位', ball: copy(data.sxzhixfsh) }])
       result.sorts.push([{ ball: copy(data.zhixhzhs) }]) // 直选和值
       result.sorts.push([{ ball: copy(data.kuaduhs) }]) // 跨度
       result.sorts.push([{ ball: copy(data.zuxhzhs) }]) // 组选和值

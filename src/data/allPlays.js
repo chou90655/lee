@@ -15,16 +15,15 @@ export default {
     { 'label': '组选三', 'value': 'zxs' },
     { 'label': '组选六', 'value': 'zxl' }],
 
-  'x5': [{ 'label': '快捷', 'value': 'kj' },
-    { 'label': '两面', 'value': 'lm' },
-    { 'label': '第一球', 'value': '1' },
-    { 'label': '第二球', 'value': '2' },
-    { 'label': '第三球', 'value': '3' },
-    { 'label': '第四球', 'value': '4' },
-    { 'label': '第五球', 'value': '5' },
-    { 'label': '直选', 'value': 'zx' },
-    { 'label': '组选', 'value': 'zux' },
-    { 'label': '任选', 'value': 'rx' }],
+  'x5': [
+    { 'label': '三码', 'value': 'sm' },
+    { 'label': '二码', 'value': 'em' },
+    { 'label': '不定位', 'value': 'bdw' },
+    { 'label': '定位胆', 'value': 'dwd' },
+    { 'label': '趣味型', 'value': 'qwx' },
+    { 'label': '任选复式', 'value': 'rxfs' },
+    { 'label': '任选胆拖', 'value': 'rxdt' }
+  ],
 
   'k3': [{ 'label': '和值', 'value': 'ds' },
     { 'label': '单号', 'value': 'sg' },

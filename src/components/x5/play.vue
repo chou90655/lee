@@ -24,8 +24,8 @@
           <i :class="[it.choose ? 't_bc' : '', !change && 't_bd']">{{it.odds}}</i>
         </li>
       </ul>
-      <ul v-for="(item, i) in rD.sort || (rD.sorts && rD.sorts[rodioIndex]) || []" :key="i" :class="{square: item.square, ball: item.ball, _first: i===0}">
-          <div class="sprt_title"><span></span>{{item.title}}</div>
+      <ul v-for="(item, i) in rD.sort || (rD.sorts && rD.sorts[rodioIndex]) || []" :key="i" :class="{square: item.square, ball: item.ball, _first: i===0, hasOdd:rD.odds}">
+          <div class="sprt_title" v-if="item.title"><span></span>{{item.title}}</div>
           <li v-for="(it, i) in item.square || item.ball" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose}">
             <p :class="it.choose && !change ? 't_b': 't_bd'">{{it.name}}</p>
             <i :class="[it.choose ? 't_bc' : '', !change && 't_bd']">{{it.odds}}</i>
@@ -35,7 +35,7 @@
   </div>
 </template>
 <script>
-import { filter, hndleData, handleZx } from './util'
+import { filter, hndleData, handleZx, hdwx } from './util'
 import { mixin } from '../mixin'
 export default {
   mixins: [mixin],
@@ -61,22 +61,43 @@ export default {
     },
     CalcLen(Chosedata) {
       let finalData = []
+      const { sort, ball, sorts } = this.rD
+      const da = ball ? [this.rD] : sort || sorts[this.rodioIndex]
       switch (this.play) {
-        case 'kj':
-          const checkedArr = this.rD.checkbox.filter(_ => _.choose)
-          if (checkedArr.length) {
-            checkedArr.forEach(_ => {
-              Chosedata.forEach(i => finalData.push(this.storeData[_.value].find(_i => _i.playCode === i.playCode.replace('1', _.value))))
-            })
-          } else {
-            finalData.err = '请选择顶部投注类型'
+        case 'sm' :
+          switch (this.rodioIndex) {
+            case 0: finalData = hdwx(da, Array(3).fill({ n: 1, t: 7 })); break
+            case 1: finalData = hdwx(da, Array(1).fill({ n: 3 })); break
+            case 2: finalData = hdwx(da, [{ n: 1 }, { n: 2 }]); break
           }
           break
-        case 'zx': handleZx(Chosedata, this.rodioIndex + 2, finalData, 1); break
+        case 'em' :
+          switch (this.rodioIndex) {
+            case 0: finalData = hdwx(da, Array(2).fill({ n: 1, t: 7 })); break
+            case 1: finalData = hdwx(da, Array(1).fill({ n: 2 })); break
+            case 2: finalData = hdwx(da, [{ n: 1 }, { n: 1 }]); break
+          }
+          break
+        case 'rxdt' :
+          switch (this.rodioIndex) {
+            case 0: finalData = hdwx(da, [{ n: 1 }, { n: 1 }]); break
+            case 1: finalData = hdwx(da, [{ n: 1 }, { n: 2 }]); break
+            case 2: finalData = hdwx(da, [{ n: 1 }, { n: 3 }]); break
+            case 3: finalData = hdwx(da, [{ n: 1 }, { n: 4 }]); break
+            case 4: finalData = hdwx(da, [{ n: 1 }, { n: 5 }]); break
+            case 5: finalData = hdwx(da, [{ n: 1 }, { n: 6 }]); break
+            case 6: finalData = hdwx(da, [{ n: 1 }, { n: 7 }]); break
+          }
+          break
+        case 'rxfs' :finalData = hdwx(da, [{ n: this.rodioIndex + 1 }]); break
+        case 'qwx': finalData = hdwx(da, [{ n: 1 }]); break
+        case 'bdw': finalData = hdwx(da, [{ n: 1 }]); break
+        case 'dwd': finalData = hdwx(da, [{ n: 0 }, { n: 0 }, { n: 0 }], 1); break
         case 'zux': handleZx(Chosedata, this.rodioIndex + 2, finalData); break
         case 'rx': handleZx(Chosedata, this.rodioIndex + 1, finalData); break
         default: finalData = Chosedata; break
       }
+      console.log(finalData)
       return finalData
     }
   }

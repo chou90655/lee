@@ -1,99 +1,79 @@
-import { handleRDChange, chooseDataZh, chooseDataPl } from '../../util/tools'
-const handleDxdszh = (res, _, troggle) => {
-  const code = _.playCode
-  const pre = troggle ? '总和' : ''
-  switch (true) {
-    case code.includes('single') : _.name = pre + '单'; break
-    case code.includes('double') : _.name = pre + '双'; break
-    case code.includes('big') : _.name = pre + '大'; break
-    case code.includes('small') : _.name = pre + '小'; break
-    default: _.name = code.slice(2); break
-  }
-  res.push(_)
+import { handleRDChange, chooseDataZh, chooseDataPl, copy, filt } from '../../util/tools'
+const yxfs = (item, i = 11) => {
+  return Array(i).fill(1).map((_, i) => ({ ...item, name: i + 1, num: i + 1 }))
 }
+const hddds = (item, odd) => ['5单0双', '4单1双', '3单2双', '2单3双', '1单4双', '0单5双'].map((_, i) => ({ ...item, name: _, num: i + 1, odds: (+odd[i]).toFixed(2) }))
+const hdczw = (item) => Array(7).fill(1).map((_, i) => ({ ...item, name: i + 3, num: i + 3 }))
 export const filter = (data) => {
   if (!data) return
-  let res = { 1: [], 2: [], 3: [], 4: [], 5: [], sum: [], yzy: [], eze: [], szs: [], sizsi: [], wzw: [], lzw: [], qzw: [], bzw: [], zxqe: [], zxqs: [], zuxqe: [], zuxqs: [], lh: [] }
+  let res = { }
   data.forEach(_ => {
     _.choose = false
-    _.odds = _.odds || '0.00'
-    const code = _.playCode
-    const tcode = _.typeCode
-    const ysqArr = ['1', '2', '3', '4', '5']
+    _.odds = (+_.rate ? +_.rate : (+_.maxjj / 2))
+    const tcode = _.playid
     switch (true) {
-      case ysqArr.includes(tcode[0]) : handleDxdszh(res[tcode[0]], _); break // 一至五球
-      case tcode === 'sum-b-s': handleDxdszh(res.sum, _, 1); break // 总和大小
-      case tcode === 'sum-s-d': handleDxdszh(res.sum, _, 1); break // 总和单双
-      case tcode === 'sum-w-b-s': _.name = code.includes('endbig') ? '总和尾大' : '总和尾小'; res.sum.push(_); break // 和尾数大小
-      case tcode === 'zw': _.name = code.includes('single') ? '总和尾单' : '总和尾双'; res.sum.push(_); break // 和尾数单双
-      case tcode === 'lh':_.name = code.includes('tiger') ? '虎' : '龙'; res.lh.push(_); break // 龙虎斗
-
-      case tcode === 'rx-yzy': _.name = code.slice(7); res.yzy.push(_); break // 一中一
-      case tcode === 'rx-eze': _.name = code.slice(7); res.eze.push(_); break // 二中二
-      case tcode === 'rx-szs': _.name = code.slice(7); res.szs.push(_); break // 3中3
-      case tcode === 'rx-sizsi': _.name = code.slice(9); res.sizsi.push(_); break // 4中4
-      case tcode === 'rx-wzw': _.name = code.slice(7); res.wzw.push(_); break // 5中5
-      case tcode === 'rx-lzw': _.name = code.slice(7); res.lzw.push(_); break // 6中5
-      case tcode === 'rx-qzw': _.name = code.slice(7); res.qzw.push(_); break // 7中5
-      case tcode === 'rx-bzw': _.name = code.slice(7); res.bzw.push(_); break // 8中5
-      case tcode === 'zx-zxqe': _.name = code.slice(8); res.zxqe.push(_); break // 直选前二
-      case tcode === 'zx-zxqs': _.name = code.slice(8); res.zxqs.push(_); break // 直选前3
-      case tcode === 'zux-zuxqe': _.name = code.slice(10); res.zuxqe.push(_); break // 组选前2
-      case tcode === 'zux-zuxqs': _.name = code.slice(10); res.zuxqs.push(_); break // 组选前三
+      case ['x5qsfs', 'x5qszx', 'x5qsdt'].includes(tcode): res[tcode] = yxfs(_); break // 前三直选复式 前三组选复式 前三组选胆拖
+      case ['x5qezx', 'x5qezx', 'x5qedt'].includes(tcode): res[tcode] = yxfs(_); break // 前二直选复式  前二组选复式 前二组选胆拖 // em
+      case ['x5bdwqs', 'x5dwd'].includes(tcode): res[tcode] = yxfs(_); break // 前三不定位 定位胆// em
+      case ['x5dds'].includes(tcode): res[tcode] = hddds(_, _.maxjj.split('|')); break //  定单双
+      case ['x5czw'].includes(tcode): res[tcode] = hdczw(_); break //  猜中位
+      case tcode.includes('x5rx') && !tcode.includes('x5rxds'): res[tcode] = yxfs(_); break // 任选复式
+      case tcode.includes('x5dt'): res[tcode] = yxfs(_); break // 胆拖
     }
   })
   return res
 }
 export const hndleData = (_this, data, key) => {
   let result = {}
+  console.log(data)
+  let oddk
   if (!data) return result
   _this.storeData = data
-  switch (key) {
-    case 'kj':
-      result.ball = data[1].filter(_ => _.typeCode === '1')
-      result.square = data[1].filter(_ => _.typeCode.indexOf('1-') === 0)
-      result.checkbox = [{ name: '一球', value: 1 }, { name: '二球', value: 2 }, { name: '三球', value: 3 }, { name: '四球', value: 4 }, { name: '五球', value: 5 }]
+  switch (key) { // dwd
+    case 'rxdt':
+      oddk = ['x5dt2z2', 'x5dt3z3', 'x5dt4z4', 'x5dt5z5', 'x5dt6z5', 'x5dt7z5', 'x5dt8z5']
+      result.rodio = ['二中二', '三中三', '四中四', '五中五', '六中五', '七中五', '八中五'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
+      result.odds = 1
+      result.sorts = oddk.map(_ => [{ title: '胆码', ball: copy(data[_]) }, { title: '拖码', ball: copy(data[_]) }])
       break
-    case 'lm':
-      result.sort = []
-      result.sort.push({ title: '第一球', square: data[1].filter(_ => _.typeCode.indexOf('1-') === 0) })
-      result.sort.push({ title: '第二球', square: data[2].filter(_ => _.typeCode.indexOf('2-') === 0) })
-      result.sort.push({ title: '第三球', square: data[3].filter(_ => _.typeCode.indexOf('3-') === 0) })
-      result.sort.push({ title: '第四球', square: data[4].filter(_ => _.typeCode.indexOf('4-') === 0) })
-      result.sort.push({ title: '第五球', square: data[5].filter(_ => _.typeCode.indexOf('5-') === 0) })
-      result.sort.push({ title: '总和-龙虎和', square: [...data.sum, ...data.lh] })
+    case 'rxfs':
+      oddk = ['x5rx1z1', 'x5rx2z2', 'x5rx3z3', 'x5rx4z4', 'x5rx5z5', 'x5rx6z5', 'x5rx7z5', 'x5rx8z5']
+      result.rodio = ['一中一', '二中二', '三中三', '四中四', '五中五', '六中五', '七中五', '八中五'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
+      result.odds = 1
+      result.sorts = oddk.map(_ => [{ ball: copy(data[_]) }])
       break
-    case '1':
-      result.ball = data[1].filter(_ => _.typeCode === '1')
-      result.square = data[1].filter(_ => _.typeCode.indexOf('1-') === 0)
+    case 'qwx':
+      oddk = ['x5dds', 'x5czw']
+      result.rodio = ['定单双', '猜中位'].map((name, i) => ({ name }))
+      result.sorts = []
+      result.sorts.push([{ square: copy(data.x5dds) }])
+      result.sorts.push([{ ball: copy(data.x5czw) }])
       break
-    case '2':
-      result.ball = data[2].filter(_ => _.typeCode === '2')
-      result.square = data[2].filter(_ => _.typeCode.indexOf('2-') === 0)
+    case 'dwd':
+      result.odds = data.x5dwd[0].odds
+      result.sort = ['第一位', '第二位', '第三位'].map(_ => ({ title: _, ball: copy(data.x5dwd) })) // 定位胆
       break
-    case '3':
-      result.ball = data[3].filter(_ => _.typeCode === '3')
-      result.square = data[3].filter(_ => _.typeCode.indexOf('3-') === 0)
+    case 'bdw':
+      result.odds = data.x5bdwqs[0].odds
+      result.ball = copy(data.x5bdwqs) // 前三不定位
       break
-    case '4':
-      result.ball = data[4].filter(_ => _.typeCode === '4')
-      result.square = data[4].filter(_ => _.typeCode.indexOf('4-') === 0)
+    case 'em':
+      oddk = ['x5qezx', 'x5qezx', 'x5qedt']
+      result.rodio = ['直选复式', '组选复式', '组选胆拖'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
+      result.sorts = []
+      result.odds = 1
+      result.sorts.push(['第一位', '第二位'].map(_ => ({ title: _, ball: copy(data.x5qezx) }))) // 直选复式
+      result.sorts.push([{ ball: copy(data.x5qezx) }]) // 组选复式
+      result.sorts.push(['胆码', '拖码'].map(_ => ({ title: _, ball: copy(data.x5qedt) }))) // 组选胆拖
       break
-    case '5':
-      result.ball = data[5].filter(_ => _.typeCode === '5')
-      result.square = data[5].filter(_ => _.typeCode.indexOf('5-') === 0)
-      break
-    case 'zx':
-      result.balls = [data.zxqe, data.zxqs]
-      result.rodio = [{ name: '前二' }, { name: '前三' }]
-      break
-    case 'zux':
-      result.balls = [data.zuxqe, data.zuxqs]
-      result.rodio = [{ name: '前二' }, { name: '前三' }]
-      break
-    case 'rx':
-      result.balls = [data.yzy, data.eze, data.szs, data.sizsi, data.wzw, data.lzw, data.qzw, data.bzw]
-      result.rodio = [{ name: '一中一' }, { name: '二中二' }, { name: '三中三' }, { name: '四中四' }, { name: '五中五' }, { name: '六中五' }, { name: '七中五' }, { name: '八中五' }]
+    case 'sm':
+      oddk = ['x5qsfs', 'x5qszx', 'x5qsdt']
+      result.rodio = ['直选复式', '组选复式', '组选胆拖'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
+      result.sorts = []
+      result.odds = 1
+      result.sorts.push(['第一位', '第二位', '第三位'].map(_ => ({ title: _, ball: copy(data.x5qsfs) }))) // 直选复式
+      result.sorts.push([{ ball: copy(data.x5qszx) }]) // 组选复式
+      result.sorts.push(['胆码', '拖码'].map(_ => ({ title: _, ball: copy(data.x5qsdt) }))) // 组选胆拖
       break
   }
   return handleRDChange(_this, result)
@@ -113,4 +93,66 @@ export const getColor = (n) => {
     case [2, 5, 8, 11].includes(n): return 'blue_b'
     case [1, 3, 4, 6, 7, 9, 10].includes(n): return 'green_b'
   }
+}
+
+export const hdarrdl = (da) => {
+  console.log(da)
+  let data = []
+  da.forEach(_ => {
+    const it = filt(_.square || _.ball)
+    if (it.length) data.push({ ..._, it })
+  })
+  if (!data.length) data.err = '至少选择一个号码'
+  else data = data.map(_ => ({ ..._.it[0], number: _.it.map(i => i.num).join(), title: _.title, zhushu: _.it.length, label: _.it.map(i => i.name).join() }))
+  return data
+}
+export const hdsprd = (da) => {
+  const data = []
+  da.forEach(_ => {
+    const it = filt(_.square || _.ball)
+    if (it.length) data.push(...it.map(i => ({ ...i, number: i.num || i.name, zhushu: 1 })))
+  })
+  if (!data.length) data.err = '至少选择一个号码'
+  return data
+}
+export const hdwx = (da, yq, pls) => {
+  const data = da.map(_ => filt(_.ball || _.square))
+  const list = []
+  const ei = yq.findIndex((_, i) => _.n > data[i].length)
+  if (data.every(_ => !_.length))list.err = '至少选择一个号码'
+  else if (ei > -1) list.err = `${da[ei].title || ''}至少选择${yq[ei].n}个`
+  else if (yq[0].t === 7) {
+    const d = data.map((_, i) => hditem(_, yq[i].n || 1, yq[i].t, yq[i].k, yq[i]))
+    list.push({ ...data[0][0], zhushu: hdqc(d.map(_ => _.l.split(','))), number: d.map(_ => _.l).join('|') })
+  } else {
+    const d = data.map((_, i) => hditem(_, yq[i].n || 1, yq[i].t, yq[i].k, yq[i]))
+    list.push({ ...data[0][0], zhushu: d.reduce((a, c) => pls ? (a + c.num) : (a * c.num), pls ? 0 : 1), number: d.map(_ => _.l).join('|') })
+  }
+  return list
+}
+const hdqc = (arr) => {
+  let arr1 = arr[0].map(_ => [_])
+  arr.forEach((_, i) => {
+    const ar = []
+    if (i) {
+      arr1.forEach(j => {
+        ar.push(..._.map(k => [...j, k]))
+      })
+      arr1 = ar
+    }
+  })
+  arr1 = arr1.map(_ => [...new Set(_)]).filter(_ => _.length >= arr.length)
+  return arr1.length
+}
+const hditem = (arr, num1, type, key, yq) => {
+  let num = 0
+  if (type === 5) num = arr.length
+  else {
+    const combination = []
+    chooseDataZh(arr, num1, combination)
+    num = combination.length
+    if (type === 6) num *= 2
+  }
+  num = yq.num || num
+  return { num, l: arr.map(_ => _.name || _.num).join() }
 }
