@@ -26,7 +26,7 @@
       </ul>
       <ul v-for="(item, i) in rD.sort || (rD.sorts && rD.sorts[rodioIndex]) || []" :key="i" :class="{square: item.square, ball: item.ball, _first: i===0, hasOdd:rD.odds}">
           <div class="sprt_title" v-if="item.title"><span></span>{{item.title}}</div>
-          <li v-for="(it, i) in item.square || item.ball" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose}">
+          <li v-for="(it, j) in item.square || item.ball" @click="handleChose(it, j)" :key=j :class="{t_b: change && it.choose}">
             <p :class="it.choose && !change ? 't_b': 't_bd'">{{it.name}}</p>
             <i :class="[it.choose ? 't_bc' : '', !change && 't_bd']">{{it.odds}}</i>
           </li>
@@ -54,7 +54,11 @@ export default {
     }
   },
   methods: {
-    handleChose(it) {
+    handleChose(it, j) {
+      const { rodio, sorts } = this.rD
+      if (rodio && rodio[this.rodioIndex] && rodio[this.rodioIndex].hc) {
+        sorts[this.rodioIndex].forEach(_ => ((_.ball || _.square)[j].choose = false))
+      }
       it.choose = !it.choose
       this.hleper = Math.random() + 1
       this.setBetData(this.CalcLen(this.rD.data.filter(_ => _.choose)))
@@ -97,7 +101,6 @@ export default {
         case 'rx': handleZx(Chosedata, this.rodioIndex + 1, finalData); break
         default: finalData = Chosedata; break
       }
-      console.log(finalData)
       return finalData
     }
   }

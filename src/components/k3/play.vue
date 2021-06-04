@@ -14,10 +14,8 @@
       <p v-if="rD.odds" class="odds t_bc"> 赔率：{{rD.rodio ? rD.rodio[rodioIndex].odds : rD.odds}}</p>
       <ul v-if='rD.ball || (rD.balls && rD.balls[rodioIndex])' :class="['ball', rD.odds && 'hasOdd', change && 'change']">
         <li v-for="(it, i) in rD.ball || (rD.balls && rD.balls[rodioIndex])" @click="handleChose(it)" :key=i :class="it.choose ? 't_b': 't_bd'">
-          <span v-if = 'it.typeCode === "qs" || it.playCode === "slh-qb"'>{{it.name}}</span>
-          <div v-else>
-            <p v-for="(it, i) in it.name.split('')" :key="i" :class="'_t' + it"></p>
-          </div>
+          <span v-if = 'it.playid === "k3sthtx" || it.playid === "k3slhtx"'>{{it.name}}</span>
+          <div v-else><p v-for="(it, i) in (''+it.name).split('')" :key="i" :class="'_t' + it"></p></div>
           <i>{{it.odds}}</i>
         </li>
       </ul>
@@ -28,17 +26,19 @@
         </li>
       </ul>
       <ul v-for="(item, i) in rD.sort || (rD.sorts && rD.sorts[rodioIndex]) || []" :key="i" :class="{square: item.square, ball: item.ball, _first: i===0}">
-          <div class="sprt_title"><span></span>{{item.title}}</div>
-          <li v-for="(it, i) in item.square || item.ball" @click="handleChose(it)" :key=i>
-            <p :class="it.choose ? 't_b': 't_bd'">{{it.name}}</p>
-            <i :class="[it.choose ? 't_bc' : '', 't_bd']">{{it.odds}}</i>
-          </li>
+        <div class="sprt_title" v-if="item.title"><span></span>{{item.title}}</div>
+        <li v-for="(it, j) in item.square || item.ball" @click="handleChose(it, j)" :key='j' :class="it.choose ? 't_b': 't_bd'">
+          <span v-if = 'it.playid === "k3sthtx" || it.playid === "k3slhtx"'>{{it.name}}</span>
+          <div v-else><p v-for="(it, i) in (''+it.name).split('')" :key="i" :class="'_t' + it"></p></div>
+          <i>{{it.odds}}</i>
+        </li>
+          <!-- <p :class="it.choose ? 't_b': 't_bd'">{{it.name}}</p><i :class="[it.choose ? 't_bc' : '', 't_bd']">{{it.odds}}</i></li> -->
       </ul>
     </cube-scroll>
   </div>
 </template>
 <script>
-import { filter, hndleData } from './util'
+import { filter, hndleData, hdwx } from './util'
 import { mixin } from '../mixin'
 export default {
   mixins: [mixin],
@@ -47,8 +47,8 @@ export default {
       const agr = (this.rodioIndex + this.hleper) && this.play && this.lotteryData && this.rightData
       let result = {}
       if (agr) {
+        result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
         try {
-          result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
         } catch (e) {
           setTimeout(() => (this.hleper = Math.random() + 1), 500)
         }
@@ -57,10 +57,13 @@ export default {
     }
   },
   methods: {
-    handleChose(it) {
+    handleChose(it, j) {
       it.choose = !it.choose
       this.hleper = Math.random() + 1
-      this.setBetData(this.rD.data.filter(_ => _.choose))
+      const { ball, sorts, square } = this.rD
+      const da = ball ? [this.rD] : square ? [this.rD] : sorts[this.rodioIndex]
+      const data = hdwx(da, [{ n: 1 }], this.play === 'hz')
+      this.setBetData(data)
     }
   }
 }

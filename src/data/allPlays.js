@@ -25,11 +25,10 @@ export default {
     { 'label': '任选胆拖', 'value': 'rxdt' }
   ],
 
-  'k3': [{ 'label': '和值', 'value': 'ds' },
-    { 'label': '单号', 'value': 'sg' },
-    { 'label': '二同号', 'value': 'dp' },
-    { 'label': '二不同号', 'value': 'cp' },
-    { 'label': '三同号', 'value': 'wq' },
+  'k3': [{ 'label': '和值', 'value': 'hz' },
+    { 'label': '二同号', 'value': 'eth' },
+    { 'label': '二不同号', 'value': 'ebth' },
+    { 'label': '三同号', 'value': 'sht' },
     { 'label': '三连号', 'value': 'slh' },
     { 'label': '三不同号', 'value': 'sbth' }],
 
@@ -52,20 +51,19 @@ export default {
     { 'label': '第八球', 'value': '8' },
     { 'label': '正码', 'value': 'zm' }],
 
-  'pk10': [{ 'label': '快捷', 'value': 'kj' },
+  'pk10': [
     { 'label': '两面', 'value': 'lm' },
-    { 'label': '冠亚和', 'value': 'hz' },
-    { 'label': '冠亚季和', 'value': 'gyj' },
-    { 'value': '1', 'label': '冠军' },
-    { 'value': '2', 'label': '亚军' },
-    { 'value': '3', 'label': '第三名' },
-    { 'value': '4', 'label': '第四名' },
-    { 'value': '5', 'label': '第五名' },
-    { 'value': '6', 'label': '第六名' },
-    { 'value': '7', 'label': '第七名' },
-    { 'value': '8', 'label': '第八名' },
-    { 'value': '9', 'label': '第九名' },
-    { 'value': '10', 'label': '第十名' }],
+    { 'label': '冠亚和', 'value': 'gyh' },
+    // { 'label': '首尾和', 'value': 'swh' },
+    // { 'label': '冠亚季和', 'value': 'gyj' },
+    { 'value': 'bjpk10qian1', 'label': '猜冠军' },
+    { 'value': 'bjpk10qian2', 'label': '猜前二' },
+    { 'value': 'bjpk10qian3', 'label': '猜前三' },
+    { 'value': 'bjpk10qian4', 'label': '猜前四' },
+    { 'value': 'bjpk10qian5', 'label': '猜前五' },
+    { 'value': 'bjpk10dwd', 'label': '定位胆' },
+    { 'value': '1z5', 'label': '一至五名' },
+    { 'value': '6z10', 'label': '六至十名' }],
 
   'ssc': [
     // { 'label': '快捷', 'value': 'kj' },

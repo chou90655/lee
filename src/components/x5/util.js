@@ -5,7 +5,8 @@ const yxfs = (item, i = 11) => {
 const hddds = (item, odd) => ['5单0双', '4单1双', '3单2双', '2单3双', '1单4双', '0单5双'].map((_, i) => ({ ...item, name: _, num: i + 1, odds: (+odd[i]).toFixed(2) }))
 const hdczw = (item) => Array(7).fill(1).map((_, i) => ({ ...item, name: i + 3, num: i + 3 }))
 export const filter = (data) => {
-  if (!data) return
+  if (!data || !0) return
+  console.log(232323)
   let res = { }
   data.forEach(_ => {
     _.choose = false
@@ -25,14 +26,13 @@ export const filter = (data) => {
 }
 export const hndleData = (_this, data, key) => {
   let result = {}
-  console.log(data)
   let oddk
   if (!data) return result
   _this.storeData = data
   switch (key) { // dwd
     case 'rxdt':
       oddk = ['x5dt2z2', 'x5dt3z3', 'x5dt4z4', 'x5dt5z5', 'x5dt6z5', 'x5dt7z5', 'x5dt8z5']
-      result.rodio = ['二中二', '三中三', '四中四', '五中五', '六中五', '七中五', '八中五'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
+      result.rodio = ['二中二', '三中三', '四中四', '五中五', '六中五', '七中五', '八中五'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds, hc: 1 }))
       result.odds = 1
       result.sorts = oddk.map(_ => [{ title: '胆码', ball: copy(data[_]) }, { title: '拖码', ball: copy(data[_]) }])
       break
@@ -59,7 +59,7 @@ export const hndleData = (_this, data, key) => {
       break
     case 'em':
       oddk = ['x5qezx', 'x5qezx', 'x5qedt']
-      result.rodio = ['直选复式', '组选复式', '组选胆拖'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
+      result.rodio = ['直选复式', '组选复式', '组选胆拖'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds, hc: i === 2 }))
       result.sorts = []
       result.odds = 1
       result.sorts.push(['第一位', '第二位'].map(_ => ({ title: _, ball: copy(data.x5qezx) }))) // 直选复式
@@ -68,7 +68,7 @@ export const hndleData = (_this, data, key) => {
       break
     case 'sm':
       oddk = ['x5qsfs', 'x5qszx', 'x5qsdt']
-      result.rodio = ['直选复式', '组选复式', '组选胆拖'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
+      result.rodio = ['直选复式', '组选复式', '组选胆拖'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds, hc: i === 2 }))
       result.sorts = []
       result.odds = 1
       result.sorts.push(['第一位', '第二位', '第三位'].map(_ => ({ title: _, ball: copy(data.x5qsfs) }))) // 直选复式
