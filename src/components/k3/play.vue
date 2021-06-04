@@ -62,7 +62,7 @@ export default {
       this.hleper = Math.random() + 1
       const { ball, sorts, square } = this.rD
       const da = ball ? [this.rD] : square ? [this.rD] : sorts[this.rodioIndex]
-      const data = hdwx(da, [{ n: 1 }], this.play === 'hz')
+      const data = hdwx(da, [{ n: this.play === 'sbth' ? 3 : 1 }], this.play === 'hz')
       this.setBetData(data)
     }
   }
