@@ -152,7 +152,7 @@ export const hndleData = (_this, data, key) => {
     case 'he':
       result.rodio = [{ name: '直选复式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选和值' }, { name: '组选包胆' }]
       result.sorts = []
-      result.sorts.push([{ title: '个位', ball: copy(data.exzhixfsh) }, { title: '十位', ball: copy(data.exzhixfsh) }])
+      result.sorts.push([{ title: '十位', ball: copy(data.exzhixfsh) }, { title: '个位', ball: copy(data.exzhixfsh) }])
       result.sorts.push([{ ball: copy(data.zhixhzhe) }]) // 和值
       result.sorts.push([{ ball: copy(data.kuaduhe) }]) // 跨度
       result.sorts.push([{ ball: copy(data.exzuxfsh) }]) // 组选复式
