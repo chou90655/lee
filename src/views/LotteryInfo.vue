@@ -14,18 +14,10 @@
       </transition>
       <icon href='shangshoulan' @click.native="showHistory = 0"/>
     </div>
-    <transition name="fade"><div class="cover" v-if='showLive'></div></transition>
-    <transition name="down">
-      <div class="_video" v-if="showLive">
-        <div class="_head"><p>{{currentLottery.label}}开奖视频</p><p @click="showLive = 0">关闭</p></div>
-        <iframe class="_iframe" :src="src" frameborder="0" v-if="showLive"></iframe>
-      </div>
-    </transition>
   </div>
 </template>
 <script>
-import { issueDisplay, mapState, mapMutations, toast, mod } from '../util/tools'
-import { getSiteCode } from '../util/cach'
+import { issueDisplay, mapState, mapMutations, toast } from '../util/tools'
 import History from './History'
 export default {
   components: { History },
@@ -42,12 +34,6 @@ export default {
   },
   computed: {
     ...mapState(['status', 'currentLottery', 'openInfo']),
-    src() {
-      const { icode, code, label } = this.currentLottery
-      const fcode = code === 'xgpm' ? 'sm' : icode
-      const url = process.env.NODE_ENV === 'production' ? `${location.origin}${mod}` : process.env.VUE_APP_LOTTERY_BASE_API
-      return `${process.env.VUE_APP_LOTTERY_VIDEO_URL}?label=${label}&code=${code}&fcode=${fcode}&siteCode=${getSiteCode()}&url=${url}`
-    },
     fTime() { // 格式化时间 方便页面展示
       const time = this.sealTime > 0 ? this.sealTime : 0
       const sec = time % 60
@@ -73,7 +59,7 @@ export default {
       let tr = nextStopTime <= 0
       this.nextStopTime = nextOpenTime
       this.sealTime = tr ? nextOpenTime : nextStopTime
-      this.setStatus(tr ? '已封盘' : '封盘')
+      this.setStatus(tr ? '已封盘' : '在售')
       this.timeId = setInterval(() => {
         --this.nextStopTime
         if (--this.sealTime <= 0) {

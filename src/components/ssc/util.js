@@ -80,9 +80,9 @@ export const hndleData = (_this, data, key) => {
       result.odds = 1
       result.sorts.push(['千位', '百位', '十位', '个位'].map(_ => ({ title: _, ball: copy(data.sixzhixfsh) }))) // 复式
       result.sorts.push([{ ball: copy(data.hsizxes) }]) // 组选24
-      result.sorts.push([{ ball: copy(data.hsizxye) }]) // 组选12
+      result.sorts.push([{ title: '二重号位', ball: copy(data.hsizxye) }, { title: '单号位', ball: copy(data.hsizxye) }])// 组选12
       result.sorts.push([{ ball: copy(data.hsizxl) }]) // 组选6
-      result.sorts.push([{ ball: copy(data.hsizxs) }]) // 组选4
+      result.sorts.push([{ title: '三重号位', ball: copy(data.hsizxs) }, { title: '单号位', ball: copy(data.hsizxs) }])// 组选4
       result.sorts.push([{ ball: copy(data.bdw4x1m) }]) // 一码不定位
       result.sorts.push([{ ball: copy(data.bdw4x2m) }]) // 二码不定位
       break
@@ -263,8 +263,13 @@ export const hdwx = (da, yq, pls) => {
   if (data.every(_ => !_.length))list.err = '至少选择一个号码'
   else if (ei > -1) list.err = `${da[ei].title || ''}至少选择${yq[ei].n}个`
   else {
-    const d = data.map((_, i) => hditem(_, yq[i].n || 1, yq[i].t, yq[i].k, yq[i]))
-    list.push({ ...data.find(_ => _.length)[0], zhushu: d.reduce((a, c) => pls ? (a + c.num) : (a * c.num), pls ? 0 : 1), number: d.map(_ => _.l).join('|') })
+    if (yq[0].t === 7) {
+      const d = data.map((_, i) => hditem(_, yq[i].n || 1, yq[i].t, yq[i].k, yq[i]))
+      list.push({ ...data[0][0], zhushu: hdqc(d.map(_ => _.l.split(',')), yq[1].n), number: d.map(_ => _.l).join('|') })
+    } else {
+      const d = data.map((_, i) => hditem(_, yq[i].n || 1, yq[i].t, yq[i].k, yq[i]))
+      list.push({ ...data.find(_ => _.length)[0], zhushu: d.reduce((a, c) => pls ? (a + c.num) : (a * c.num), pls ? 0 : 1), number: d.map(_ => _.l).join('|') })
+    }
   }
   return list
 }
@@ -279,4 +284,16 @@ const hditem = (arr, num1, type, key, yq) => {
   }
   num = yq.num || num
   return { num, l: arr.map(_ => _.name || _.num).join() }
+}
+
+const hdqc = (arr, n) => {
+  let arr1 = arr[0]
+  const combination = []
+  chooseDataZh([...arr[1]], n, combination)
+  const ar = []
+  combination.forEach(_ => {
+    ar.push(...arr1.map(i => ([i, ..._])))
+  })
+  arr1 = ar.map(_ => [...new Set(_)]).filter(_ => _.length >= n + 1)
+  return arr1.length
 }
