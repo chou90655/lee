@@ -1,7 +1,6 @@
 <template>
   <cube-scroll :options="{ scrollbar: true }" :class="['rule', currentLottery.lcode]">
     <h2>{{currentLottery.label}}</h2>
-    <p class="inf" v-html="gameRule.lotteryInfo[currentLottery.code]"></p>
     <p class="notice">请认真了解游戏规则《游戏规则如下》</p>
     <div v-html="gameRule.gameRule[currentLottery.lcode]">
     </div>

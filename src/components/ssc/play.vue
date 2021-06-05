@@ -120,7 +120,7 @@ export default {
           switch (this.rodioIndex) {
             case 0: finalData = hdwx(da, Array(5).fill({ n: 1 })); break
             case 1: finalData = hdwx(da, [{ n: 5 }]); break
-            case 2: finalData = hdwx(da, [{ n: 1 }, { n: 3 }]); break
+            case 2: finalData = hdwx(da, [{ n: 1 }, { n: 4 }]); break
             case 3: finalData = hdwx(da, [{ n: 2 }, { n: 1 }]); break
             case 4: finalData = hdwx(da, [{ n: 1 }, { n: 2 }]); break
             case 5: finalData = hdwx(da, [{ n: 1 }, { n: 1 }]); break

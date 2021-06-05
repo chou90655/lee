@@ -1,11 +1,10 @@
 <template>
   <div :class="['more', showTheme && 'fade']">
     <div class="user t_b">
-      <div class="ava" @click="!token && $router.push('/login', () => {})"></div>
+      <div class="ava"></div>
       <div class="info">
         <p class="name">{{userInfo.username}}</p>
         <p v-if="token">余额：{{userInfo.memberBal || '0.00'}}元</p>
-        <p v-if="!token" class="log" @click="!token && $router.push('/login', () => {})">登陆</p>
       </div>
     </div>
     <ul class="route">
@@ -36,7 +35,6 @@
 import routers from '../data/moreRoutes'
 import { mapState, mod, toast } from '../util/tools'
 import { setTheme, getTheme, getToken } from '../util/cach'
-import { getBetReport } from '../api/interface'
 export default {
   data() {
     return {
@@ -57,14 +55,6 @@ export default {
   computed: mapState(['userInfo', 'currentLottery']),
   created() {
     (this.themes.find(_ => _.color === getTheme())).inuse = 'check_bule' // 设置主题选择状态
-    const jrsy = this.routers.find(_ => _.icon === 'jinrishuying')
-    const jszd = this.routers.find(_ => _.icon === 'jishizhudan')
-    this.token && getBetReport().then(res => { // 查询并设置及时注单和今日输赢金额
-      if (res) {
-        jrsy.amount = '￥' + res.winLosAmount.toFixed(2)
-        jszd.amount = '￥' + res.currentAmount.toFixed(2)
-      }
-    })
   },
   methods: {
     choseTheme(item) {

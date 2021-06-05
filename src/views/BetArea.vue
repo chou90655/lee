@@ -2,11 +2,11 @@
   <div class="bet_area">
     <div class="inner">
       <div class="betinfo">
-        <p>已选中{{total}}注：<i>{{total * betAmount}}</i>元</p>
+        <p>已选中{{total}}注：<i>{{total * money}}</i>元</p>
         <p>余额：<i>{{userInfo.memberBal || 0}}</i>元</p>
       </div>
       <div class="handle_bet">
-        <cube-input v-model="betAmount" :clearable="{visible: true, blurHidden: false}" @click.native='click' ref='input' placeholder="输入金额" class="input"/>
+        <cube-input v-model="betAmount" :clearable="{visible: true, blurHidden: false}" @click.native='click' ref='input' placeholder="输入倍数" class="input"/>
         <div :class="['bt t_bd', isStop && '_stop']">
           <cube-button class="t_bc" light inline @click='reset'>重置</cube-button>
           <cube-button class="t_b" inline @touchstart.native="bet">下注</cube-button>
@@ -14,8 +14,8 @@
         </div>
       </div>
       <ul class="keyboard" ref='keyboard'>
-        <li v-for="(item, index) in keylist" :key="index">
-          <span v-for="i in item" :key="i" @touchend="handleInput(i)">{{i}}<icon v-if="i === 'x'" href='tuige'/></span>
+        <li v-for="(item, id) in keylist" :key="id">
+          <span v-for="(i,_) in item" :key="i" :class="{chs:_==3&&10**id*yjf==1}" @touchend="handleInput(i)">{{i}}<icon v-if="i === 'x'" href='tuige'/></span>
         </li>
       </ul>
       <div class="kd_mask" @click="hideKb" ref='mask'></div>
@@ -34,7 +34,7 @@
               <li v-for="(it, i) in copyBetData" :key=i>
                 <i>{{it.title||it.name}}</i>
                 <i>{{it.label||it.number}}</i>
-                <i>￥{{betAmount}}</i>
+                <i>￥{{money}}</i>
                 <i @click="del(i)"><icon href='cancel'/></i>
               </li>
             </ul>
@@ -50,7 +50,7 @@
           </cube-scroll>
           <div class="info">
             <p>{{isStop ? '开奖' : '封盘'}}时间：<i>{{sealTime.join(':')}}</i></p>
-            <p class="amount">共{{total}}注：<i>{{total * betAmount}}</i>元</p>
+            <p class="amount">共{{total}}注：<i>{{total * money}}</i>元</p>
           </div>
           <div class="btn">
             <cube-button class="t_bd" light inline @click="cancel">取消</cube-button>
@@ -65,6 +65,7 @@
 import { issueDisplay, toast, mapState, mapMutations } from '../util/tools'
 import { getToken } from '../util/cach'
 import { lotteryBet, getUser } from '../api/interface'
+const yjf = { 元: 1, 角: 0.1, 分: 0.01 }
 export default {
   data() {
     return {
@@ -74,11 +75,12 @@ export default {
       headerData: ['号码', '赔率', '金额', '操作'],
       showBetDetail: false,
       copyBetData: [],
+      yjf: 1,
       keylist: [
-        [1, 2, 3, '+200'],
-        [4, 5, 6, '+300'],
-        [7, 8, 9, '+500'],
-        ['C', 0, 'x', '+1000']
+        [1, 2, 3, '元'],
+        [4, 5, 6, '角'],
+        [7, 8, 9, '分'],
+        ['C', 0, 'x', '+500']
       ]
     }
   },
@@ -86,7 +88,6 @@ export default {
     issueDisplay
   },
   mounted() {
-    window.__this = this
     this.$refs.input.$el.querySelector('input').setAttribute('readonly', 1)
     this.getUserInfo()
     // this.timeId = setInterval(() => this.getUserInfo(), 8000)
@@ -98,6 +99,9 @@ export default {
     },
     isStop() {
       return this.status.includes('已')
+    },
+    money() {
+      return +(2 * this.yjf * this.betAmount).toFixed(2)
     }
   },
   watch: {
@@ -138,8 +142,8 @@ export default {
       if (!this.total) this.cancel()
     },
     confirm() {
-      if (this.userInfo.memberBal < this.total * this.betAmount) return toast('当前余额不足！', false)
-      const orderList = this.copyBetData.map(_ => ({ ..._, price: _.zhushu * this.betAmount, beishu: this.betAmount / 2, yjf: 1 }))
+      if (this.userInfo.memberBal < this.total * this.money) return toast('当前余额不足！', false)
+      const orderList = this.copyBetData.map(_ => ({ ..._, price: _.zhushu * this.money, beishu: this.betAmount, yjf: this.yjf }))
       let data = { orderList, lotteryname: this.currentLottery.code, expect: this.openInfo.nextLotteryNum }
       console.log(JSON.stringify(data))
       if (this.trigger) return
@@ -169,6 +173,7 @@ export default {
     handleInput(i) {
       this.betAmount1 = this.betAmount
       switch (true) {
+        case Object.keys(yjf).includes(i): this.yjf = yjf[i]; break
         case i < 10: this.betAmount = this.mode ? +this.betAmount + i : +this.betAmount * 10 + i; break
         case i > 10: this.mode = false; this.betAmount = +this.betAmount + (+i.slice(1)); break
         case i === 'x': this.betAmount = Math.floor(+this.betAmount / 10); break
@@ -289,6 +294,8 @@ export default {
             border-left 1px solid #e5e5e5
           &:last-of-type
             color #19b4f5
+            &.chs
+              color #ff3a39
           &:active
             background-color #e5e9f2
         &:last-of-type
