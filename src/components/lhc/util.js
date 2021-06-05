@@ -45,21 +45,6 @@ const hndleTmtw = (_) => {
 const handleWs = (index) => {
   return [0, 10, 20, 30, 40].map(_ => _ + index).filter(_ => _ > 0)
 }
-const hndleZm = (code) => {
-  switch (true) {
-    case code.includes('sumsingle') : return '合单'
-    case code.includes('sumdouble') : return '合双'
-    case code.includes('sumsmall') : return '合小'
-    case code.includes('sumbig') : return '合大'
-    case code.includes('single') : return '单'
-    case code.includes('double') : return '双'
-    case code.includes('big') : return '大'
-    case code.includes('small') : return '小'
-    case code.includes('red') : return '红波'
-    case code.includes('blue') : return '绿波'
-    case code.includes('green') : return '蓝波'
-  }
-}
 
 const chooseDataTt = (arr, re) => { // 拖头投注
   const locks = arr.filter(_ => _.lock)
