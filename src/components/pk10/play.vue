@@ -61,7 +61,6 @@ export default {
       it.choose = !it.choose
       this.hleper = Math.random() + 1
       const da = this.rD.rodio ? [this.rD] : (this.rD.sort || this.rD.cqp || [this.rD])
-      console.log(da)
       let data = []
       switch (true) {
         case ['lm', 'gyh', '1z5', '6z10'].includes(this.play):data = this.rD.data.filter(_ => _.choose).map(_ => ({ ..._, number: _.name, zhushu: 1 })); break

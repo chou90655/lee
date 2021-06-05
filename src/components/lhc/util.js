@@ -31,7 +31,6 @@ const hndleSx = (tc, num = 50) => {
 const hndleTmtw = (_) => {
   const code = _.title
   const index = +code[0]
-  index || console.log(_)
   if (code.includes('尾')) {
     _.name = index + '尾'
     _.num = index + '尾'
@@ -55,7 +54,7 @@ const hdnb = (item, num = 50) => Array(num).fill(1).map((_, i) => ({ ...item, na
 const hd12sx = (item) => sxArr1.map((_, i) => ({ ...item, name: _, num: _, numbers: hndleSx(_) }))
 const hdws = (item) => Array(10).fill(1).map((_, i) => ({ ...item, name: i + '尾', num: i + '尾', numbers: handleWs(i) }))
 export const filter = (data) => {
-  if (!data) return
+  if (!data || !0) return
   let res = { tmlm: [], bb: [], sxtx: [], sx1x: [], tmtw: [], tmb: [], tmblm: [], zmb: [], zmblm: [] }
   const zmArr = ['zm1', 'zm2', 'zm3', 'zm4', 'zm5', 'zm6']
   zmArr.forEach(_ => { res[_] = [] })
@@ -121,7 +120,6 @@ export const handleZx = (data, index, list, type) => {
   if (data.length >= index) {
     const combination = []
     type ? chooseDataTt([...data], combination) : chooseDataZh([...data], index, combination)
-    console.log(combination)
     list.push({ ...data[0], zhushu: combination.length, number: data.map(_ => _.num || _.name).join() })
   } else {
     list.err = '选择不能少于' + index + '个'

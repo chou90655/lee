@@ -60,7 +60,6 @@ export default {
       it.choose = !it.choose
       const da = this.rD.rodio ? this.rD.sorts[this.rodioIndex] : this.rD.sort ? this.rD.sort : [this.rD]
       let data = []
-      console.log(da)
       switch (this.play) {
         case 'yx' :data = hdwx(da, [{ n: 0 }, { n: 0 }, { n: 0 }], 1); break
         case 'lm' :data = hdwx(da, [{ n: 1 }, { n: 1 }]); break
@@ -98,7 +97,6 @@ export default {
           break
         default: data = []; break
       }
-      console.log(data)
       this.setBetData(data)
     }
   }

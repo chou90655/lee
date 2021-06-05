@@ -77,7 +77,6 @@ export default {
         case 'rx':finalData = handleZx(Chosedata, this.rodioIndex, this.rD); break
         default: finalData = this.hdqw(Chosedata); break
       }
-      console.log(finalData)
       return finalData
     }
   }
