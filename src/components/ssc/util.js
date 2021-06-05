@@ -237,7 +237,6 @@ export const hndleData = (_this, data, key) => {
 }
 
 export const hdarrdl = (da) => {
-  console.log(da)
   let data = []
   da.forEach(_ => {
     const it = filt(_.square || _.ball)

@@ -135,9 +135,9 @@ export const hndleData = (_this, data, key) => {
 export const handleZx = (data, index, list, type) => {
   if (data.length >= index) {
     const combination = []
-    let { typeCode, typeName, odds } = data[0]
-    type ? chooseDataTt(data, combination) : chooseDataZh(data, index, combination)
-    list.push(...combination.map(_ => ({ odds: Math.min(..._.map(i => i.odds)) || odds, typeCode, typeName, name: _.map(i => i.name).join(), playCode: _.map(i => i.playCode).join('@') })))
+    type ? chooseDataTt([...data], combination) : chooseDataZh([...data], index, combination)
+    console.log(combination)
+    list.push({ ...data[0], zhushu: combination.length, number: data.map(_ => _.num || _.name).join() })
   } else {
     list.err = '选择不能少于' + index + '个'
   }

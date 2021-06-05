@@ -68,7 +68,7 @@ export default {
       commit('setUserInfo', params)
       return getGameList().then(res => {
         if (Array.isArray(res)) {
-          res.forEach(_ => {
+          res.filter(_ => +_.isopen).forEach(_ => {
             const item = baselist.find(i => i.code === _.typeid)
             if (item) item.children.push(_)
             _.path = _.typeid + '/' + _.name // 储存父级的code 用于后台传参
@@ -96,7 +96,7 @@ export default {
       })
       data && state.currentLottery.code === code && commit('setLotteryData', data)
     },
-    getGameList({ state, commit }, params) { // 获取历史开奖和走珠信息
+    getGameList({ state, commit }, params) {
       const { code, lcode } = state.currentLottery
       const par = { num: 50, lotteryname: code, ...params }
       getChartList(par).then(res => {

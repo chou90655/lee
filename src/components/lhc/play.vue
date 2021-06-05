@@ -142,15 +142,11 @@ export default {
     },
     CalcLen(Chosedata) {
       let finalData = []
-      switch (this.play) {
-        case 'lm': handleZx(Chosedata, this.rodioIndex > 2 ? 3 : 2, finalData); break
-        case 'gg': this.handleGg(Chosedata, finalData); break
-        case 'lx': handleZx(Chosedata, this.rodioIndex + 2, finalData); break
-        case 'sxl': handleZx(Chosedata, this.rodioIndex < 4 ? this.rodioIndex + 2 : this.rodioIndex - 2, finalData, this.betIndex); break
-        case 'wsl': handleZx(Chosedata, this.rodioIndex < 3 ? this.rodioIndex + 2 : this.rodioIndex - 1, finalData, this.betIndex); break
-        case 'bz': handleZx(Chosedata, this.rodioIndex + 5, finalData, this.betIndex); break
-        case 'dxzy': handleZx(Chosedata, this.rodioIndex + 5, finalData, this.betIndex); break
-        case 'tpz': handleZx(Chosedata, this.rodioIndex + 1, finalData, this.betIndex); break
+      switch (true) {
+        case this.play === 'lm': handleZx(Chosedata, this.rodioIndex > 1 ? 2 : 3, finalData); break
+        case this.play === 'bz': handleZx(Chosedata, this.rodioIndex + 5, finalData); break
+        case [2, 3, 4].includes(this.rodioIndex) && this.play === 'sx': handleZx(Chosedata, this.rodioIndex, finalData); break
+        case [1, 2, 3].includes(this.rodioIndex) && this.play === 'ws': handleZx(Chosedata, this.rodioIndex + 1, finalData); break
         default: finalData = Chosedata.map(_ => ({ ..._, zhushu: 1, number: _.num || _.name })); break
       }
       return finalData
