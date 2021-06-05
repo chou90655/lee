@@ -101,16 +101,15 @@ export default {
   computed: {
     ...mapState(['lotteryData', 'isReset', 'currentLottery']),
     rD() {
-      const agr = (this.rodioIndex + this.hleper) && this.play && this.lotteryData && this.currentLottery.lcode === 'xgc'
+      const agr = (this.rodioIndex + this.hleper) && this.play && this.lotteryData && this.currentLottery.lcode === 'lhc'
       let result = {}
-      result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
-      // if (agr) {
-      //   try {
-      //     result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
-      //   } catch (e) {
-      //     setTimeout(() => (this.hleper = Math.random() + 1), 500)
-      //   }
-      // }
+      if (agr) {
+        try {
+          result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
+        } catch (e) {
+          setTimeout(() => (this.hleper = Math.random() + 1), 500)
+        }
+      }
       return result
     }
   },
@@ -152,7 +151,7 @@ export default {
         case 'bz': handleZx(Chosedata, this.rodioIndex + 5, finalData, this.betIndex); break
         case 'dxzy': handleZx(Chosedata, this.rodioIndex + 5, finalData, this.betIndex); break
         case 'tpz': handleZx(Chosedata, this.rodioIndex + 1, finalData, this.betIndex); break
-        default: finalData = Chosedata; break
+        default: finalData = Chosedata.map(_ => ({ ..._, zhushu: 1, number: _.num || _.name })); break
       }
       return finalData
     },

@@ -22,8 +22,8 @@ export default {
     { 'label': '二同号', 'value': 'eth' },
     { 'label': '二不同号', 'value': 'ebth' },
     { 'label': '三同号', 'value': 'sht' },
-    { 'label': '三连号', 'value': 'slh' },
-    { 'label': '三不同号', 'value': 'sbth' }],
+    { 'label': '三不同号', 'value': 'sbth' },
+    { 'label': '三连号', 'value': 'slh' } ],
 
   'keno': [{ 'label': '任选', 'value': 'rx' },
     { 'label': '趣味', 'value': 'qw' }],
