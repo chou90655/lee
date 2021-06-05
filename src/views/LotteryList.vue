@@ -1,6 +1,6 @@
 <template>
   <div class="drawer">
-    <header class="t_b"><span v-show="url" class="f_m" @click="back"><icon href='fanhuishouye'/>返回</span></header>
+    <header class="t_b"><span class="f_m" @click="back"><icon href='fanhuishouye'/>返回</span></header>
     <div class="content">
       <cube-scroll :data="gameList" :options="options" class="mainkind">
         <ul>
@@ -19,7 +19,6 @@
 </template>
 <script>
 import { mapState, mapMutations, mod, mapGetters } from '../util/tools'
-import { getUrl } from '../util/cach'
 
 export default {
   data() {
@@ -52,8 +51,7 @@ export default {
       this.$emit('choose')
     },
     back() {
-      const resourceUrl = getUrl()
-      if (resourceUrl) location.href = resourceUrl.indexOf('http') === -1 ? ('https://' + resourceUrl) : resourceUrl
+      parent.postMessage('back', '*')
     }
   }
 }

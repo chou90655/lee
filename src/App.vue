@@ -26,9 +26,8 @@ export default {
   },
   computed: mapGetters(['lotterys']),
   created() {
-    const msg = { token: '$2y$10$DFVVi.znWbyqv.auJQjlMemVKhDyxvIUPy6AG/LEwY.ZJYozuTb4G', username: 'test1007' }
+    const msg = { token: '$2y$10$DFVVi.znWbyqv.auJQjlMemVKhDyxvIUPy6AG/LEwY.ZJYozuTb4G', username: 'test1007', ...this.$route.query }
     this.initLottery(msg).then(list => {
-    // this.initLottery(this.$route.query).then(list => {
       this.$router.addRoutes(createRouterFunction(list))
       let item = ''
       const { resourceUrl } = this.$route.query
