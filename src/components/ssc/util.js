@@ -264,7 +264,7 @@ export const hdwx = (da, yq, pls) => {
   else if (ei > -1) list.err = `${da[ei].title || ''}至少选择${yq[ei].n}个`
   else {
     const d = data.map((_, i) => hditem(_, yq[i].n || 1, yq[i].t, yq[i].k, yq[i]))
-    list.push({ ...data[0][0], zhushu: d.reduce((a, c) => pls ? (a + c.num) : (a * c.num), pls ? 0 : 1), number: d.map(_ => _.l).join('|') })
+    list.push({ ...data.find(_ => _.length)[0], zhushu: d.reduce((a, c) => pls ? (a + c.num) : (a * c.num), pls ? 0 : 1), number: d.map(_ => _.l).join('|') })
   }
   return list
 }
@@ -273,7 +273,7 @@ const hditem = (arr, num1, type, key, yq) => {
   if (type === 5) num = arr.reduce((a, c) => a + zxdata[key][(c.num || c.name)], 0)
   else {
     const combination = []
-    chooseDataZh(arr, num1, combination)
+    chooseDataZh([...arr], num1, combination)
     num = combination.length
     if (type === 6) num *= 2
   }

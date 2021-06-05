@@ -49,18 +49,24 @@ const red = [1, 2, 7, 8, 12, 13, 18, 19, 23, 24, 29, 30, 34, 35, 40, 45, 46]
 const blue = [3, 4, 9, 10, 14, 15, 20, 25, 26, 31, 36, 37, 41, 42, 47, 48]
 const green = [5, 6, 11, 16, 17, 21, 22, 27, 28, 32, 33, 38, 39, 43, 44, 49]
 const bbObj = {
-  redsingle: { name: '红单', numbers: red.filter(_ => _ % 2) },
-  reddouble: { name: '红双', numbers: red.filter(_ => !(_ % 2)) },
-  redbig: { name: '红大', numbers: red.filter(_ => _ > 24) },
-  redsmall: { name: '红小', numbers: red.filter(_ => _ < 25) },
-  bluesingle: { name: '蓝单', numbers: blue.filter(_ => _ % 2) },
-  bluedouble: { name: '蓝双', numbers: blue.filter(_ => !(_ % 2)) },
-  bluebig: { name: '蓝大', numbers: blue.filter(_ => _ > 24) },
-  bluesmall: { name: '蓝小', numbers: blue.filter(_ => _ < 25) },
-  greensingle: { name: '绿单', numbers: green.filter(_ => _ % 2 && _ < 49) },
-  greendouble: { name: '绿双', numbers: green.filter(_ => !(_ % 2)) },
-  greenbig: { name: '绿大', numbers: green.filter(_ => _ > 24 && _ < 49) },
-  greensmall: { name: '绿小', numbers: green.filter(_ => _ < 25) }
+  hongdan: { name: '红单', numbers: red.filter(_ => _ % 2) },
+  hongshuang: { name: '红双', numbers: red.filter(_ => !(_ % 2)) },
+  hongda: { name: '红大', numbers: red.filter(_ => _ > 24) },
+  hongxiao: { name: '红小', numbers: red.filter(_ => _ < 25) },
+  honghedan: { name: '红合单', numbers: [1, 7, 12, 18, 23, 29, 30, 34, 35] },
+  hongheshuang: { name: '红合双', numbers: [2, 8, 13, 19, 24, 35, 40, 46] },
+  landan: { name: '蓝单', numbers: blue.filter(_ => _ % 2) },
+  lanshuang: { name: '蓝双', numbers: blue.filter(_ => !(_ % 2)) },
+  landa: { name: '蓝大', numbers: blue.filter(_ => _ > 24) },
+  lanxiao: { name: '蓝小', numbers: blue.filter(_ => _ < 25) },
+  lanhedan: { name: '绿合单', numbers: [3, 9, 10, 14, 25, 36, 41, 47] },
+  lanheshuang: { name: '绿合双', numbers: [4, 15, 20, 26, 31, 37, 42, 48] },
+  lvdan: { name: '绿单', numbers: green.filter(_ => _ % 2 && _ < 49) },
+  lvshuang: { name: '绿双', numbers: green.filter(_ => !(_ % 2)) },
+  lvda: { name: '绿大', numbers: green.filter(_ => _ > 24 && _ < 49) },
+  lvxiao: { name: '绿小', numbers: green.filter(_ => _ < 25) },
+  lvhedan: { name: '绿合单', numbers: [5, 16, 21, 27, 32, 38, 43] },
+  lvheshuang: { name: '绿合双', numbers: [6, 16, 22, 28, 32, 38, 44] }
 }
 const hndleQm = (code) => {
   switch (true) {
@@ -71,7 +77,8 @@ const hndleQm = (code) => {
   }
 }
 
-let sxArr = ['rat', 'cow', 'tiger', 'rabbit', 'dragon', 'snake', 'horse', 'sheep', 'monkey', 'chicken', 'dog', 'pig']
+const sxArr1 = ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪']
+let sxArr = [...sxArr1]
 sxArr.push(...sxArr.splice(0, sxIndex))
 const hndleSx = (tc, num = 50) => {
   return [1, 2, 3, 4, 5].map(_ => _ * 12 - sxArr.indexOf(tc)).filter(_ => _ < num)
@@ -111,84 +118,59 @@ const chooseDataTt = (arr, re) => { // 拖头投注
   arr.filter(_ => !_.lock).forEach(_ => re.push(locks.concat(_)))
 }
 
+const hdnb = (item, num = 50) => Array(num).fill(1).map((_, i) => ({ ...item, name: i, num: i }))
+const hd12sx = (item) => sxArr1.map((_, i) => ({ ...item, name: _, num: _, numbers: hndleSx(_) }))
 export const filter = (data) => {
   if (!data) return
-  let res = { tm: [], tmlm: [], tx: [], zm: [], sum: [], tmtw: [], wx: [], bb: [], qm: [], tmb: [], tmblm: [], zmb: [], zmblm: [] }
+  let res = { tmlm: [], bb: [], sxtx: [], sx1x: [], qm: [], tmb: [], tmblm: [], zmb: [], zmblm: [] }
   const zmArr = ['zm1', 'zm2', 'zm3', 'zm4', 'zm5', 'zm6']
-  zmArr.forEach(_ => { res[_ + '_'] = []; res[_ + '_1'] = [] })
+  zmArr.forEach(_ => { res[_] = [] })
   data.forEach(_ => {
     _.choose = false
-    _.odds = _.odds || '0.00'
-    const code = _.playCode
-    const tcode = _.typeCode
-    let key = ''
+    _.odds = (+_.rate ? +_.rate : (+_.maxjj / 2))
+    const tcode = _.playid
+    let name
     switch (true) {
-      case tcode === 'tm': _.name = code.slice(3, 5); res.tm.push(_); break // 特码A
-      case tcode.includes('tmlm'): _.name = dxdsObj[code]; res.tmlm.push(_); break // 特码A 大小单双
-      case tcode === 'tm-color': _.name = dxdsObj[code]; res.tmlm.push(_); break // 波色
-      case tcode === 'tx':const tc = code.slice(3, 10); _.name = sxObj[tc].name; _.beast = sxObj[tc].beast; _.numbers = hndleSx(tc); res.tx.push(_); break // 特码生肖
-      case tcode.includes('zmb-'): _.name = zhObj[code.slice(4)]; res.zmblm.push(_); break // 正码B
-      case tcode === 'zm': _.name = code.slice(3, 5); res.zm.push(_); break // 正码A
-      case tcode.includes('sum-'): _.name = zhObj[code]; res.sum.push(_); break // 正码A 大小单双
-      case tcode === 'tmtw': hndleTmtw(_); res.tmtw.push(_); break // 特码头尾
-      case tcode === 'wx': _.name = wxObj[code].name; _.numbers = wxObj[code].numbers; res.wx.push(_); break // 五行
-      case tcode === 'bb': _.name = bbObj[code].name; _.numbers = bbObj[code].numbers; res.bb.push(_); break // 半波
-      case tcode === 'qm': _.name = hndleQm(code); res.qm.push(_); break // 七码
-      case zmArr.includes(tcode) : _.name = code.slice(4, 6); res[tcode + '_'].push(_); break // 正码1-6
-      case zmArr.includes(tcode.slice(0, 3)) : _.name = hndleZm(code); res[tcode.slice(0, 3) + '_1'].push(_); break // 正码1-6
-      case tcode === 'tmb': _.name = code.slice(5, 7); res.tmb.push(_); break // 特码B
-      case tcode.includes('tmblm'): _.name = dxdsObj[code.split('b-')[1]]; res.tmblm.push(_); break // 特码B 大小单双
-      case tcode.includes('tmb-'): _.name = dxdsObj[code.split('b-')[1]]; res.tmblm.push(_); break // 特码B 大小单双
-      case tcode.includes('lm-'): _.name = code.slice(tcode.length + 1); key = code.split('-')[1]; if (!res[key]) res[key] = []; res[key].push(_); break // lm
-      case tcode.includes('-gg'): _.name = hndleZm(code); key = code.split('-')[1]; if (!res[key]) res[key] = []; res[key].push(_); break // 过关
-      case tcode.includes('lx-'): key = code.split('-'); const k1 = key[2] || key[1]; const k2 = tcode.slice(3); _.name = sxObj[k1].name; _.beast = sxObj[k1].beast; _.numbers = hndleSx(k1, 49); if (!res[k2]) res[k2] = []; res[k2].push(_); break // 六肖
-      case tcode.includes('yxws-y'): key = code.split('-'); _.name = sxObj[key[2]].name; _.beast = sxObj[key[2]].beast; _.numbers = hndleSx(key[2]); if (!res[key[1]]) res[key[1]] = []; res[key[1]].push(_); break // 一肖
-      case tcode === 'yxws-ws':const wId = code.slice(-1); _.name = wId + '尾'; _.numbers = handleWs(+wId); if (!res.yxws_) res.yxws_ = []; res.yxws_.push(_); break // 尾数
-      case tcode === 'yxws-ws-bz-bz':const bId = code.slice(-1); _.name = bId + '尾'; _.numbers = handleWs(+bId); if (!res.yxws_b) res.yxws_b = []; res.yxws_b.push(_); break // 尾数不中
-      case tcode.includes('sxl-'): key = code.split('-'); _.name = sxObj[key[2]].name; _.beast = sxObj[key[2]].beast; _.numbers = hndleSx(key[2]); if (!res[key[1]]) res[key[1]] = []; res[key[1]].push(_); break // 生肖连
-      case tcode.includes('wsl-'): key = code.split('-')[1]; const wd = code.slice(-1); _.name = wd + '尾'; _.numbers = handleWs(+wd); if (!res[key]) res[key] = []; res[key].push(_); break // 尾数连
-      case tcode.includes('bz-'): key = code.split('-'); _.name = key[2]; if (!res[key[1]]) res[key[1]] = []; res[key[1]].push(_); break // 不中
-      case tcode.includes('dxzy-'): key = code.split('-'); _.name = key[2]; if (!res[key[1]]) res[key[1]] = []; res[key[1]].push(_); break // 多选中1
-      case tcode.includes('tpz-'): key = code.split('-'); _.name = key[2]; if (!res[key[1]]) res[key[1]] = []; res[key[1]].push(_); break // 特平中
-      case tcode === 'zmb': _.name = code.slice(4); res.zmb.push(_); break // 正码B
+      case tcode === 'tmzx': res[tcode] = hdnb(_).slice(1); break // 特码 数字
+      case tcode.includes('tmlm'): name = _.title.slice(2); res.tmlm.push({ ..._, name, num: name }); break // 特码lm
+      case tcode === 'zmrx': res[tcode] = hdnb(_).slice(1); break // 正码 任选
+      case ['zm1t', 'zm2t', 'zm3t', 'zm4t', 'zm5t'].includes(tcode): res[tcode] = hdnb(_).slice(1); break // 正码 数字
+      case tcode.includes('zm') && tcode.includes('lm'): name = _.title.slice(2); res['zm' + tcode[2]].push({ ..._, name, num: name }); break // 正码 lm
+      case ['lm3qz', 'lm3z2', 'lm2qz', 'lm2zt', 'lmtc'].includes(tcode): res[tcode] = hdnb(_).slice(1); break // 连码
+      case !!bbObj[tcode]: res.bb.push({ ..._, ...bbObj[tcode], num: _.title }); break // 半波
+      case tcode.includes('sxtx'): name = _.title.slice(2); res.sxtx.push({ ..._, name, numbers: hndleSx(name), num: name }); break // 特肖
+      case tcode.includes('sx1x'): name = _.title.slice(2); res.sx1x.push({ ..._, name, numbers: hndleSx(name), num: name }); break // 1肖
+      case ['sx2xl', 'sx3xl', 'sx4xl'].includes(tcode): res[tcode] = hd12sx(_); break // 连码
     }
   })
   return res
 }
 export const hndleData = (_this, data, key) => {
   let result = {}
+  console.log(data)
   if (!data) return result
   _this.storeData = data
   switch (key) {
-    case 'kj':
-      result.balls = [data.tm, data.tmb, data.zm, data.zmb, data.zm1_, data.zm2_, data.zm3_, data.zm4_, data.zm5_, data.zm6_]
-      result.squares = [data.tmlm, data.tmblm, data.sum, data.zmblm, data.zm1_1, data.zm2_1, data.zm3_1, data.zm4_1, data.zm5_1, data.zm6_1]
-      result.rodio = [{ name: '特A' }, { name: '特B' }, { name: '正A' }, { name: '正B' }, { name: '正1特' }, { name: '正2特' }, { name: '正3特' }, { name: '正4特' }, { name: '正5特' }, { name: '正6特' }]
+    case 'sx':
+      result.groups = [data.sxtx, data.sx1x, data.sx2xl, data.sx3xl, data.sx4xl]
+      result.rodio = [{ name: '特肖' }, { name: '一肖' }, { name: '二肖连' }, { name: '三肖连' }, { name: '四肖连' }]
       break
-    case 'tm':
-      result.balls = [data.tm, data.tmb]
-      result.squares = [data.tmlm, data.tmblm]
-      result.rodio = [{ name: '特A' }, { name: '特B' }]
-      break
+    case 'tm': result.ball = data.tmzx; result.square = data.tmlm; break
     case 'zm':
-      result.balls = [data.zm, data.zmb]
-      result.squares = [data.sum, data.zmblm]
-      result.rodio = [{ name: '正A' }, { name: '正B' }]
+      result.balls = [data.zmrx, data.zm1t, data.zm2t, data.zm3t, data.zm4t, data.zm5t]
+      result.squares = [[], data.zm1, data.zm2, data.zm3, data.zm4, data.zm5]
+      result.rodio = [{ name: '任选' }, { name: '正1特' }, { name: '正2特' }, { name: '正3特' }, { name: '正4特' }, { name: '正5特' }]
       break
-    case 'zmt':
-      result.balls = [data.zm1_, data.zm2_, data.zm3_, data.zm4_, data.zm5_, data.zm6_]
-      result.squares = [data.zm1_1, data.zm2_1, data.zm3_1, data.zm4_1, data.zm5_1, data.zm6_1]
-      result.rodio = [{ name: '正1特' }, { name: '正2特' }, { name: '正3特' }, { name: '正4特' }, { name: '正5特' }, { name: '正6特' }]
-      break
+    case 'bb': result.group = data.bb; break
     case 'lm':
       result.odds = 1
-      const sze = data.sze[0].odds.split('/')
-      const ezt = data.ezt[0].odds.split('/')
-      result.balls = [data.eqz, data.ezt, data.tc, data.sze, data.sqz]
-      result.rodio = [{ name: '二全中', odds: data.eqz[0].odds }, { name: '二中特', odds: '中特 ' + (ezt[1] || '0.00') + '  中二 ' + ezt[0] },
-        { name: '特串', odds: data.tc[0].odds }, { name: '三中二', odds: '中二 ' + (sze[1] || '0.00') + '  中三 ' + sze[0] },
-        { name: '三全中', odds: data.sqz[0].odds }]
+      // const sze = data.sze[0].odds.split('/')
+      // const ezt = data.ezt[0].odds.split('/')
+      result.balls = ['lm3qz', 'lm3z2', 'lm2qz', 'lm2zt', 'lmtc'].map(_ => data[_]) // 'lm3qz', 'lm3z2', 'lm2qz', 'lm2zt', 'lmtc'
+      result.rodio = [{ name: '三全中', odds: '三全中' }, { name: '三中二', odds: '中二 ' + ('0.00') + '  中三 ' + 'sze[0]' },
+        { name: '二全中', odds: 'data.eqz[0].odds' }, { name: '二中特', odds: '中特 ' + '0.00' + '  中二 + ezt[0]' }, { name: '特串', odds: 'dc' } ]
       break
+
     case 'gg':
       result.sort = []
       result.sort.push({ title: '正码1', square: data.zm1 })
@@ -201,7 +183,6 @@ export const hndleData = (_this, data, key) => {
     case 'tx': result.group = data.tx; result.aid = [{ title: '家禽' }, { title: '野兽' }]; break
     case 'tmtw': result.group = data.tmtw; break
     case 'wx': result.group = data.wx; break
-    case 'bb': result.group = data.bb; break
     case 'qm': result.square = data.qm; break
     case 'lx':
       result.rodio = [{ name: '二肖' }, { name: '三肖' }, { name: '四肖' }, { name: '五肖' }, { name: '六肖' }]

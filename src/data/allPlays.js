@@ -1,19 +1,12 @@
 export default {
-  'dpc': [{ 'label': '快捷', 'value': 'kj' },
-    { 'label': '两面盘', 'value': 'lm' },
-    { 'label': '主势盘', 'value': 'zsp' },
-    { 'label': '第一球', 'value': '1' },
-    { 'label': '第二球', 'value': '2' },
-    { 'label': '第三球', 'value': '3' },
-    { 'label': '整合', 'value': 'zh' },
-    { 'label': '二字组合', 'value': 'ezzh' },
-    { 'label': '三字组合', 'value': 'szzh' },
-    { 'label': '二字定位', 'value': 'ezdw' },
-    { 'label': '三字定位', 'value': 'szdw' },
-    { 'label': '二字和数', 'value': 'ezhs' },
-    { 'label': '三字和数', 'value': 'szhs' },
-    { 'label': '组选三', 'value': 'zxs' },
-    { 'label': '组选六', 'value': 'zxl' }],
+  'dpc': [
+    { 'label': '三星', 'value': 'sx' },
+    { 'label': '不定位', 'value': 'bdw' },
+    { 'label': '前二', 'value': 'qe' },
+    { 'label': '后二', 'value': 'he' },
+    { 'label': '一星', 'value': 'yx' },
+    { 'label': '两面', 'value': 'lm' }
+  ],
 
   'x5': [
     { 'label': '三码', 'value': 'sm' },
@@ -94,22 +87,26 @@ export default {
     { 'label': '跨度', 'value': 'kd' },
     { 'label': '和数', 'value': 'hs' }],
 
-  'lhc': [{ 'label': '快捷', 'value': 'kj' },
+  'lhc': [
+    // { 'label': '快捷', 'value': 'kj' },
+    // { 'label': '正码特', 'value': 'zmt' },
     { 'label': '特码', 'value': 'tm' },
     { 'label': '正码', 'value': 'zm' },
-    { 'label': '正码特', 'value': 'zmt' },
     { 'label': '连码', 'value': 'lm' },
-    { 'label': '过关', 'value': 'gg' },
-    { 'label': '特肖', 'value': 'tx' },
-    { 'label': '特码头尾', 'value': 'tmtw' },
-    // { 'label': '五行', 'value': 'wx' },
     { 'label': '半波', 'value': 'bb' },
-    { 'label': '七码', 'value': 'qm' },
-    { 'label': '六肖', 'value': 'lx' },
-    { 'label': '一肖尾数', 'value': 'yxws' },
-    { 'label': '生肖连', 'value': 'sxl' },
-    { 'label': '尾数连', 'value': 'wsl' },
-    { 'label': '不中', 'value': 'bz' },
-    { 'label': '多选中一', 'value': 'dxzy' },
-    { 'label': '特平中', 'value': 'tpz' }]
+    { 'label': '生肖', 'value': 'sx' },
+    { 'label': '尾数', 'value': 'ws' },
+    { 'label': '不中', 'value': 'bz' }
+
+    // { 'label': '过关', 'value': 'gg' },
+    // { 'label': '特肖', 'value': 'tx' },
+    // { 'label': '特码头尾', 'value': 'tmtw' },
+    // // { 'label': '五行', 'value': 'wx' },
+    // { 'label': '七码', 'value': 'qm' },
+    // { 'label': '六肖', 'value': 'lx' },
+    // { 'label': '一肖尾数', 'value': 'yxws' },
+    // { 'label': '生肖连', 'value': 'sxl' },
+    // { 'label': '多选中一', 'value': 'dxzy' },
+    // { 'label': '特平中', 'value': 'tpz' }
+  ]
 }

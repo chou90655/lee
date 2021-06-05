@@ -24,9 +24,9 @@
           <i :class="[it.choose ? 't_bc' : '', !change && 't_bd']">{{it.odds}}</i>
         </li>
       </ul>
-      <ul v-for="(item, i) in rD.sort || (rD.sorts && rD.sorts[rodioIndex]) || []" :key="i" :class="{square: item.square, ball: item.ball, _first: i===0}">
-        <div class="sprt_title"><span></span>{{item.title}}</div>
-        <li v-for="(it, i) in item.square || item.ball" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose}">
+      <ul v-for="(item, i) in rD.sort || (rD.sorts && rD.sorts[rodioIndex]) || []" :key="i" :class="{square: item.square, ball: item.ball, _first: i===0, hasOdd:rD.odds}">
+        <div class="sprt_title" v-if="item.title"><span></span>{{item.title}}</div>
+        <li v-for="(it, i) in item.square || item.ball" @click="handleChose(it, item, i)" :key=i :class="{t_b: change && it.choose}">
           <p :class="it.choose && !change ? 't_b': 't_bd'">{{it.name}}</p>
           <i :class="[it.choose ? 't_bc' : '', !change && 't_bd']">{{it.odds}}</i>
         </li>
@@ -35,7 +35,7 @@
   </div>
 </template>
 <script>
-import { filter, hndleData, handleZx } from './util'
+import { filter, hndleData, hdwx } from './util'
 import { mixin } from '../mixin'
 export default {
   mixins: [mixin],
@@ -54,29 +54,52 @@ export default {
     }
   },
   methods: {
-    handleChose(it) {
-      it.choose = !it.choose
+    handleChose(it, item, j) {
       this.hleper = Math.random() + 1
-      this.setBetData(this.CalcLen(this.rD.data.filter(_ => _.choose)))
-    },
-    CalcLen(Chosedata) {
-      let finalData = []
+      if (this.rD.rodio && this.rD.rodio[this.rodioIndex].sg) item.ball.forEach(_ => (_.choose = false))
+      it.choose = !it.choose
+      const da = this.rD.rodio ? this.rD.sorts[this.rodioIndex] : this.rD.sort ? this.rD.sort : [this.rD]
+      let data = []
+      console.log(da)
       switch (this.play) {
-        case 'kj':
-          const checkedArr = this.rD.checkbox.filter(_ => _.choose)
-          if (checkedArr.length) {
-            checkedArr.forEach(_ => {
-              Chosedata.forEach(i => finalData.push(this.storeData[_.value].find(_i => _i.playCode === i.playCode.replace('1', _.value))))
-            })
-          } else {
-            finalData.err = '请选择顶部投注类型'
+        case 'yx' :data = hdwx(da, [{ n: 0 }, { n: 0 }, { n: 0 }], 1); break
+        case 'lm' :data = hdwx(da, [{ n: 1 }, { n: 1 }]); break
+        case 'he' :
+          switch (this.rodioIndex) {
+            case 0: data = hdwx(da, Array(2).fill({ n: 1 })); break
+            case 1: data = hdwx(da, [{ n: 1, k: 'qezxhz', t: 5 }]); break
+            case 2: data = hdwx(da, [{ n: 1, k: 'qekd', t: 5 }]); break
+            case 3: data = hdwx(da, [{ n: 2 }]); break
+            case 4: data = hdwx(da, [{ n: 1, k: 'qezuxhz', t: 5 }]); break
+            case 5: data = hdwx(da, [{ n: 1, num: 9 }]); break
           }
           break
-        case 'zxs': handleZx(Chosedata, this.rodioIndex, finalData, 1); break
-        case 'zxl': handleZx(Chosedata, this.rodioIndex, finalData); break
-        default: finalData = Chosedata; break
+        case 'qe' :
+          switch (this.rodioIndex) {
+            case 0: data = hdwx(da, Array(2).fill({ n: 1 })); break
+            case 1: data = hdwx(da, [{ n: 1, k: 'qezxhz', t: 5 }]); break
+            case 2: data = hdwx(da, [{ n: 1, k: 'qekd', t: 5 }]); break
+            case 3: data = hdwx(da, [{ n: 2 }]); break
+            case 4: data = hdwx(da, [{ n: 1, k: 'qezuxhz', t: 5 }]); break
+            case 5: data = hdwx(da, [{ n: 1, num: 9 }]); break
+          }
+          break
+        case 'bdw' :data = hdwx(da, [{ n: this.rodioIndex + 1 }]); break
+        case 'sx' :
+          switch (this.rodioIndex) {
+            case 0: data = hdwx(da, Array(3).fill({ n: 1 })); break
+            case 1: data = hdwx(da, [{ n: 1, k: 'sxzxhz', t: 5 }]); break
+            case 2: data = hdwx(da, [{ n: 1, k: 'sxzxkd', t: 5 }]); break
+            case 3: data = hdwx(da, [{ n: 1, k: 'sxzuxhz', t: 5 }]); break
+            case 4: data = hdwx(da, [{ n: 2, t: 6 }]); break
+            case 5: data = hdwx(da, [{ n: 3 }]); break
+            case 6: data = hdwx(da, [{ n: 1, num: 54 }]); break
+          }
+          break
+        default: data = []; break
       }
-      return finalData
+      console.log(data)
+      this.setBetData(data)
     }
   }
 }

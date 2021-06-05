@@ -6,7 +6,6 @@ const hddds = (item, odd) => ['5单0双', '4单1双', '3单2双', '2单3双', '1
 const hdczw = (item) => Array(7).fill(1).map((_, i) => ({ ...item, name: i + 3, num: i + 3 }))
 export const filter = (data) => {
   if (!data || !0) return
-  console.log(232323)
   let res = { }
   data.forEach(_ => {
     _.choose = false
@@ -126,7 +125,7 @@ export const hdwx = (da, yq, pls) => {
     list.push({ ...data[0][0], zhushu: hdqc(d.map(_ => _.l.split(','))), number: d.map(_ => _.l).join('|') })
   } else {
     const d = data.map((_, i) => hditem(_, yq[i].n || 1, yq[i].t, yq[i].k, yq[i]))
-    list.push({ ...data[0][0], zhushu: d.reduce((a, c) => pls ? (a + c.num) : (a * c.num), pls ? 0 : 1), number: d.map(_ => _.l).join('|') })
+    list.push({ ...data.find(_ => _.length)[0], zhushu: d.reduce((a, c) => pls ? (a + c.num) : (a * c.num), pls ? 0 : 1), number: d.map(_ => _.l).join('|') })
   }
   return list
 }
@@ -149,7 +148,7 @@ const hditem = (arr, num1, type, key, yq) => {
   if (type === 5) num = arr.length
   else {
     const combination = []
-    chooseDataZh(arr, num1, combination)
+    chooseDataZh([...arr], num1, combination)
     num = combination.length
     if (type === 6) num *= 2
   }

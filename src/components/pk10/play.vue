@@ -38,7 +38,7 @@
   </div>
 </template>
 <script>
-import { filter, hndleData } from './util'
+import { filter, hndleData, hdwx } from './util'
 import { mixin } from '../mixin'
 export default {
   mixins: [mixin],
@@ -46,14 +46,13 @@ export default {
     rD() {
       const agr = (this.rodioIndex + this.hleper) && this.play && this.lotteryData && this.rightData
       let result = {}
-      result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
-      // if (agr) {
-      //   try {
-      //     result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
-      //   } catch (e) {
-      //     setTimeout(() => (this.hleper = Math.random() + 1), 500)
-      //   }
-      // }
+      if (agr) {
+        try {
+          result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
+        } catch (e) {
+          setTimeout(() => (this.hleper = Math.random() + 1), 500)
+        }
+      }
       return result
     }
   },
@@ -61,22 +60,16 @@ export default {
     handleChose(it) {
       it.choose = !it.choose
       this.hleper = Math.random() + 1
-      this.setBetData(this.CalcLen(this.rD.data.filter(_ => _.choose)))
-    },
-    CalcLen(Chosedata) {
-      let finalData = []
-      switch (this.play) {
-        case 'kj':
-          const checkedArr = this.rD.checkbox.filter(_ => _.choose)
-          if (checkedArr.length) {
-            checkedArr.forEach(_ => Chosedata.forEach(i => finalData.push(this.storeData[_.value].find(_i => _i.playCode === i.playCode.replace('1', _.value)))))
-          } else {
-            finalData.err = '请选择顶部投注类型'
-          }
-          break
-        default: finalData = Chosedata; break
+      const da = this.rD.rodio ? [this.rD] : (this.rD.sort || this.rD.cqp || [this.rD])
+      console.log(da)
+      let data = []
+      switch (true) {
+        case ['lm', 'gyh', '1z5', '6z10'].includes(this.play):data = this.rD.data.filter(_ => _.choose).map(_ => ({ ..._, number: _.name, zhushu: 1 })); break
+        case this.play.includes('bjpk10qian'): data = hdwx(da, Array(+this.play.slice(-1)).fill({ n: 1, t: 7 })); break
+        case this.play.includes('bjpk10dwd'): data = hdwx(da, Array(10).fill({ n: 0 }), 1); break
+        // default: finalData = Chosedata; break
       }
-      return finalData
+      this.setBetData(data)
     }
   }
 }

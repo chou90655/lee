@@ -92,7 +92,7 @@ export const hdwx = (da, yq, pls) => {
 const hditem = (arr, num1) => {
   let num = 0
   const combination = []
-  chooseDataZh(arr, num1, combination)
+  chooseDataZh([...arr], num1, combination)
   num = combination.length
   return { num, l: arr.map(_ => _.num || _.name).join('#') }
 }

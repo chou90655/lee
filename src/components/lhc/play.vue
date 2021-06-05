@@ -52,6 +52,7 @@ import { getColor, toast, mapState, mapMutations } from '../../util/tools'
 import { filter, hndleData, handleZx } from './util'
 export default {
   data() {
+    window.__this1 = this
     return {
       options: { scrollbar: true },
       hleper: 1 + Math.random(),
@@ -102,13 +103,14 @@ export default {
     rD() {
       const agr = (this.rodioIndex + this.hleper) && this.play && this.lotteryData && this.currentLottery.lcode === 'xgc'
       let result = {}
-      if (agr) {
-        try {
-          result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
-        } catch (e) {
-          setTimeout(() => (this.hleper = Math.random() + 1), 500)
-        }
-      }
+      result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
+      // if (agr) {
+      //   try {
+      //     result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
+      //   } catch (e) {
+      //     setTimeout(() => (this.hleper = Math.random() + 1), 500)
+      //   }
+      // }
       return result
     }
   },

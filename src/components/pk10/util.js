@@ -1,4 +1,4 @@
-import { handleRDChange, copy } from '../../util/tools'
+import { handleRDChange, copy, chooseDataZh, filt } from '../../util/tools'
 const handleGyj = (res, _) => {
   const code = _.playCode
   switch (true) {
@@ -63,7 +63,6 @@ export const filter = (data) => { // ruleName
 const rank = ['冠军', '亚军', '第三名', '第四名', '第五名', '第六名', '第七名', '第八名', '第九名', '第十名']
 export const hndleData = (_this, data, key) => {
   let result = {}
-  console.log(data)
   if (!data) return result
   _this.storeData = data
   switch (key) { // ['bjpk10qian1', 'bjpk10qian2', 'bjpk10qian3', 'bjpk10qian4', 'bjpk10qian5', 'bjpk10dwd']
@@ -75,11 +74,11 @@ export const hndleData = (_this, data, key) => {
     case 'bjpk10dwd':result.cqp = rank.map(title => ({ title, ball: copy(data[key]) })); break
     case '1z5':
       result.rodio = rank.slice(0, 5).map(name => ({ name }))
-      result.balls = rank.slice(0, 5).map((_, i) => data['hm' + (i + 6)])
+      result.balls = rank.slice(0, 5).map((_, i) => data['hm' + (i + 1)])
       break
     case '6z10':
       result.rodio = rank.slice(5, 10).map(name => ({ name }))
-      result.balls = rank.slice(0, 5).map((_, i) => data['hm' + (i + 1)])
+      result.balls = rank.slice(0, 5).map((_, i) => data['hm' + (i + 6)])
       break
     case 'swh':
       result.ball = data.swh.filter(_ => _.playid.includes('gyh_hm'))
@@ -92,14 +91,47 @@ export const hndleData = (_this, data, key) => {
     case 'lm':
       result.sort = rank.map((_, i) => ({ title: _, square: data[i + 1] }))
       break
-    case 'hz':
-      result.ball = data.sum.filter(_ => _.typeCode === 'sum')
-      result.square = data.sum.filter(_ => _.typeCode.indexOf('sum-') === 0)
-      break
     case 'gyj':
       result.ball = data.gyj.filter(_ => _.typeCode === 'sum-gyj')
       result.square = data.gyj.filter(_ => _.typeCode.indexOf('sum-gyj-') === 0)
       break
   }
   return handleRDChange(_this, result)
+}
+export const hdwx = (da, yq, pls) => {
+  let data = da.map(_ => filt(_.ball || _.square))
+  let list = []
+  const ei = yq.findIndex((_, i) => _.n > data[i].length)
+  if (data.every(_ => !_.length)) list.err = '至少选择一个号码'
+  else if (ei > -1) list.err = `${da[ei].title || ''}至少选择${yq[ei].n}个`
+  else {
+    if (yq[0].t === 7) {
+      const d = data.map((_, i) => hditem(_, yq[i].n || 1, yq[i].t, yq[i].k, yq[i]))
+      list.push({ ...data[0][0], zhushu: hdqc(d.map(_ => _.l.split(','))), number: d.map(_ => _.l).join('|') })
+    } else {
+      const d = data.map((_, i) => hditem(_, yq[i].n))
+      list.push({ ...data.find(_ => _.length)[0], zhushu: d.reduce((a, c) => pls ? (a + c.num) : (a * c.num), pls ? 0 : 1), number: d.map(_ => _.l).join('|') })
+    }
+  }
+  return list
+}
+const hditem = (arr, num1) => {
+  let num = 0
+  const combination = []
+  chooseDataZh([...arr], num1 || 1, combination)
+  num = combination.length
+  return { num, l: arr.map(_ => _.num || _.name).join() }
+}
+
+const hdqc = (arr) => {
+  let arr1 = arr[0].map(_ => [_])
+  arr.forEach((_, i) => {
+    const ar = []
+    if (i) {
+      arr1.forEach(j => ar.push(..._.map(k => [...j, k])))
+      arr1 = ar
+    }
+  })
+  arr1 = arr1.map(_ => [...new Set(_)]).filter(_ => _.length >= arr.length)
+  return arr1.length
 }

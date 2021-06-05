@@ -1,73 +1,24 @@
 
-import { handleRDChange, chooseDataZh } from '../../util/tools'
-const handleLs = (res, _) => {
-  const code = _.playCode
-  switch (true) {
-    case code.includes('bao') : _.name = '豹子'; break
-    case code.includes('ban') : _.name = '半顺'; break
-    case code.includes('shun') : _.name = '顺子'; break
-    case code.includes('dui') : _.name = '对子'; break
-    case code.includes('za') : _.name = '杂六'; break
-  }
-  res.ls.push(_)
-}
-const prepbj = {
-  bsh: '佰拾和',
-  bgh: '佰个和',
-  sgh: '拾个和'
-}
-const handleDxdszh = (res, _, trigger) => {
-  const code = _.playCode
-  let pre = trigger ? prepbj[_.typeCode] : ''
-  switch (true) {
-    case code.includes('single') : _.name = pre + '单'; break
-    case code.includes('double') : _.name = pre + '双'; break
-    case code.includes('big') : _.name = '大'; break
-    case code.includes('small') : _.name = '小'; break
-    case code.includes('zhi') : _.name = '质'; break
-    case code.includes('sum') : _.name = '合'; break
-  }
-  res.push(_)
-}
+import { handleRDChange, chooseDataZh, copy, filt } from '../../util/tools'
+const hdnb = (item, num = 10) => Array(num).fill(1).map((_, i) => ({ ...item, name: i, num: i }))
+const hddxds = (item) => ['大', '小', '单', '双'].map((_, i) => ({ ...item, name: _, num: i }))
 export const filter = (data) => {
   if (!data) return
-  let res = { 1: [], 2: [], 3: [], dd: [], kd: [], ls: [], sum: [], lhh: [], bshws: [], bghws: [], sghws: [], bsghw: [], hsds: [] }
-  Object.assign(res, { ezzh: [], szzh: [], bsdw: [], bgdw: [], gsdw: [], szdw: [] })
+  let res = {}
   data.forEach(_ => {
     _.choose = false
-    _.odds = _.odds || '0.00'
-    const code = _.playCode
-    const tcode = _.typeCode
-    const ysqArr = ['1-b-s', '2-b-s', '3-b-s', '1-s-d', '2-s-d', '3-s-d', '1-z-h', '2-z-h', '3-z-h']
-    const wsArr = ['bshws', 'bghws', 'sghws', 'bsghws', 'bshws-z-h', 'bghws-z-h', 'sghws-z-h', 'bsghws-z-h']
-    const hsArr = ['bsh', 'bgh', 'sgh']
-    const dwArr = ['ezdw-bsdw', 'ezdw-bgdw', 'ezdw-gsdw']
-    const ezhsArr = ['bshs-ezhs', 'bghs-ezhs', 'sghs-ezhs', 'bshs-ws', 'bghs-ws', 'sghs-ws']
-    const szhsArr = ['szhs', 'szhs-ws']
+    _.odds = (+_.rate ? +_.rate : (+_.maxjj / 2))
+    const tcode = _.playid
+    const sxArr = ['pl3zxfs', 'pl3zux3', 'pl3zux6', 'pl3zuxbd', 'pl3kd', 'pl3ymbdw', 'pl3rmbdw', 'pl3dwdfs'] // 三星
+    const qeArr = ['pl3q2zxfs', 'pl3q2kd', 'pl3qx2fs', 'pl3q2zxbd'] // 前二 组选复式 跨度 直选复式 包胆
+    const heArr = ['pl3h2zxfs', 'pl3h2kd', 'pl3hx2fs', 'pl3h2zxbd'] // h二 组选复式 跨度 直选复式 包胆
     switch (true) {
-      case tcode === '1' || tcode === '2' || tcode === '3': _.name = code[2]; res[tcode].push(_); break // 一三球 数字
-      case ysqArr.includes(tcode) : handleDxdszh(res[tcode[0]], _); break // 一三球 大小单双质合
-      case tcode === 'dd':_.name = code[3]; res.dd.push(_); break // 独胆
-      case tcode === 'kd':_.name = code[3]; res.kd.push(_); break // 跨度
-      case tcode === 'ls': handleLs(res, _); break // 连3
-      case tcode === 'sum-b-s': handleDxdszh(res.sum, _); break // 总和大小
-      case tcode === 'sum-s-d': handleDxdszh(res.sum, _); break // 总和单双
-      case tcode === 'lhh':_.name = code.includes('tiger') ? '虎' : code.includes('dragon') ? '龙' : '和'; res.lhh.push(_); break // 龙虎斗
-      case wsArr.includes(tcode): handleDxdszh(res[tcode.slice(0, 5)], _); break // 和尾数
-      case hsArr.includes(tcode): handleDxdszh(res.hsds, _, 1); break // 和数单双
-      case tcode === 'ezzh': _.name = code.slice(-2); res.ezzh.push(_); break // 二字组合
-      case tcode === 'szzh': _.name = code.slice(-3); res.szzh.push(_); break // 三字组合
-      case dwArr.includes(tcode): _.name = code.slice(-2); res[tcode.slice(-4)].push(_); break // 二字定位
-      case tcode === 'szdw': _.name = code.slice(-3); res.szdw.push(_); break // 三字定位
-      case ezhsArr.includes(tcode):
-        if (!res[tcode]) res[tcode] = []
-        _.name = code.slice(tcode.length + 1); res[tcode].push(_); break // 二字和数 和数尾数
-      case szhsArr.includes(tcode):
-        if (!res[tcode]) res[tcode] = []
-        _.name = code.slice(tcode.length + 1); res[tcode].push(_); break // 三字和数 和数尾数
-      default:
-        if (!res[tcode]) res[tcode] = []
-        _.name = code.slice(tcode.length + 1); res[tcode].push(_); break // 组选系列
+      case [...qeArr, ...heArr, ...sxArr].includes(tcode): res[tcode] = hdnb(_); break
+      case ['pl3hzzx'].includes(tcode): res[tcode] = hdnb(_, 28); break // 三星直选和值
+      case ['pl3zuxhz'].includes(tcode): res[tcode] = hdnb(_, 27).slice(1); break // 三星组选和值
+      case ['pl3q2zuxhz', 'pl3h2zuxhz'].includes(tcode): res[tcode] = hdnb(_, 18).slice(1); break // 2组选和值
+      case ['pl3q2zxhz', 'pl3h2zxhz'].includes(tcode): res[tcode] = hdnb(_, 19); break // 2直选和值
+      case ['dxdsq2', 'dxdsh2'].includes(tcode): res[tcode] = hddxds(_); break // 大小单双
     }
   })
   return res
@@ -77,115 +28,84 @@ export const hndleData = (_this, data, key) => {
   if (!data) return result
   _this.storeData = data
   switch (key) {
-    case 'kj':
-      result.ball = data[1].filter(_ => _.typeCode === '1')
-      result.square = data[1].filter(_ => _.typeCode.indexOf('1-') === 0)
-      result.checkbox = [{ name: '第一球', value: 1 }, { name: '第二球', value: 2 }, { name: '第三球', value: 3 }]
+    case 'he':
+      result.rodio = [{ name: '直选复式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选和值' }, { name: '包胆', sg: 1 }] // 前二
+      result.sorts = []
+      result.sorts.push(['十位', '个位'].map(title => ({ title, ball: copy(data.pl3hx2fs) }))) // 直选复式
+      result.sorts.push([{ ball: copy(data.pl3h2zxhz) }]) // 直选和值
+      result.sorts.push([{ ball: copy(data.pl3h2kd) }]) // 跨度
+      result.sorts.push([{ ball: copy(data.pl3h2zxfs) }]) // 组选复式
+      result.sorts.push([{ ball: copy(data.pl3h2zuxhz) }]) // 前二 组选和值
+      result.sorts.push([{ ball: copy(data.pl3h2zxbd) }]) // 包胆
+      break
+    case 'qe':
+      result.rodio = [{ name: '直选复式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选和值' }, { name: '包胆', sg: 1 }] // 前二
+      result.sorts = []
+      result.sorts.push(['百位', '十位'].map(title => ({ title, ball: copy(data.pl3qx2fs) }))) // 直选复式
+      result.sorts.push([{ ball: copy(data.pl3q2zxhz) }]) // 直选和值
+      result.sorts.push([{ ball: copy(data.pl3q2kd) }]) // 跨度
+      result.sorts.push([{ ball: copy(data.pl3q2zxfs) }]) // 组选复式
+      result.sorts.push([{ ball: copy(data.pl3q2zuxhz) }]) // 前二 组选和值
+      result.sorts.push([{ ball: copy(data.pl3q2zxbd) }]) // 包胆
+      break
+    case 'yx':
+      result.sort = (['百位', '十位', '个位'].map(title => ({ title, ball: copy(data.pl3dwdfs) }))) // 1星复式
+      break
+    case 'bdw':
+      result.rodio = [{ name: '一码' }, { name: '二码' }]
+      result.sorts = []
+      result.sorts.push([{ ball: copy(data.pl3ymbdw) }]) // 一码
+      result.sorts.push([{ ball: copy(data.pl3rmbdw) }]) // 二码
+      break
+    case 'sx':
+      result.rodio = [{ name: '直选复式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选和值' }, { name: '组三' }, { name: '组六' }, { name: '包胆', sg: 1 }]
+      result.sorts = []
+      result.sorts.push(['百位', '十位', '个位'].map(title => ({ title, ball: copy(data.pl3zxfs) }))) // 直选复式
+      result.sorts.push([{ ball: copy(data.pl3hzzx) }]) // 直选和值
+      result.sorts.push([{ ball: copy(data.pl3kd) }]) // 跨度
+      result.sorts.push([{ ball: copy(data.pl3zuxhz) }]) // 三星组选和值
+      result.sorts.push([{ ball: copy(data.pl3zux3) }]) // 组三
+      result.sorts.push([{ ball: copy(data.pl3zux6) }]) // 组六
+      result.sorts.push([{ ball: copy(data.pl3zuxbd) }]) // 包胆
       break
     case 'lm':
-      result.sort = []
-      result.sort.push({ title: '百第一球', square: data[1].filter(_ => _.typeCode.indexOf('1-') === 0) })
-      result.sort.push({ title: '十第二球', square: data[2].filter(_ => _.typeCode.indexOf('2-') === 0) })
-      result.sort.push({ title: '个第三球', square: data[3].filter(_ => _.typeCode.indexOf('3-') === 0) })
-      result.sort.push({ title: '龙虎和', square: data.lhh })
-      result.sort.push({ title: '总和', square: data.sum })
-      break
-    case 'zsp':
-      result.sort = []
-      result.sort.push({ title: '百十和尾数', square: data.bshws })
-      result.sort.push({ title: '百个和尾数', square: data.bghws })
-      result.sort.push({ title: '十个和尾数', square: data.sghws })
-      result.sort.push({ title: '百十个和尾数', square: data.bsghw })
-      result.sort.push({ title: '和数单双', square: data.hsds })
-      break
-    case '1':
-      result.ball = data[1].filter(_ => _.typeCode === '1')
-      result.square = data[1].filter(_ => _.typeCode.indexOf('1-') === 0)
-      break
-    case '2':
-      result.ball = data[2].filter(_ => _.typeCode === '2')
-      result.square = data[2].filter(_ => _.typeCode.indexOf('2-') === 0)
-      break
-    case '3':
-      result.ball = data[3].filter(_ => _.typeCode === '3')
-      result.square = data[3].filter(_ => _.typeCode.indexOf('3-') === 0)
-      break
-    case 'zh':
-      result.sort = []
-      result.sort.push({ title: '跨度', ball: data.kd })
-      result.sort.push({ title: '独胆', ball: data.dd })
-      result.sort.push({ title: '连3', square: data.ls })
-      break
-    case 'ezzh':result.ball = data.ezzh; break
-    case 'szzh':result.ball = data.szzh; break
-    case 'ezdw':
-      result.odds = 1
-      result.balls = [data.bsdw, data.bgdw, data.gsdw]
-      result.rodio = [{ name: '佰拾定位', odds: data.bsdw[0].odds },
-        { name: '佰个定位', odds: data.bgdw[0].odds },
-        { name: '拾个定位', odds: data.gsdw[0].odds }]
-      break
-    case 'szdw':
-      result.odds = 1
-      result.balls = [data.szdw.slice(0, 200), data.szdw.slice(200, 400), data.szdw.slice(400, 600), data.szdw.slice(600, 800), data.szdw.slice(800, 1000)]
-      result.rodio = [
-        { name: '000-199', odds: data.szdw[0].odds },
-        { name: '200-399', odds: data.szdw[0].odds },
-        { name: '400-599', odds: data.szdw[0].odds },
-        { name: '600-799', odds: data.szdw[0].odds },
-        { name: '800-999', odds: data.szdw[0].odds }]
-      break
-    case 'ezhs':
-      result.rodio = [
-        { name: '佰拾和数' },
-        { name: '佰个和数' },
-        { name: '拾个和数' }]
-      result.sorts = [[], [], []]
-      result.sorts[0].push({ title: '和数', square: data['bshs-ezhs'] })
-      result.sorts[0].push({ title: '和数尾数', square: data['bshs-ws'] })
-      result.sorts[1].push({ title: '和数', square: data['bghs-ezhs'] })
-      result.sorts[1].push({ title: '和数尾数', square: data['bghs-ws'] })
-      result.sorts[2].push({ title: '和数', square: data['sghs-ezhs'] })
-      result.sorts[2].push({ title: '和数尾数', square: data['sghs-ws'] })
-      break
-    case 'szhs':
-      result.sort = [
-        { title: '三字和数', square: data['szhs'] },
-        { title: '三字和数尾数', square: data['szhs-ws'] }
-      ]
-      break
-    case 'zxs':
-      result.odds = 1
-      result.balls = [data['zxs-wws'], data['zxs-lws'], data['zxs-qws'], data['zxs-bws'], data['zxs-jws'], data['zxs-sws']]
-      result.rodio = [
-        { name: '5位数', odds: data['zxs-wws'][0].odds, value: 5 },
-        { name: '6位数', odds: data['zxs-lws'][0].odds, value: 6 },
-        { name: '7位数', odds: data['zxs-qws'][0].odds, value: 7 },
-        { name: '8位数', odds: data['zxs-bws'][0].odds, value: 8 },
-        { name: '9位数', odds: data['zxs-jws'][0].odds, value: 9 },
-        { name: '10位数', odds: data['zxs-sws'][0].odds, value: 10 }]
-      break
-    case 'zxl':
-      result.odds = 1
-      result.balls = [data['zxl-sws'], data['zxl-wws'], data['zxl-lws'], data['zxl-qws'], data['zxl-bws']]
-      result.rodio = [
-        { name: '4位数', odds: data['zxl-sws'][0].odds, value: 4 },
-        { name: '5位数', odds: data['zxl-wws'][0].odds, value: 5 },
-        { name: '6位数', odds: data['zxl-lws'][0].odds, value: 6 },
-        { name: '7位数', odds: data['zxl-qws'][0].odds, value: 7 },
-        { name: '8位数', odds: data['zxl-bws'][0].odds, value: 8 }]
+      result.rodio = [{ name: '前二' }, { name: '后二' }]
+      result.sorts = []
+      result.sorts.push(['百位', '十位'].map(title => ({ title, square: copy(data.dxdsq2) })))
+      result.sorts.push(['十位', '个位'].map(title => ({ title, square: copy(data.dxdsh2) })))
       break
   }
   return handleRDChange(_this, result)
 }
-export const handleZx = (data, index, list, type) => {
-  const realIndex = index + (type ? 5 : 4)
-  if (data.length >= realIndex) {
-    const combination = []
-    let { odds, typeCode, typeName } = data[0]
-    chooseDataZh(data, realIndex, combination)
-    list.push(...combination.map(_ => ({ odds, typeCode, typeName, name: _.map(i => i.name).join(), playCode: _.map(i => i.playCode).join('@') })))
-  } else {
-    list.err = '选择不能少于' + realIndex + '个'
+
+export const hdwx = (da, yq, pls) => {
+  const data = da.map(_ => filt(_.ball || _.square))
+  const list = []
+  const ei = yq.findIndex((_, i) => _.n > data[i].length)
+  if (data.every(_ => !_.length))list.err = '至少选择一个号码'
+  else if (ei > -1) list.err = `${da[ei].title || ''}至少选择${yq[ei].n}个`
+  else {
+    const d = data.map((_, i) => hditem(_, yq[i].n || 1, yq[i].t, yq[i].k, yq[i]))
+    list.push({ ...data.find(_ => _.length)[0], zhushu: d.reduce((a, c) => pls ? (a + c.num) : (a * c.num), pls ? 0 : 1), number: d.map(_ => _.l).join('|') })
   }
+  return list
+}
+const sxzxhz = [1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 63, 69, 73, 75, 75, 73, 69, 63, 55, 45, 36, 28, 21, 15, 10, 6, 3, 1]
+const sxzxkd = [10, 54, 96, 126, 144, 150, 144, 126, 96, 54]
+const sxzuxhz = [0, 1, 2, 2, 4, 5, 6, 8, 10, 11, 13, 14, 14, 15, 15, 14, 14, 13, 11, 10, 8, 6, 5, 4, 2, 2, 1]
+const qezxhz = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1] // , zxhz2, zxkd2,zuxhz2
+const qekd = [10, 18, 16, 14, 12, 10, 8, 6, 4, 2]
+const qezuxhz = [0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 4, 4, 3, 3, 2, 2, 1, 1]
+const zxdata = { sxzxhz, sxzxkd, sxzuxhz, qezxhz, qekd, qezuxhz }
+const hditem = (arr, num1, type, key, yq) => {
+  let num = 0
+  if (type === 5) num = arr.reduce((a, c) => a + zxdata[key][(c.num || c.name)], 0)
+  else {
+    const combination = []
+    chooseDataZh([...arr], num1, combination)
+    num = combination.length
+    if (type === 6) num *= 2
+  }
+  num = yq.num || num
+  return { num, l: arr.map(_ => _.num || _.name).join() }
 }
