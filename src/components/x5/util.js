@@ -5,7 +5,7 @@ const yxfs = (item, i = 11) => {
 const hddds = (item, odd) => ['5单0双', '4单1双', '3单2双', '2单3双', '1单4双', '0单5双'].map((_, i) => ({ ...item, name: _, num: i + 1, odds: (+odd[i]).toFixed(2) }))
 const hdczw = (item) => Array(7).fill(1).map((_, i) => ({ ...item, name: i + 3, num: i + 3 }))
 export const filter = (data) => {
-  if (!data || !0) return
+  if (!data) return
   let res = { }
   data.forEach(_ => {
     _.choose = false
