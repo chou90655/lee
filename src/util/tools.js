@@ -111,6 +111,7 @@ export function parseDrawResult(code, result, statistics) {
     case 'k3': arr = arr.map(_ => ({ num: +_, class: '_t' + (+_) })); break
     case 'klc': arr = [...arr, statistics.split(',')[0]].map(_ => ({ num: _, class: getColor(code, +_) })); arr.splice(-1, 0, { num: '=', class: 'sign' }); break
     case 'xgc': arr = arr.map(_ => ({ num: _, class: getColor(code, +_) })); arr.splice(-1, 0, { num: '+', class: 'sign' }); break
+    case 'lhc': arr = arr.map(_ => ({ num: _, class: getColor('xgc', +_) })); arr.splice(-1, 0, { num: '+', class: 'sign' }); break
     default: arr = arr.map(_ => ({ num: _, class: getColor(code, +_) })); break
   }
   return arr
@@ -147,7 +148,7 @@ export const getColor = (code, n) => {
       break
   }
   switch (true) {
-    case ['klsf', 'kl8'].includes(code) :
+    case ['klsf', 'kl8', 'keno'].includes(code) :
       switch (n % 3) {
         case 1: return 'red_b'
         case 2: return 'blue_b'

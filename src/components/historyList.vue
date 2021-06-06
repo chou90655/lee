@@ -10,14 +10,6 @@
               <li v-for="(item, i) in parseDrawResult(history.lcode, it.result, it.resultProperty)" :key="i" :class="item.class">{{item.num}}</li>
             </ul>
           </td>
-          <td v-if = "history.lcode === 'k3'">
-            <ul class="st">
-              <li v-for="(item, i) in it.resultProperty.split(',').slice(0,3)" :key="i" >{{item}}</li>
-            </ul>
-          </td>
-          <td v-if = "history.lcode === 'xgc'">
-            <ul class="st"><li>{{it.resultProperty.slice(-1)}}</li></ul>
-          </td>
         </tr>
       </tbody>
     </table>
@@ -28,7 +20,6 @@ import { issueDisplay, parseDrawResult, mapState } from '../util/tools'
 export default {
   data() {
     return {
-      sLottery: { k3: '和值/大小/单双', xgc: '特码' }
     }
   },
   filters: {
@@ -37,9 +28,8 @@ export default {
   computed: {
     ...mapState(['history']),
     headData() {
-      const name = ({ k3: '和值/大小/单双', xgc: '特码' })[this.history.lcode]
-      const widts = ({ kl8: ['30%', '70%'], k3: ['30%', '35%', '35%'], xgc: ['27%', '60%', '13%'] })[this.history.lcode] || ['35%', '65%']
-      return [{ name: '期数', width: widts[0] }, { name: '开奖号码', width: widts[1] }, { name, width: widts[2] }].filter(_ => _.width)
+      const widts = ({ kl8: ['30%', '70%'] })[this.history.lcode] || ['35%', '65%']
+      return [{ name: '期数', width: widts[0] }, { name: '开奖号码', width: widts[1] }].filter(_ => _.width)
     }
   },
   watch: {
@@ -102,12 +92,12 @@ export default {
           background: #f5f5f5;
           border-radius: 2px;
           color: #333;
-      .xgc 
+      .lhc
         .st li
           margin-right: 0px;
         .bl li
           margin-right: 3px;
-      .kl8
+      .keno
         tr
           line-height 26px
         ul

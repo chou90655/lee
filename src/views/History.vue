@@ -1,44 +1,6 @@
 <template>
   <div class="historyInner">
-    <ul class="rodio" v-if = "history.dropList">
-      <li v-for="(it,i) in ['走珠','两面长龙','开奖记录']" :key='i' :class="{t_bc: index === i}" @click="index = i">{{it}}</li>
-    </ul>
-    <cube-slide v-if = "history.dropList && history.dropList !== 1" @change="index = $event" :loop="false" :auto-play="false" :initial-index="index" :show-dots="false">
-      <cube-slide-item>
-        <ul class="h_tabs">
-          <li v-for="(it, i) in zz" :key="i" :class="{t_bc: i === activeIndex}" @click="activeIndex = i">{{it.name}}</li>
-        </ul>
-        <cube-scroll :data="zz[activeIndex].data" class="checkbox _head" direction="horizontal" ref="_head" @touchstart.native.stop>
-          <ul>
-            <li v-for="(it, i) in zz[activeIndex].data" :class="{t_bc: i === rankIndex}" @click="rankIndex = i" :key=i>{{it.tlitle}}</li>
-          </ul>
-        </cube-scroll>
-        <cube-scroll :data="zz[activeIndex].data" class="checkbox _body" direction="horizontal" ref="_body" @touchstart.native.stop>
-          <div class="_inner">
-            <ul v-for="(_,it) in detailData.length > 20 ? detailData.length : 20" :key="it">
-              <li v-for="(_i, i) in 12" :key="i">
-                <i :class="{spe: ['大', '双', '龙'].includes(detailData[it] && detailData[it][i]), t_b:detailData[it] && detailData[it][i]}">{{detailData[it] && detailData[it][i]}}</i>
-                </li>
-            </ul>
-          </div>
-        </cube-scroll>
-      </cube-slide-item>
-      <cube-slide-item>
-        <cube-scroll class="_lm" ref="_lm" :data='lm' :options="options">
-          <ul>
-            <li v-for="(it, i) in lm" :key="i">
-              <span>{{it.lt}}</span>
-              <span>{{it.play}}</span>
-              <span class="t_bc">{{it.lo}}期</span>
-            </li>
-          </ul>
-        </cube-scroll>
-      </cube-slide-item>
-      <cube-slide-item>
-        <historyList/>
-      </cube-slide-item>
-    </cube-slide>
-    <historyList v-else/>
+    <historyList/>
   </div>
 </template>
 <script>
