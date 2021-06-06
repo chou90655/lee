@@ -2,7 +2,7 @@
   <div class="bet_area">
     <div class="inner">
       <div class="betinfo">
-        <p>已选中{{total}}注：<i>{{total * money}}</i>元</p>
+        <p>已选中{{total}}注：<i>{{total * money*100/100}}</i>元</p>
         <p>余额：<i>{{userInfo.memberBal || 0}}</i>元</p>
       </div>
       <div class="handle_bet">
@@ -50,7 +50,7 @@
           </cube-scroll>
           <div class="info">
             <p>{{isStop ? '开奖' : '封盘'}}时间：<i>{{sealTime.join(':')}}</i></p>
-            <p class="amount">共{{total}}注：<i>{{total * money}}</i>元</p>
+            <p class="amount">共{{total}}注：<i>{{total * money*100/100}}</i>元</p>
           </div>
           <div class="btn">
             <cube-button class="t_bd" light inline @click="cancel">取消</cube-button>
@@ -101,7 +101,7 @@ export default {
       return this.status.includes('已')
     },
     money() {
-      return +(2 * this.yjf * this.betAmount).toFixed(2)
+      return 2 * this.yjf * this.betAmount * 100 / 100
     }
   },
   watch: {
@@ -142,8 +142,8 @@ export default {
       if (!this.total) this.cancel()
     },
     confirm() {
-      if (this.userInfo.memberBal < this.total * this.money) return toast('当前余额不足！', false)
-      const orderList = this.copyBetData.map(_ => ({ ..._, price: _.zhushu * this.money, beishu: this.betAmount, yjf: this.yjf }))
+      if (this.userInfo.memberBal < this.total * this.money * 100 / 100) return toast('当前余额不足！', false)
+      const orderList = this.copyBetData.map(_ => ({ ..._, price: _.zhushu * this.money * 100 / 100, beishu: this.betAmount, yjf: this.yjf }))
       let data = { orderList, lotteryname: this.currentLottery.code, expect: this.openInfo.nextLotteryNum }
       console.log(JSON.stringify(data))
       if (this.trigger) return
