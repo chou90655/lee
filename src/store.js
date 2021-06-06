@@ -2,8 +2,8 @@
 import { toast } from './util/tools'
 import { setToken, getUrl, setLotteryList, getLotteryList, getLotteryData, setLotteryData, setCurrentLottery, getCurrentLottery } from './util/cach'
 import { getGameList, queryOddsByCode, getChartList } from './api/interface'
-import { list, baselist } from './data/data'
-export const lotteryList = getLotteryList() || list
+import { baselist } from './data/data'
+export const lotteryList = getLotteryList() || []
 export default {
   namespaced: true,
   state: {

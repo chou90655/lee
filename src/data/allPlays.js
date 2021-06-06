@@ -78,35 +78,13 @@ export default {
     { 'label': '大小单双', 'value': 'dxds' },
     { 'label': '定位胆', 'value': 'dwd' }],
 
-  'ssl': [{ 'label': '快捷', 'value': 'kj' },
-    { 'label': '两面盘', 'value': 'lm' },
-    { 'label': '数字盘', 'value': 'sz' },
-    { 'label': '第一球', 'value': '1' },
-    { 'label': '第二球', 'value': '2' },
-    { 'label': '第三球', 'value': '3' },
-    { 'label': '跨度', 'value': 'kd' },
-    { 'label': '和数', 'value': 'hs' }],
-
   'lhc': [
-    // { 'label': '快捷', 'value': 'kj' },
-    // { 'label': '正码特', 'value': 'zmt' },
     { 'label': '特码', 'value': 'tm' },
     { 'label': '正码', 'value': 'zm' },
-    { 'label': '连码', 'value': 'lm' },
-    { 'label': '半波', 'value': 'bb' },
-    { 'label': '生肖', 'value': 'sx' },
-    { 'label': '尾数', 'value': 'ws' },
+    // { 'label': '连码', 'value': 'lm' },
+    // { 'label': '半波', 'value': 'bb' },
+    // { 'label': '生肖', 'value': 'sx' },
+    // { 'label': '尾数', 'value': 'ws' },
     { 'label': '不中', 'value': 'bz' }
-
-    // { 'label': '过关', 'value': 'gg' },
-    // { 'label': '特肖', 'value': 'tx' },
-    // { 'label': '特码头尾', 'value': 'tmtw' },
-    // // { 'label': '五行', 'value': 'wx' },
-    // { 'label': '七码', 'value': 'qm' },
-    // { 'label': '六肖', 'value': 'lx' },
-    // { 'label': '一肖尾数', 'value': 'yxws' },
-    // { 'label': '生肖连', 'value': 'sxl' },
-    // { 'label': '多选中一', 'value': 'dxzy' },
-    // { 'label': '特平中', 'value': 'tpz' }
   ]
 }
