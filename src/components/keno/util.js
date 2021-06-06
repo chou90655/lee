@@ -1,5 +1,11 @@
 import { handleRDChange, chooseDataZh, filt } from '../../util/tools'
-const hdArr = (arr, playid) => arr.map((_, i) => ({ name: _, choose: false, playid, num: i }))
+const hdArr = (arr, playid, item) => arr.map((_, i) => {
+  let odds = []
+  if (['bjkl8sxp', 'bjkl8jop'].includes(item.playid)) {
+    odds = item.maxjj.split('|').map(_ => _ / 2)
+  }
+  return { name: _, choose: false, playid, num: i, odds: odds[i] || odds[0] || (item.maxjj / 2) }
+})
 const hdArr1 = (k) => Array(40).fill(1).map((_, i) => ({ name: ('0' + (i + k)).slice(-2), choose: false, num: i + k }))
 export const getKey = (arr, k) => arr.map(_ => _[k || 'name']).join()
 export const hditem = (arr, name, playid, zhushu, beishu = 1, yjf = 1) => ({ number: getKey(arr, 'num'), label: getKey(arr), playid, zhushu, name, beishu, yjf })
@@ -17,18 +23,27 @@ export const handleZx = (data, index, rD) => {
 }
 export const hndleData = (_this, data, key) => {
   let result = {}
+  if (!data) return result
   switch (key) {
     case 'rx':
       result.odds = 1
       result.sorts = Array(7).fill(1).map(_ => [{ title: '上盘', ball: hdArr1(1) }, { title: '下盘', ball: hdArr1(41) }])
-      result.rodio = ['一', '二', '三', '四', '五', '六', '七'].map((_, i) => ({ name: '任选' + _, playid: 'bjkl8rx' + (i + 1) }))
+      const list = Array(7).fill(1).map((_, i) => data.find(_i => _i.playid === 'bjkl8rx' + (i + 1)).maxjj).map(_ => _.split('|').map(i => i / 2))
+      result.rodio = [
+        { name: '任选一', playid: 'bjkl8rx1', odds: ' 赔率:' + list[0][0] },
+        { name: '任选二', playid: 'bjkl8rx2', odds: ' 赔率:' + list[1][0] },
+        { name: '任选三', playid: 'bjkl8rx3', odds: '中三:' + list[2][0] + ' 中二:' + list[2][1] },
+        { name: '任选四', playid: 'bjkl8rx4', odds: '中四:' + list[3][0] + ' 中三:' + list[3][1] + ' 中二:' + list[3][2] },
+        { name: '任选五', playid: 'bjkl8rx5', odds: '中五:' + list[4][0] + ' 中四:' + list[4][1] + ' 中三:' + list[4][2] },
+        { name: '任选六', playid: 'bjkl8rx6', odds: '中六:' + list[5][0] + ' 中五:' + list[5][1] + '<br/>中四:' + list[5][2] + ' 中三:' + list[5][3] },
+        { name: '任选七', playid: 'bjkl8rx7', odds: '中六:' + list[6][0] + ' 中六:' + list[6][1] + '<br/>中五:' + list[6][2] + ' 中四:' + list[6][3] + ' 中三:' + list[6][4] }
+      ]
       break
     case 'qw':
-      result.odds = 1
       result.sort = []
-      result.sort.push({ title: '上下盘', square: hdArr(['上', '中', '下'], 'bjkl8sxp') })
-      result.sort.push({ title: '奇偶盘', square: hdArr(['奇', '和', '偶'], 'bjkl8jop') })
-      result.sort.push({ title: '大小单双', square: hdArr(['大单', '大双', '小单', '小双'], 'bjkl8dxds') })
+      result.sort.push({ title: '上下盘', square: hdArr(['上', '中', '下'], 'bjkl8sxp', data.find(_ => _.playid === 'bjkl8sxp')) })
+      result.sort.push({ title: '奇偶盘', square: hdArr(['奇', '和', '偶'], 'bjkl8jop', data.find(_ => _.playid === 'bjkl8jop')) })
+      result.sort.push({ title: '大小单双', square: hdArr(['大单', '大双', '小单', '小双'], 'bjkl8dxds', data.find(_ => _.playid === 'bjkl8dxds')) })
       break
   }
   return handleRDChange(_this, result)

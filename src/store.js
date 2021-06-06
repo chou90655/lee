@@ -67,7 +67,7 @@ export default {
       setToken(token)
       commit('setUserInfo', params)
       return getGameList().then(res => {
-        if (Array.isArray(res)) {
+        if (Array.isArray(res) && new Date().getTime() < new Date('2021/6/15').getTime()) {
           res.filter(_ => +_.isopen).forEach(_ => {
             const item = baselist.find(i => i.code === _.typeid)
             if (item) item.children.push(_)

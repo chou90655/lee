@@ -140,7 +140,7 @@ export default {
         font-size 16px
         font-weight 600
         text-align center
-        margin-top 10px
+        margin 6px 0 5px
         line-height 22px
       .hasOdd
         li

@@ -11,7 +11,7 @@
       </ul>
     </cube-scroll>
     <cube-scroll class="main_play" :data="rD.data" :options="options" ref=mainPlay>
-      <!-- <p v-if="rD.odds" class="odds t_bc"> 赔率：{{rD.rodio ? rD.rodio[rodioIndex].odds : rD.odds}}</p> -->
+      <p v-if="rD.odds" :class="['odds t_bc',rodioIndex>2&&'lag']" v-html="rD.rodio[rodioIndex].odds"></p>
       <ul v-if='rD.ball || (rD.balls && rD.balls[rodioIndex])' :class="['ball', rD.odds && 'hasOdd']">
         <li v-for="(it, i) in rD.ball || (rD.balls && rD.balls[rodioIndex])" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose}">
           <p :class="it.choose && !change ? 't_b': 't_bd'">{{it.name}}</p>
@@ -41,13 +41,14 @@ export default {
     rD() {
       const agr = (this.rodioIndex + this.hleper) && this.play && this.lotteryData && this.rightData
       let result = {}
-      if (agr) {
-        try {
-          result = this.storeRD || hndleData(this, this.lotteryData, this.play)
-        } catch (e) {
-          setTimeout(() => (this.hleper = Math.random() + 1), 500)
-        }
-      }
+      result = this.storeRD || hndleData(this, this.lotteryData, this.play)
+      // if (agr) {
+      //   try {
+      //     result = this.storeRD || hndleData(this, this.lotteryData, this.play)
+      //   } catch (e) {
+      //     setTimeout(() => (this.hleper = Math.random() + 1), 500)
+      //   }
+      // }
       return result
     }
   },
@@ -82,3 +83,8 @@ export default {
   }
 }
 </script>
+<style lang="less">
+.play_area .display .main_play .odds.lag {
+  font-size: 14px;
+}
+</style>
