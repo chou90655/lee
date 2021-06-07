@@ -88,11 +88,13 @@ export const hndleData = (_this, data, key) => {
   switch (key) {
     case 'bz':
       result.odds = 1
+      result.key = 'balls'
       result.rodio = [{ name: '五不中', odds: data.bz5bz[0].odds }, { name: '六不中', odds: data.bz6bz[0].odds }, { name: '七不中', odds: data.bz7bz[0].odds },
         { name: '八不中', odds: data.bz8bz[0].odds }, { name: '九不中', odds: data.bz9bz[0].odds }, { name: '十不中', odds: data.bz10bz[0].odds }]
       result.balls = [data.bz5bz, data.bz6bz, data.bz7bz, data.bz8bz, data.bz9bz, data.bz10bz]
       break
     case 'ws':
+      result.key = 'groups'
       result.groups = [data.tmtw, data.ws2wl, data.ws3wl, data.ws4wl]
       result.rodio = [{ name: '特码头尾' }, { name: '二尾连' }, { name: '三尾连' }, { name: '四尾连' }]
       break

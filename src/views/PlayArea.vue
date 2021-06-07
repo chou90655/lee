@@ -2,20 +2,29 @@
   <div :class="['play_area', change && 'switch']">
     <cube-scroll :data="plays" :options="{ scrollbar: true }" class="class" ref='scroll'>
       <ul>
-        <li v-for="(it, i) in plays" :class="{t_a: active === it.value}" @click="active = it.value" :key=i>{{it.label}}</li>
+        <li v-for="(it, i) in plays" :class="{t_a: active === it.value}" @click="hdchs(it)" :key=i>{{it.label}}</li>
       </ul>
     </cube-scroll>
-    <router-view class="cube-view" name="play" :play='active' :change='change' ref="plays"></router-view>
-    <i class="desc t_bc cubeic-question" @click="desc"/>
+    <router-view class="cube-view" name="play" :play='active' :actions="[{ text: '选项一' }, { text: '选项二' }]" :change='change' ref="plays"></router-view>
+    <p class="desc">
+      <van-popover v-model="showPopover" trigger="click" placement='left' theme="dark">
+        <p class="ctt" v-if="$refs.plays" v-html="remark">2342323</p>
+        <template #reference><i class="t_bc cubeic-question"/></template>
+      </van-popover>
+    </p>
   </div>
 </template>
 <script>
+import { mapState } from '../util/tools'
 export default {
   data() {
     return {
+      showPopover: false,
+      desc: '',
       active: this.plays[0].value
     }
   },
+  computed: mapState(['remark']),
   props: {
     plays: Array,
     change: Number
@@ -32,8 +41,8 @@ export default {
     window.removeEventListener('orientationchange', this.fitHeiht)
   },
   methods: {
-    desc() {
-      console.log(212121)
+    hdchs(it) {
+      this.active = it.value
     },
     fitHeiht() {
       setTimeout(() => {
@@ -48,6 +57,14 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
+  .ctt
+    font-size 12px
+    padding 8px
+    max-width 260px
+    white-space normal
+    line-height: 16px;
+    word-break: break-all;
+    text-align justify
   .play_area
     height calc(100% - 262px)
     background #f0f0f0

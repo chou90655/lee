@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import App from './App.vue'
 import lotteryConfigFunc from './lotteryConfig'
 import createPersistedState from 'vuex-persistedstate'
+import './plugins/vant.js'
 
 Vue.use(Vuex)
 Vue.use(Router)

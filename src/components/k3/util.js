@@ -52,15 +52,16 @@ export const hndleData = (_this, data, key) => {
   _this.storeData = data
   switch (key) {
     case 'eth':
+      result.remarks = [data.k3ethfx[0].remark, data.k3ethdx[0].remark]
       result.rodio = [{ name: '复选' }, { name: '单选', hc: 1 }]
       result.sorts = [[{ ball: copy(data.k3ethfx) }], [{ ball: copy(data.k3ethdx) }]]
       break // 二同号
-    case 'ebth':result.ball = data.k3ebthbz; break // 二不同号标准
-    case 'hz':result.square = data.k3hz; break // 和值
-    case 'sht':result.ball = [...data.k3sthdx, ...data.k3sthtx]; break // 三同号
-    case 'sbth':result.ball = data.k3sbthbz; break // 三不同号
-    case 'slh':result.ball = [...data.k3slhdx, ...data.k3slhtx]; break // 三连号
-    case 'wq':result.ball = data.ws; break // 三同号
+    case 'ebth':result.ball = data.k3ebthbz; result.remark = data.k3ebthbz[0].remark; break // 二不同号标准
+    case 'hz':result.square = data.k3hz; result.remark = data.k3hz[0].remark; break // 和值
+    case 'sht':result.ball = [...data.k3sthdx, ...data.k3sthtx]; result.remark = data.k3sthdx[0].remark; break // 三同号
+    case 'sbth':result.ball = data.k3sbthbz; result.remark = data.k3sbthbz[0].remark; break // 三不同号
+    case 'slh':result.ball = [...data.k3slhdx, ...data.k3slhtx]; result.remark = data.k3slhdx[0].remark; break // 三连号
+    case 'wq':result.ball = data.ws; result.remark = data.ws[0].remark; break // 三同号
   }
   return handleRDChange(_this, result)
 }

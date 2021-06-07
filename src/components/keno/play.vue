@@ -41,14 +41,13 @@ export default {
     rD() {
       const agr = (this.rodioIndex + this.hleper) && this.play && this.lotteryData && this.rightData
       let result = {}
-      result = this.storeRD || hndleData(this, this.lotteryData, this.play)
-      // if (agr) {
-      //   try {
-      //     result = this.storeRD || hndleData(this, this.lotteryData, this.play)
-      //   } catch (e) {
-      //     setTimeout(() => (this.hleper = Math.random() + 1), 500)
-      //   }
-      // }
+      if (agr) {
+        try {
+          result = this.storeRD || hndleData(this, this.lotteryData, this.play)
+        } catch (e) {
+          setTimeout(() => (this.hleper = Math.random() + 1), 500)
+        }
+      }
       return result
     }
   },

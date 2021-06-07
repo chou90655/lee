@@ -15,6 +15,7 @@ export default {
     betData: [],
     isReset: 0,
     sealTime: [],
+    remark: '',
     status: '封盘',
     url: getUrl(),
     history: {}
@@ -27,6 +28,9 @@ export default {
   mutations: {
     setUrl(state, val) {
       state.url = val
+    },
+    setRemark(state, val) {
+      state.remark = val
     },
     setHistory(state, val) {
       state.history = val

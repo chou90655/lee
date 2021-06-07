@@ -75,6 +75,7 @@ export const hndleData = (_this, data, key) => {
   switch (key) {
     case 'sx':
       oddk = ['sixzhixfsh', 'hsizxes', 'hsizxye', 'hsizxl', 'hsizxs', 'bdw4x1m', 'bdw4x2m']
+      result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = ['复式', '组选24', '组选12', '组选6', '组选4', '一码不定位', '二码不定位'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
       result.sorts = []
       result.odds = 1
@@ -88,6 +89,7 @@ export const hndleData = (_this, data, key) => {
       break
     case 'wx':
       oddk = ['wxzhixfs', 'wxzxyel', 'wxzxls', 'wxzxsl', 'wxzxel', 'wxzxyl', 'wxzxw', 'bdw5x1m', 'bdw5x2m', 'bdw5x3m', 'qwyffs', 'qwhscs', 'qwsxbx', 'qwsjfc']
+      result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = ['复式', '组选120', '组选60', '组选30', '组选20', '组选10', '组选5', '一码不定位',
         '二码不定位', '三码不定位', '一帆风顺', '好事成双', '三星报喜', '四季发财'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
       result.sorts = []
@@ -109,6 +111,7 @@ export const hndleData = (_this, data, key) => {
       break
     case 'lm':
       result.sort = []
+      result.remark = data.lm1[0].remark
       result.sort.push({ title: '万第一球', square: data.lm1 })
       result.sort.push({ title: '千第二球', square: data.lm2 })
       result.sort.push({ title: '百第三球', square: data.lm3 })
@@ -117,21 +120,28 @@ export const hndleData = (_this, data, key) => {
       result.sort.push({ title: '总和', square: data.sum })
       break
     case '1':
+      result.remark = data[1][0].remark
       result.ball = data[1]
       break
     case '2':
+      result.remark = data[1][0].remark
       result.ball = data[2]
       break
     case '3':
+      result.remark = data[1][0].remark
       result.ball = data[3]
       break
     case '4':
+      result.remark = data[1][0].remark
       result.ball = data[4]
       break
     case '5':
+      result.remark = data[1][0].remark
       result.ball = data[5]
       break
     case 'dxds':
+      oddk = ['dxdsqe', 'dxdshe', 'dxdsqs', 'dxdshs']
+      result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = [{ name: '前二' }, { name: '后二' }, { name: '前三' }, { name: '后三' }]
       result.sorts = []
       result.sorts.push([{ title: '个位', square: copy(data.dxdsqe) }, { title: '十位', square: copy(data.dxdsqe) }])
@@ -140,6 +150,8 @@ export const hndleData = (_this, data, key) => {
       result.sorts.push([{ title: '百位', square: copy(data.dxdshs) }, { title: '千位', square: copy(data.dxdshs) }, { title: '万位', square: copy(data.dxdshs) }])
       break
     case 'qe':
+      oddk = ['exzhixfsq', 'zhixhzqe', 'kuaduqe', 'exzuxfsq', 'zuxhzqe', 'zuxcebd']
+      result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = [{ name: '直选复式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选和值' }, { name: '组选包胆' }]
       result.sorts = []
       result.sorts.push([{ title: '万位', ball: copy(data.exzhixfsq) }, { title: '千位', ball: copy(data.exzhixfsq) }])
@@ -150,6 +162,8 @@ export const hndleData = (_this, data, key) => {
       result.sorts.push([{ ball: copy(data.zuxcebd) }]) // 包胆
       break
     case 'he':
+      oddk = ['exzhixfsh', 'zhixhzhe', 'kuaduhe', 'exzuxfsh', 'zuxhzhe', 'zuxhebd']
+      result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = [{ name: '直选复式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选和值' }, { name: '组选包胆' }]
       result.sorts = []
       result.sorts.push([{ title: '十位', ball: copy(data.exzhixfsh) }, { title: '个位', ball: copy(data.exzhixfsh) }])
@@ -161,6 +175,7 @@ export const hndleData = (_this, data, key) => {
       break
     case 'qs':
       oddk = ['sxzhixfsq', 'zhixhzqs', 'kuaduqs', 'zuxhzqs', 'sxzuxzsq', 'sxzuxzlq', 'zuxcsbd', 'bdwqs', 'bdwqs2m']
+      result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = ['直选复式', '直选和值', '跨度', '组选和值', '组选三', '组选六', '组选包胆', '一码不定位', '二码不定位'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
       result.odds = 1
       result.sorts = []
@@ -176,6 +191,7 @@ export const hndleData = (_this, data, key) => {
       break
     case 'zs':
       oddk = ['sxzhixfsz', 'zhixhzzs', 'kuaduzs', 'zuxhzzs', 'sxzuxzsz', 'sxzuxzlz', 'zuxzsbd', 'bdwzs', 'bdwzs2m']
+      result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = ['直选复式', '直选和值', '跨度', '组选和值', '组选三', '组选六', '组选包胆', '一码不定位', '二码不定位'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
       result.odds = 1
       result.sorts = []
@@ -191,6 +207,7 @@ export const hndleData = (_this, data, key) => {
       break
     case 'hs':
       oddk = ['sxzhixfsh', 'zhixhzhs', 'kuaduhs', 'zuxhzhs', 'sxzuxzsh', 'sxzuxzlh', 'zuxhsbd', 'bdwhs', 'bdwhs2m']
+      result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = ['直选复式', '直选和值', '跨度', '组选和值', '组选三', '组选六', '组选包胆', '一码不定位', '二码不定位'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
       result.odds = 1
       result.sorts = []
@@ -206,6 +223,7 @@ export const hndleData = (_this, data, key) => {
       break
     case 'qzh':
       result.sort = []
+      result.remark = data.qsq[0].remark
       result.sort.push({ title: '前三球', square: data.qsq })
       result.sort.push({ title: '中三球', square: data.zsq })
       result.sort.push({ title: '后三球', square: data.hsq })
@@ -213,6 +231,7 @@ export const hndleData = (_this, data, key) => {
       break
     case 'dwd':
       result.sort = []
+      result.remark = data.dwd[0].remark
       result.sort.push({ title: '个位', ball: copy(data.dwd) })
       result.sort.push({ title: '十位', ball: copy(data.dwd) })
       result.sort.push({ title: '百位', ball: copy(data.dwd) })
@@ -221,6 +240,7 @@ export const hndleData = (_this, data, key) => {
       break
     case 'lh':
       result.sort = []
+      result.remark = data.lhbg[0].remark || '龙虎奖金 4.2220和奖金 19.00元'
       result.sort.push({ title: '龙虎百个', square: data.lhbg })
       result.sort.push({ title: '龙虎百十', square: data.lhbs })
       result.sort.push({ title: '龙虎千百', square: data.lhqb })

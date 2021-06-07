@@ -29,6 +29,7 @@ export const hndleData = (_this, data, key) => {
       result.odds = 1
       result.sorts = Array(7).fill(1).map(_ => [{ title: '上盘', ball: hdArr1(1) }, { title: '下盘', ball: hdArr1(41) }])
       const list = Array(7).fill(1).map((_, i) => data.find(_i => _i.playid === 'bjkl8rx' + (i + 1)).maxjj).map(_ => _.split('|').map(i => i / 2))
+      result.remarks = Array(7).fill(1).map((_, i) => data.find(_i => _i.playid === 'bjkl8rx' + (i + 1)).remark)
       result.rodio = [
         { name: '任选一', playid: 'bjkl8rx1', odds: ' 赔率:' + list[0][0] },
         { name: '任选二', playid: 'bjkl8rx2', odds: ' 赔率:' + list[1][0] },
@@ -41,9 +42,11 @@ export const hndleData = (_this, data, key) => {
       break
     case 'qw':
       result.sort = []
-      result.sort.push({ title: '上下盘', square: hdArr(['上', '中', '下'], 'bjkl8sxp', data.find(_ => _.playid === 'bjkl8sxp')) })
-      result.sort.push({ title: '奇偶盘', square: hdArr(['奇', '和', '偶'], 'bjkl8jop', data.find(_ => _.playid === 'bjkl8jop')) })
-      result.sort.push({ title: '大小单双', square: hdArr(['大单', '大双', '小单', '小双'], 'bjkl8dxds', data.find(_ => _.playid === 'bjkl8dxds')) })
+      const arrs = ['bjkl8sxp', 'bjkl8jop', 'bjkl8dxds'].map(i => data.find(_ => _.playid === i))
+      result.remark = `上下盘：${arrs[0].remark}<br/>奇偶盘：${arrs[1].remark}<br/>和值大小单双：${arrs[2].remark}`
+      result.sort.push({ title: '上下盘', square: hdArr(['上', '中', '下'], 'bjkl8sxp', arrs[0]) })
+      result.sort.push({ title: '奇偶盘', square: hdArr(['奇', '和', '偶'], 'bjkl8jop', arrs[1]) })
+      result.sort.push({ title: '大小单双', square: hdArr(['大单', '大双', '小单', '小双'], 'bjkl8dxds', arrs[2]) })
       break
   }
   return handleRDChange(_this, result)

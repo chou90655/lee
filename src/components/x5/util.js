@@ -31,12 +31,14 @@ export const hndleData = (_this, data, key) => {
   switch (key) { // dwd
     case 'rxdt':
       oddk = ['x5dt2z2', 'x5dt3z3', 'x5dt4z4', 'x5dt5z5', 'x5dt6z5', 'x5dt7z5', 'x5dt8z5']
+      result.remarks = Array(7).fill(1).map((_, i) => data[oddk[i]][0].remark)
       result.rodio = ['二中二', '三中三', '四中四', '五中五', '六中五', '七中五', '八中五'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds, hc: 1 }))
       result.odds = 1
       result.sorts = oddk.map(_ => [{ title: '胆码', ball: copy(data[_]) }, { title: '拖码', ball: copy(data[_]) }])
       break
     case 'rxfs':
       oddk = ['x5rx1z1', 'x5rx2z2', 'x5rx3z3', 'x5rx4z4', 'x5rx5z5', 'x5rx6z5', 'x5rx7z5', 'x5rx8z5']
+      result.remarks = Array(8).fill(1).map((_, i) => data[oddk[i]][0].remark)
       result.rodio = ['一中一', '二中二', '三中三', '四中四', '五中五', '六中五', '七中五', '八中五'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
       result.odds = 1
       result.sorts = oddk.map(_ => [{ ball: copy(data[_]) }])
@@ -44,20 +46,24 @@ export const hndleData = (_this, data, key) => {
     case 'qwx':
       oddk = ['x5dds', 'x5czw']
       result.rodio = ['定单双', '猜中位'].map((name, i) => ({ name }))
+      result.remarks = Array(2).fill(1).map((_, i) => data[oddk[i]][0].remark)
       result.sorts = []
       result.sorts.push([{ square: copy(data.x5dds) }])
       result.sorts.push([{ ball: copy(data.x5czw) }])
       break
     case 'dwd':
       result.odds = data.x5dwd[0].odds
+      result.remark = data.x5dwd[0].remark
       result.sort = ['第一位', '第二位', '第三位'].map(_ => ({ title: _, ball: copy(data.x5dwd) })) // 定位胆
       break
     case 'bdw':
+      result.remark = data.x5bdwqs[0].remark
       result.odds = data.x5bdwqs[0].odds
       result.ball = copy(data.x5bdwqs) // 前三不定位
       break
     case 'em':
       oddk = ['x5qezx', 'x5qezx', 'x5qedt']
+      result.remarks = Array(3).fill(1).map((_, i) => data[oddk[i]][0].remark)
       result.rodio = ['直选复式', '组选复式', '组选胆拖'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds, hc: i === 2 }))
       result.sorts = []
       result.odds = 1
@@ -67,6 +73,7 @@ export const hndleData = (_this, data, key) => {
       break
     case 'sm':
       oddk = ['x5qsfs', 'x5qszx', 'x5qsdt']
+      result.remarks = Array(3).fill(1).map((_, i) => data[oddk[i]][0].remark)
       result.rodio = ['直选复式', '组选复式', '组选胆拖'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds, hc: i === 2 }))
       result.sorts = []
       result.odds = 1

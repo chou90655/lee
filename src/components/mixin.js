@@ -34,6 +34,12 @@ export const mixin = {
       rodio && rodio.refresh()
       mainPlay && mainPlay.refresh()
     },
+    rmk: {
+      handler(v) {
+        this.setRemark(v)
+      },
+      immediate: true
+    },
     isReset(v) {
       if (v) {
         this.storeRD = false
@@ -55,7 +61,11 @@ export const mixin = {
     ...mapState(['lotteryData', 'isReset', 'currentLottery']),
     rightData() {
       return this.currentLottery.fcode === this.$route.path.split('/')[3]
+    },
+    rmk() {
+      const { remark, remarks } = this.rD
+      return remark || (remarks && remarks[this.rodioIndex])
     }
   },
-  methods: mapMutations(['setBetData', 'setIsReset'])
+  methods: mapMutations(['setBetData', 'setIsReset', 'setRemark'])
 }
