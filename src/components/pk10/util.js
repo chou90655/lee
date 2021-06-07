@@ -66,29 +66,34 @@ export const hndleData = (_this, data, key) => {
   if (!data) return result
   _this.storeData = data
   switch (key) { // ['bjpk10qian1', 'bjpk10qian2', 'bjpk10qian3', 'bjpk10qian4', 'bjpk10qian5', 'bjpk10dwd']
-    case 'bjpk10qian1':result.ball = data[key]; break
-    case 'bjpk10qian2':result.cqp = rank.slice(0, 2).map(title => ({ title, ball: copy(data[key]) })); break
-    case 'bjpk10qian3':result.cqp = rank.slice(0, 3).map(title => ({ title, ball: copy(data[key]) })); break
-    case 'bjpk10qian4':result.cqp = rank.slice(0, 4).map(title => ({ title, ball: copy(data[key]) })); break
-    case 'bjpk10qian5':result.cqp = rank.slice(0, 5).map(title => ({ title, ball: copy(data[key]) })); break
-    case 'bjpk10dwd':result.cqp = rank.map(title => ({ title, ball: copy(data[key]) })); break
+    case 'bjpk10qian1':result.ball = data[key]; result.remark = data[key][0].remark; break
+    case 'bjpk10qian2':result.cqp = rank.slice(0, 2).map(title => ({ title, ball: copy(data[key]) })); result.remark = data[key][0].remark; break
+    case 'bjpk10qian3':result.cqp = rank.slice(0, 3).map(title => ({ title, ball: copy(data[key]) })); result.remark = data[key][0].remark; break
+    case 'bjpk10qian4':result.cqp = rank.slice(0, 4).map(title => ({ title, ball: copy(data[key]) })); result.remark = data[key][0].remark; break
+    case 'bjpk10qian5':result.cqp = rank.slice(0, 5).map(title => ({ title, ball: copy(data[key]) })); result.remark = data[key][0].remark; break
+    case 'bjpk10dwd':result.cqp = rank.map(title => ({ title, ball: copy(data[key]) })); result.remark = data[key][0].remark; break
     case '1z5':
+      result.remarks = rank.slice(0, 5).map((_, i) => data['hm' + (i + 1)][0].remark)
       result.rodio = rank.slice(0, 5).map(name => ({ name }))
       result.balls = rank.slice(0, 5).map((_, i) => data['hm' + (i + 1)])
       break
     case '6z10':
+      result.remarks = rank.slice(5, 10).map((_, i) => data['hm' + (i + 1)][0].remark)
       result.rodio = rank.slice(5, 10).map(name => ({ name }))
-      result.balls = rank.slice(0, 5).map((_, i) => data['hm' + (i + 6)])
+      result.balls = rank.slice(5, 10).map((_, i) => data['hm' + (i + 6)])
       break
     case 'swh':
+      result.remark = data.swh[0].remark
       result.ball = data.swh.filter(_ => _.playid.includes('gyh_hm'))
       result.square = data.swh.filter(_ => !_.playid.includes('gyh_hm'))
       break
     case 'gyh':
+      result.remark = data.gyh[0].remark
       result.ball = data.gyh.filter(_ => _.playid.includes('gyh_hm'))
       result.square = data.gyh.filter(_ => !_.playid.includes('gyh_hm'))
       break
     case 'lm':
+      result.remark = data[1][0].remark
       result.sort = rank.map((_, i) => ({ title: _, square: data[i + 1] }))
       break
     case 'gyj':

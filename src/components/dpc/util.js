@@ -27,8 +27,11 @@ export const hndleData = (_this, data, key) => {
   let result = {}
   if (!data) return result
   _this.storeData = data
+  let oddk
   switch (key) {
     case 'he':
+      oddk = ['pl3hx2fs', 'pl3h2zxhz', 'pl3h2kd', 'pl3h2zxfs', 'pl3h2zuxhz', 'pl3h2zxbd']
+      result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = [{ name: '直选复式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选和值' }, { name: '包胆', sg: 1 }] // 前二
       result.sorts = []
       result.sorts.push(['十位', '个位'].map(title => ({ title, ball: copy(data.pl3hx2fs) }))) // 直选复式
@@ -39,6 +42,8 @@ export const hndleData = (_this, data, key) => {
       result.sorts.push([{ ball: copy(data.pl3h2zxbd) }]) // 包胆
       break
     case 'qe':
+      oddk = ['pl3qx2fs', 'pl3q2zxhz', 'pl3q2kd', 'pl3q2zxfs', 'pl3q2zuxhz', 'pl3q2zxbd']
+      result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = [{ name: '直选复式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选和值' }, { name: '包胆', sg: 1 }] // 前二
       result.sorts = []
       result.sorts.push(['百位', '十位'].map(title => ({ title, ball: copy(data.pl3qx2fs) }))) // 直选复式
@@ -49,15 +54,20 @@ export const hndleData = (_this, data, key) => {
       result.sorts.push([{ ball: copy(data.pl3q2zxbd) }]) // 包胆
       break
     case 'yx':
+      result.remark = data.pl3dwdfs[0].remark
       result.sort = (['百位', '十位', '个位'].map(title => ({ title, ball: copy(data.pl3dwdfs) }))) // 1星复式
       break
     case 'bdw':
+      oddk = ['pl3ymbdw', 'pl3rmbdw']
+      result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = [{ name: '一码' }, { name: '二码' }]
       result.sorts = []
       result.sorts.push([{ ball: copy(data.pl3ymbdw) }]) // 一码
       result.sorts.push([{ ball: copy(data.pl3rmbdw) }]) // 二码
       break
     case 'sx':
+      oddk = ['pl3hzzx', 'pl3kd', 'pl3zuxhz', 'pl3zux3', 'pl3zux6', 'pl3zuxbd']
+      result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = [{ name: '直选复式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选和值' }, { name: '组三' }, { name: '组六' }, { name: '包胆', sg: 1 }]
       result.sorts = []
       result.sorts.push(['百位', '十位', '个位'].map(title => ({ title, ball: copy(data.pl3zxfs) }))) // 直选复式
@@ -69,6 +79,8 @@ export const hndleData = (_this, data, key) => {
       result.sorts.push([{ ball: copy(data.pl3zuxbd) }]) // 包胆
       break
     case 'lm':
+      oddk = ['dxdsq2', 'dxdsh2']
+      result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = [{ name: '前二' }, { name: '后二' }]
       result.sorts = []
       result.sorts.push(['百位', '十位'].map(title => ({ title, square: copy(data.dxdsq2) })))

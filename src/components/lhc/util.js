@@ -83,35 +83,44 @@ export const filter = (data) => {
 }
 export const hndleData = (_this, data, key) => {
   let result = {}
+  let oddk
   if (!data) return result
   _this.storeData = data
   switch (key) {
     case 'bz':
       result.odds = 1
-      result.key = 'balls'
+      oddk = ['bz5bz', 'bz6bz', 'bz7bz', 'bz8bz', 'bz9bz', 'bz10bz']
+      result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = [{ name: '五不中', odds: data.bz5bz[0].odds }, { name: '六不中', odds: data.bz6bz[0].odds }, { name: '七不中', odds: data.bz7bz[0].odds },
         { name: '八不中', odds: data.bz8bz[0].odds }, { name: '九不中', odds: data.bz9bz[0].odds }, { name: '十不中', odds: data.bz10bz[0].odds }]
       result.balls = [data.bz5bz, data.bz6bz, data.bz7bz, data.bz8bz, data.bz9bz, data.bz10bz]
       break
     case 'ws':
-      result.key = 'groups'
+      oddk = ['tmtw', 'ws2wl', 'ws3wl', 'ws4wl']
+      result.remarks = oddk.map((_) => data[_][0].remark)
       result.groups = [data.tmtw, data.ws2wl, data.ws3wl, data.ws4wl]
       result.rodio = [{ name: '特码头尾' }, { name: '二尾连' }, { name: '三尾连' }, { name: '四尾连' }]
       break
     case 'sx':
+      oddk = ['sxtx', 'sx1x', 'sx2xl', 'sx3xl', 'sx4xl']
+      result.remarks = oddk.map((_) => data[_][0].remark)
       result.groups = [data.sxtx, data.sx1x, data.sx2xl, data.sx3xl, data.sx4xl]
       result.rodio = [{ name: '特肖' }, { name: '一肖' }, { name: '二肖连' }, { name: '三肖连' }, { name: '四肖连' }]
       break
-    case 'tm': result.ball = data.tmzx; result.square = data.tmlm; break
+    case 'tm': result.ball = data.tmzx; result.square = data.tmlm; result.remark = data.tmzx[0].remark; break
     case 'zm':
+      oddk = ['zmrx', 'zm1t', 'zm2t', 'zm3t', 'zm4t', 'zm5t']
+      result.remarks = oddk.map((_) => data[_][0].remark)
       result.balls = [data.zmrx, data.zm1t, data.zm2t, data.zm3t, data.zm4t, data.zm5t]
       result.squares = [[], data.zm1, data.zm2, data.zm3, data.zm4, data.zm5]
       result.rodio = [{ name: '任选' }, { name: '正1特' }, { name: '正2特' }, { name: '正3特' }, { name: '正4特' }, { name: '正5特' }]
       break
-    case 'bb': result.group = data.bb; break
+    case 'bb': result.group = data.bb; result.remark = data.bb[0].remark; break
     case 'lm':
       result.odds = 1
-      result.balls = ['lm3qz', 'lm3z2', 'lm2qz', 'lm2zt', 'lmtc'].map(_ => data[_]) // 'lm3qz', 'lm3z2', 'lm2qz', 'lm2zt', 'lmtc'
+      oddk = ['lm3qz', 'lm3z2', 'lm2qz', 'lm2zt', 'lmtc']
+      result.remarks = oddk.map((_) => data[_][0].remark)
+      result.balls = oddk.map(_ => data[_]) // 'lm3qz', 'lm3z2', 'lm2qz', 'lm2zt', 'lmtc'
       result.rodio = [{ name: '三全中', odds: data.lm3qz[0].odds }, { name: '三中二', odds: '中二 ' + data.lm3z2[0].odds },
         { name: '二全中', odds: data.lm2qz[0].odds }, { name: '二中特', odds: '中特 ' + data.lm2zt[0].odds }, { name: '特串', odds: data.lmtc[0].odds } ]
       break

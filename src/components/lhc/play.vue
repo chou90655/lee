@@ -92,6 +92,12 @@ export default {
         this.setBetData([])
         this.setIsReset(0)
       }
+    },
+    rmk: {
+      handler(v) {
+        this.setRemark(v)
+      },
+      immediate: true
     }
   },
   props: {
@@ -111,6 +117,10 @@ export default {
         }
       }
       return result
+    },
+    rmk() {
+      const { remark, remarks } = this.rD
+      return remark || (remarks && remarks[this.rodioIndex])
     }
   },
   mounted() {
@@ -118,7 +128,7 @@ export default {
     document.querySelector('.display').style.height = document.querySelector('.play_area').offsetHeight - 10 + 'px'
   },
   methods: {
-    ...mapMutations(['setBetData', 'setIsReset']),
+    ...mapMutations(['setBetData', 'setIsReset', 'setRemark']),
     init() {
       this.storeRD = false
       this.aidIndex = -1
