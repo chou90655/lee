@@ -9,19 +9,12 @@
     <lottery-info @getOpenInfo='getOpenInfo' ref="lotteryInfo"></lottery-info>
     <play-area :plays='plays' :change='isSwitch' @touchstart.native="Intercept"></play-area>
     <bet-area/>
-    <transition name="slide">
-      <more-list v-if="showMore" @chooseTheme="showMore = 0"/>
-    </transition>
-    <transition name="fade">
-      <div class="_mask" @click="showMore = 0" v-if="showMore"></div>
-    </transition>
   </div>
 </template>
 <script>
 import LotteryInfo from './LotteryInfo' // 开奖和计时信息展示组件
 import PlayArea from './PlayArea' // 玩法及下注组件
 import BetArea from './BetArea' // 金额和投注组件
-import MoreList from './MoreList' // 右侧划入组件
 import allPlays from '../data/allPlays' // 所有大彩种玩法数据
 import { getLotterytimes, getChartList } from '../api/interface'
 import { mapState, mapMutations, mapActions } from '../util/tools'
@@ -29,13 +22,11 @@ export default {
   components: {
     LotteryInfo,
     PlayArea,
-    BetArea,
-    MoreList
+    BetArea
   },
   data() {
     return {
-      isSwitch: 0,
-      showMore: 0
+      isSwitch: 0
     }
   },
   created() {
@@ -48,9 +39,6 @@ export default {
     }
   },
   watch: {
-    $route(v) { // 路由变化时 隐藏右侧划入组件
-      setTimeout(() => (this.showMore = 0), 130)
-    },
     currentLottery() { // 当前彩种变化时 拉取当前彩种信息
       this.lotterChange()
     }
@@ -103,7 +91,7 @@ export default {
       setTimeout(() => {
         if (this.trigger) return
         if (index === 2) {
-          this.showMore = 1
+          parent.postMessage('list', '*')
         } else {
           this.isSwitch = index
         }
