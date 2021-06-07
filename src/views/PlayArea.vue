@@ -6,6 +6,7 @@
       </ul>
     </cube-scroll>
     <router-view class="cube-view" name="play" :play='active' :change='change' ref="plays"></router-view>
+    <i class="desc t_bc cubeic-question" @click="desc"/>
   </div>
 </template>
 <script>
@@ -31,6 +32,9 @@ export default {
     window.removeEventListener('orientationchange', this.fitHeiht)
   },
   methods: {
+    desc() {
+      console.log(212121)
+    },
     fitHeiht() {
       setTimeout(() => {
         document.querySelector('.display').style.height = document.querySelector('.play_area').offsetHeight - 10 + 'px'
@@ -52,6 +56,12 @@ export default {
     color #999
     position relative
     box-sizing content-box
+    .desc
+      position absolute
+      right 3px
+      top -18px
+      font-size 16px
+      z-index 100
     .class
       height 100%
       width 80px
