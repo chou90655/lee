@@ -54,7 +54,7 @@ const hdnb = (item, num = 50) => Array(num).fill(1).map((_, i) => ({ ...item, na
 const hd12sx = (item) => sxArr1.map((_, i) => ({ ...item, name: _, num: _, numbers: hndleSx(_) }))
 const hdws = (item) => Array(10).fill(1).map((_, i) => ({ ...item, name: i + '尾', num: i + '尾', numbers: handleWs(i) }))
 export const filter = (data) => {
-  if (!data || !0) return
+  if (!data) return
   let res = { tmlm: [], bb: [], sxtx: [], sx1x: [], tmtw: [], tmb: [], tmblm: [], zmb: [], zmblm: [] }
   const zmArr = ['zm1', 'zm2', 'zm3', 'zm4', 'zm5', 'zm6']
   zmArr.forEach(_ => { res[_] = [] })

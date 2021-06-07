@@ -81,10 +81,10 @@ export default {
   'lhc': [
     { 'label': '特码', 'value': 'tm' },
     { 'label': '正码', 'value': 'zm' },
-    // { 'label': '连码', 'value': 'lm' },
-    // { 'label': '半波', 'value': 'bb' },
-    // { 'label': '生肖', 'value': 'sx' },
-    // { 'label': '尾数', 'value': 'ws' },
+    { 'label': '连码', 'value': 'lm' },
+    { 'label': '半波', 'value': 'bb' },
+    { 'label': '生肖', 'value': 'sx' },
+    { 'label': '尾数', 'value': 'ws' },
     { 'label': '不中', 'value': 'bz' }
   ]
 }
