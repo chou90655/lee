@@ -34,7 +34,7 @@
               <li v-for="(it, i) in copyBetData" :key=i>
                 <i>{{it.title||it.name}}</i>
                 <i>{{it.label||it.number}}</i>
-                <i>￥{{money}}</i>
+                <i>￥{{money*it.zhushu}}</i>
                 <i @click="del(i)"><icon href='cancel'/></i>
               </li>
             </ul>
