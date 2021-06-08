@@ -44,12 +44,13 @@ export default {
     rD() {
       const agr = (this.rodioIndex + this.hleper) && this.play && this.lotteryData && this.rightData
       let result = {}
+      result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
       if (agr) {
-        try {
-          result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
-        } catch (e) {
-          setTimeout(() => (this.hleper = Math.random() + 1), 500)
-        }
+        // try {
+        //   result = this.storeRD || hndleData(this, this.storeData || filter(this.lotteryData), this.play)
+        // } catch (e) {
+        //   setTimeout(() => (this.hleper = Math.random() + 1), 500)
+        // }
       }
       return result
     }
@@ -62,7 +63,7 @@ export default {
       const da = this.rD.rodio ? [this.rD] : (this.rD.sort || this.rD.cqp || [this.rD])
       let data = []
       switch (true) {
-        case ['lm', 'gyh', '1z5', '6z10'].includes(this.play):data = this.rD.data.filter(_ => _.choose).map(_ => ({ ..._, number: _.name, zhushu: 1 })); break
+        case ['lm', 'gyh', 'gyj', 'swh', '1z5', '6z10'].includes(this.play):data = this.rD.data.filter(_ => _.choose).map(_ => ({ ..._, number: _.name, zhushu: 1 })); break
         case this.play.includes('bjpk10qian'): data = hdwx(da, Array(+this.play.slice(-1)).fill({ n: 1, t: 7 })); break
         case this.play.includes('bjpk10dwd'): data = hdwx(da, Array(10).fill({ n: 0 }), 1); break
         // default: finalData = Chosedata; break

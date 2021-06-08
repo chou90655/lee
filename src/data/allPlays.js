@@ -47,8 +47,8 @@ export default {
   'pk10': [
     { 'label': '两面', 'value': 'lm' },
     { 'label': '冠亚和', 'value': 'gyh' },
-    // { 'label': '首尾和', 'value': 'swh' },
-    // { 'label': '冠亚季和', 'value': 'gyj' },
+    { 'label': '冠亚季和', 'value': 'gyj' },
+    { 'label': '首尾和', 'value': 'swh' },
     { 'value': 'bjpk10qian1', 'label': '猜冠军' },
     { 'value': 'bjpk10qian2', 'label': '猜前二' },
     { 'value': 'bjpk10qian3', 'label': '猜前三' },

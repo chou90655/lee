@@ -64,7 +64,7 @@ const mid = 'te().getT'
 export const gt = 'new Da' + mid + 'ime()'
 const dds = 'w Da'
 const dds1 = 'tTi'
-export const hdtt = (tt) => {
+export const hdtt = () => {
   // eslint-disable-next-line no-eval
   return eval('ne' + dds + 'te(' + tt + ').ge' + dds1 + 'me()')
 }

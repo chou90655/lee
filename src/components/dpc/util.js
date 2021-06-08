@@ -66,7 +66,7 @@ export const hndleData = (_this, data, key) => {
       result.sorts.push([{ ball: copy(data.pl3rmbdw) }]) // 二码
       break
     case 'sx':
-      oddk = ['pl3hzzx', 'pl3kd', 'pl3zuxhz', 'pl3zux3', 'pl3zux6', 'pl3zuxbd']
+      oddk = ['pl3zxfs', 'pl3hzzx', 'pl3kd', 'pl3zuxhz', 'pl3zux3', 'pl3zux6', 'pl3zuxbd']
       result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = [{ name: '直选复式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选和值' }, { name: '组三' }, { name: '组六' }, { name: '包胆', sg: 1 }]
       result.sorts = []

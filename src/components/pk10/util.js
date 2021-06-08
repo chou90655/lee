@@ -1,21 +1,23 @@
 import { handleRDChange, copy, chooseDataZh, filt } from '../../util/tools'
 const handleGyj = (res, _) => {
-  const code = _.playCode
+  const code = _.playid
   switch (true) {
-    case code.includes('big') : _.name = '大'; break
-    case code.includes('small') : _.name = '小'; break
-    case code.includes('single') : _.name = '单'; break
-    case code.includes('double') : _.name = '双'; break
-    default: _.name = _.playCode.slice(8, 10); break
+    case code.includes('dan') : _.name = '单'; break
+    case code.includes('da') : _.name = '大'; break
+    case code.includes('xiao') : _.name = '小'; break
+    case code.includes('shuang') : _.name = '双'; break
+    case code.includes('long') : _.name = '龙'; break
+    case code.includes('hu') : _.name = '虎'; break
+    default: _.name = _.playid.slice(7); break
   }
   res.push(_)
 }
 const handleYs = (res, _, tri) => {
   const code = _.playid
   switch (true) {
+    case code.includes('dan') : _.name = '单'; break
     case code.includes('da') : _.name = '大'; break
     case code.includes('xiao') : _.name = '小'; break
-    case code.includes('dan') : _.name = '单'; break
     case code.includes('shuang') : _.name = '双'; break
     case code.includes('long') : _.name = '龙'; break
     case code.includes('hu') : _.name = '虎'; break
@@ -24,14 +26,14 @@ const handleYs = (res, _, tri) => {
   res.push(_)
 }
 
-const handleGy = (res, _) => {
+const handleSw = (res, _) => {
   const code = _.playid
   switch (true) {
-    case code.includes('big') : _.name = '冠亚大'; break
-    case code.includes('small') : _.name = '冠亚小'; break
-    case code.includes('single') : _.name = '冠亚单'; break
-    case code.includes('double') : _.name = '冠亚双'; break
-    default: _.name = _.playCode.slice(4, 6); break
+    case code.includes('dan') : _.name = '单'; break
+    case code.includes('da') : _.name = '大'; break
+    case code.includes('xiao') : _.name = '小'; break
+    case code.includes('shuang') : _.name = '双'; break
+    default: _.name = _.playid.slice(6); break
   }
   res.push(_)
 }
@@ -39,7 +41,7 @@ const ysArr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 const hddfs = (item) => ysArr.map(_ => ({ ...item, name: _, num: _ }))
 export const filter = (data) => { // ruleName
   if (!data) return
-  let res = { gyh: [] }
+  let res = { gyh: [], gyj: [], swh: [] }
   ysArr.forEach(_ => (res[_] = []))
   ysArr.forEach(_ => (res['hm' + _] = []))
   data.forEach(_ => {
@@ -53,9 +55,8 @@ export const filter = (data) => { // ruleName
       case tcode.includes('gyh'): handleYs(res.gyh, _, 1); break // 冠亚和
       case tcode.includes('yzwm_d10'): handleYs(res.hm10, _); break // 十名
       case tcode.includes('yzwm_d'): handleYs(res['hm' + tcode[6]], _); break // 一九名
-      // case tcode.includes('swh'): handleYs(res.swh, _, 1); break // 首尾和
-      // case tcode.includes('gyj'): handleGyj(res.gyj, _); break // 冠亚季
-      case tcode.includes('sum'): handleGy(res.sum, _); break // 冠亚
+      case tcode.includes('swh_'): handleSw(res.swh, _); break // 首尾和
+      case tcode.includes('gyjh'): handleGyj(res.gyj, _); break // 冠亚季
     }
   })
   return res
@@ -84,21 +85,22 @@ export const hndleData = (_this, data, key) => {
       break
     case 'swh':
       result.remark = data.swh[0].remark
-      result.ball = data.swh.filter(_ => _.playid.includes('gyh_hm'))
-      result.square = data.swh.filter(_ => !_.playid.includes('gyh_hm'))
+      result.ball = data.swh.filter(_ => _.playid.includes('swh_hm'))
+      result.square = data.swh.filter(_ => !_.playid.includes('swh_hm'))
       break
     case 'gyh':
       result.remark = data.gyh[0].remark
       result.ball = data.gyh.filter(_ => _.playid.includes('gyh_hm'))
       result.square = data.gyh.filter(_ => !_.playid.includes('gyh_hm'))
       break
+    case 'gyj':
+      result.remark = data.gyj[0].remark
+      result.ball = data.gyj.filter(_ => _.playid.includes('gyjh_hm'))
+      result.square = data.gyj.filter(_ => !_.playid.includes('gyjh_hm'))
+      break
     case 'lm':
       result.remark = data[1][0].remark
       result.sort = rank.map((_, i) => ({ title: _, square: data[i + 1] }))
-      break
-    case 'gyj':
-      result.ball = data.gyj.filter(_ => _.typeCode === 'sum-gyj')
-      result.square = data.gyj.filter(_ => _.typeCode.indexOf('sum-gyj-') === 0)
       break
   }
   return handleRDChange(_this, result)
