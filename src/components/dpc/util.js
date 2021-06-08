@@ -1,7 +1,7 @@
 
 import { handleRDChange, chooseDataZh, copy, filt } from '../../util/tools'
-const hdnb = (item, num = 10) => Array(num).fill(1).map((_, i) => ({ ...item, name: i, num: i }))
-const hddxds = (item) => ['大', '小', '单', '双'].map((_, i) => ({ ...item, name: _, num: i }))
+const hdnb = (item, num = 10) => Array(num).fill(1).map((_, i) => ({ ...item, name: i, num: '' + i }))
+const hddxds = (item) => ['大', '小', '单', '双'].map((_, i) => ({ ...item, name: _, num: '' + i }))
 export const filter = (data) => {
   if (!data) return
   let res = {}

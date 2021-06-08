@@ -50,7 +50,7 @@ const chooseDataTt = (arr, re) => { // 拖头投注
   arr.filter(_ => !_.lock).forEach(_ => re.push(locks.concat(_)))
 }
 
-const hdnb = (item, num = 50) => Array(num).fill(1).map((_, i) => ({ ...item, name: i, num: i }))
+const hdnb = (item, num = 50) => Array(num).fill(1).map((_, i) => ({ ...item, name: i, num: '' + i }))
 const hd12sx = (item) => sxArr1.map((_, i) => ({ ...item, name: _, num: _, numbers: hndleSx(_) }))
 const hdws = (item) => Array(10).fill(1).map((_, i) => ({ ...item, name: i + '尾', num: i + '尾', numbers: handleWs(i) }))
 export const filter = (data) => {

@@ -25,13 +25,13 @@ const handleLs = (res, _) => {
   res.push(_)
 }
 const hddxds = (item) => {
-  return ['大', '小', '单', '双'].map((_, i) => ({ ...item, name: _, num: i }))
+  return ['大', '小', '单', '双'].map((_, i) => ({ ...item, name: _, num: '' + i }))
 }
 const hdhl = (item) => {
-  return ['龙', '虎', '和'].map((_, i) => ({ ...item, name: _, num: i }))
+  return ['龙', '虎', '和'].map((_, i) => ({ ...item, name: _, num: '' + i }))
 }
 const yxfs = (item, i = 10) => {
-  return Array(i).fill(1).map((_, i) => ({ ...item, name: i, num: i }))
+  return Array(i).fill(1).map((_, i) => ({ ...item, name: i, num: '' + i }))
 }
 export const filter = (data) => {
   if (!data) return
@@ -141,6 +141,7 @@ export const hndleData = (_this, data, key) => {
       break
     case 'dxds':
       oddk = ['dxdsqe', 'dxdshe', 'dxdsqs', 'dxdshs']
+      oddk.forEach(_ => console.log(data[_]))
       result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = [{ name: '前二' }, { name: '后二' }, { name: '前三' }, { name: '后三' }]
       result.sorts = []

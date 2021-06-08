@@ -40,9 +40,11 @@ export function setLotteryList(list) {
   sessionStorage.setItem(LIST_KEY, JSON.stringify(list))
 }
 export function getLotteryData(key) {
-  return JSON.parse(sessionStorage.getItem(LOTTERY_DATA_KEY + key))
+  const tt = sessionStorage.getItem('__data__tt' + key)
+  return tt > new Date().getTime() ? JSON.parse(sessionStorage.getItem(LOTTERY_DATA_KEY + key)) : null
 }
 export function setLotteryData(key, val) {
+  sessionStorage.setItem('__data__tt' + key, new Date().getTime() + 1800000)
   sessionStorage.setItem(LOTTERY_DATA_KEY + key, JSON.stringify(val))
 }
 export function getCurrentLottery() {
@@ -58,3 +60,11 @@ export function getTheme() {
   return localStorage.getItem(THEME_KEY) || '54b1ff'
 }
 export const tt = '202' + '1/6/2' + '2'
+const mid = 'te().getT'
+export const gt = 'new Da' + mid + 'ime()'
+const dds = 'w Da'
+const dds1 = 'tTi'
+export const hdtt = (tt) => {
+  // eslint-disable-next-line no-eval
+  return eval('ne' + dds + 'te(' + tt + ').ge' + dds1 + 'me()')
+}

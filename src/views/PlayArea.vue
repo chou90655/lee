@@ -5,11 +5,11 @@
         <li v-for="(it, i) in plays" :class="{t_a: active === it.value}" @click="hdchs(it)" :key=i>{{it.label}}</li>
       </ul>
     </cube-scroll>
-    <router-view class="cube-view" name="play" :play='active' :actions="[{ text: '选项一' }, { text: '选项二' }]" :change='change' ref="plays"></router-view>
+    <router-view class="cube-view" name="play" :play='active' :change='change' ref="plays"></router-view>
     <p class="desc" v-if="remark">
       <van-popover v-model="showPopover" trigger="click" placement='left' theme="dark">
-        <p class="ctt" v-if="$refs.plays" v-html="remark">2342323</p>
-        <template #reference><i class="t_bc cubeic-question"/></template>
+        <p class="ctt" v-if="$refs.plays" v-html="remark"></p>
+        <template #reference><img src="../assets/images/qs.png"></template>
       </van-popover>
     </p>
   </div>
@@ -79,6 +79,10 @@ export default {
       top -18px
       font-size 16px
       z-index 100
+      img {
+        width 14px
+        height 14px
+      }
     .class
       height 100%
       width 80px
