@@ -4,6 +4,7 @@ module.exports = {
     proxy: {
       '/api': {
         target: 'http://ceshi.fc225.info/',
+        // target: 'https://api.qinaw.com/',
         changeOrigin: true,
         ws: true,
         pathRewrite: {

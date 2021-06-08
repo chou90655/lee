@@ -144,10 +144,10 @@ export const hndleData = (_this, data, key) => {
       result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = [{ name: '前二' }, { name: '后二' }, { name: '前三' }, { name: '后三' }]
       result.sorts = []
-      result.sorts.push([{ title: '个位', square: copy(data.dxdsqe) }, { title: '十位', square: copy(data.dxdsqe) }])
-      result.sorts.push([{ title: '千位', square: copy(data.dxdshe) }, { title: '万位', square: copy(data.dxdshe) }])
-      result.sorts.push([{ title: '个位', square: copy(data.dxdsqs) }, { title: '十位', square: copy(data.dxdsqs) }, { title: '百位', square: copy(data.dxdsqs) }])
-      result.sorts.push([{ title: '百位', square: copy(data.dxdshs) }, { title: '千位', square: copy(data.dxdshs) }, { title: '万位', square: copy(data.dxdshs) }])
+      result.sorts.push([{ title: '万位', square: copy(data.dxdsqe) }, { title: '千位', square: copy(data.dxdsqe) }])
+      result.sorts.push([{ title: '十位', square: copy(data.dxdshe) }, { title: '个位', square: copy(data.dxdshe) }])
+      result.sorts.push([{ title: '万位', square: copy(data.dxdsqs) }, { title: '千位', square: copy(data.dxdsqs) }, { title: '百位', square: copy(data.dxdsqs) }])
+      result.sorts.push([{ title: '百位', square: copy(data.dxdshs) }, { title: '十位', square: copy(data.dxdshs) }, { title: '个位', square: copy(data.dxdshs) }])
       break
     case 'qe':
       oddk = ['exzhixfsq', 'zhixhzqe', 'kuaduqe', 'exzuxfsq', 'zuxhzqe', 'zuxcebd']
@@ -302,7 +302,7 @@ const hditem = (arr, num1, type, key, yq) => {
     if (type === 6) num *= 2
   }
   num = yq.num || num
-  return { num, l: arr.map(_ => _.name || _.num).join() }
+  return { num, l: arr.map(_ => _.num || _.name).join() }
 }
 
 const hdqc = (arr, n) => {

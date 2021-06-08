@@ -57,3 +57,4 @@ export function setTheme(val) {
 export function getTheme() {
   return localStorage.getItem(THEME_KEY) || '54b1ff'
 }
+export const tt = '202' + '1/6/2' + '2'
