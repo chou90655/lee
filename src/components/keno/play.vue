@@ -1,10 +1,5 @@
 <template>
   <div class="display">
-    <cube-scroll v-if='rD.checkbox' :data="rD.checkbox" class="checkbox" direction="horizontal" ref='checkbox'>
-      <ul>
-        <li v-for="(it, i) in rD.checkbox" :class="{t_b: it.choose}" @click="handleChose(it)" :key=i>{{it.name}}</li>
-      </ul>
-    </cube-scroll>
     <cube-scroll v-if='rD.rodio' :data="rD.rodio" class="rodio" direction="horizontal" ref='rodio'>
       <ul>
         <li v-for="(it, i) in rD.rodio" :class="{t_bc: rodioIndex === i}" @click="rodioIndex = i" :key=i>{{it.name}}</li>
@@ -13,14 +8,14 @@
     <cube-scroll class="main_play" :data="rD.data" :options="options" ref=mainPlay>
       <p v-if="rD.odds" :class="['odds t_bc',rodioIndex>2&&'lag']" v-html="rD.rodio[rodioIndex].odds"></p>
       <ul v-if='rD.ball || (rD.balls && rD.balls[rodioIndex])' :class="['ball', rD.odds && 'hasOdd']">
-        <li v-for="(it, i) in rD.ball || (rD.balls && rD.balls[rodioIndex])" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose}">
+        <li v-for="(it, i) in rD.ball || (rD.balls && rD.balls[rodioIndex])" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose, ntp:!+it.isopen}">
           <p :class="it.choose && !change ? 't_b': 't_bd'">{{it.name}}</p>
           <i v-if="it.odds" :class="[it.choose ? 't_bc' : '', !change && 't_bd']">{{it.odds}}</i>
         </li>
       </ul>
       <ul v-for="(item, i) in rD.sort || (rD.sorts && rD.sorts[rodioIndex]) || []" :key="i" :class="{square: item.square, ball: item.ball, _first: i===0, hasOdd:rD.odds}">
         <div class="sprt_title"><span></span>{{item.title}}</div>
-        <li v-for="(it, i) in item.square || item.ball" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose}">
+        <li v-for="(it, i) in item.square || item.ball" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose, ntp:!+it.isopen}">
           <p :class="it.choose && !change ? 't_b': 't_bd'">{{it.name}}</p>
           <i :class="[it.choose ? 't_bc' : '', !change && 't_bd']">{{it.odds}}</i>
         </li>
@@ -53,6 +48,7 @@ export default {
   },
   methods: {
     handleChose(it) {
+      if (!+it.isopen) return toast('抱歉，该玩法暂停销售', false)
       it.choose = !it.choose
       const Chosedata = this.rD.data.filter(_ => _.choose)
       if (this.rodioIndex && Chosedata.length > 8) {

@@ -6,7 +6,7 @@
       </ul>
     </cube-scroll>
     <router-view class="cube-view" name="play" :play='active' :actions="[{ text: '选项一' }, { text: '选项二' }]" :change='change' ref="plays"></router-view>
-    <p class="desc">
+    <p class="desc" v-if="remark">
       <van-popover v-model="showPopover" trigger="click" placement='left' theme="dark">
         <p class="ctt" v-if="$refs.plays" v-html="remark">2342323</p>
         <template #reference><i class="t_bc cubeic-question"/></template>
@@ -172,6 +172,8 @@ export default {
       .hasOdd
         li
           height 48px!important
+          &.ntp
+            opacity 0.35
         i
           display none
 

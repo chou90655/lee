@@ -26,7 +26,9 @@ request.interceptors.response.use(res => {
     if (data.code === 995 && config.url.includes('apijiekou.getLotteryOpencodes.do')) return {}
     else if (data.code === 999) {
       toast(data.message)
-      parent.postMessage('login', '*')
+      setTimeout(() => {
+        parent.postMessage('login', '*')
+      }, 1500)
     } else toast(data.message)
   } else toast()
   return Promise.reject(data)

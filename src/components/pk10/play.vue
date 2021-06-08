@@ -1,35 +1,32 @@
 <template>
   <div class="display pk10">
-    <cube-scroll v-if='rD.checkbox' :data="rD.checkbox" class="checkbox" direction="horizontal" ref='checkbox'>
-      <ul><li v-for="(it, i) in rD.checkbox" :class="{t_b: it.choose}" @click="handleChose(it)" :key=i>{{it.name}}</li></ul>
-    </cube-scroll>
     <cube-scroll v-if='rD.rodio' :data="rD.rodio" class="rodio" direction="horizontal" ref='rodio'>
       <ul><li v-for="(it, i) in rD.rodio" :class="{t_bc: rodioIndex === i}" @click="rodioIndex = i" :key=i>{{it.name}}</li></ul>
     </cube-scroll>
     <cube-scroll class="main_play" :options="options" ref=mainPlay>
       <p v-if="rD.odds" class="odds t_bc"> 赔率：{{rD.rodio ? rD.rodio[rodioIndex].odds : rD.odds}}</p>
       <ul v-if='rD.ball || (rD.balls && rD.balls[rodioIndex])' :class="['ball', change && 'change', rD.odds && 'hasOdd']">
-        <li v-for="(it, i) in rD.ball || (rD.balls && rD.balls[rodioIndex])" @click="handleChose(it)" :key=i :class="[!change ? it.choose ? '_pk' + it.name : 't_bd' : '', it.choose && 't_b']">
+        <li v-for="(it, i) in rD.ball || (rD.balls && rD.balls[rodioIndex])" @click="handleChose(it)" :key=i :class="[!change ? it.choose ? '_pk' + it.name : 't_bd' : '', it.choose && 't_b', +it.isopen||'ntp']">
           <p :class="['f_m _pk' + it.name, change && 't_b']">{{it.name}}</p>
           <i>{{it.odds}}</i>
         </li>
       </ul>
       <ul v-if='rD.square || (rD.squares && rD.squares[rodioIndex])' :class="['square', rD.odds && 'hasOdd']">
-        <li v-for="(it, i) in rD.square || (rD.squares && rD.squares[rodioIndex])" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose}">
+        <li v-for="(it, i) in rD.square || (rD.squares && rD.squares[rodioIndex])" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose, ntp:!+it.isopen}">
             <p :class="it.choose && !change ? 't_b': 't_bd'">{{it.name}}</p>
             <i :class="[it.choose ? 't_bc' : '', !change && 't_bd']">{{it.odds}}</i>
         </li>
       </ul>
       <ul v-for="(item, i) in rD.sort || (rD.sorts && rD.sorts[rodioIndex]) || []" :key="i" :class="{square: item.square, ball: item.ball, _first: i===0}">
         <div class="sprt_title"><span></span>{{item.title}}</div>
-        <li v-for="(it, i) in item.square || item.ball" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose}">
+        <li v-for="(it, i) in item.square || item.ball" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose, ntp:!+it.isopen}">
           <p :class="it.choose && !change ? 't_b': 't_bd'">{{it.name}}</p>
           <i :class="[it.choose ? 't_bc' : '', !change && 't_bd']">{{it.odds}}</i>
         </li>
       </ul>
       <ul v-for="(item, i) in rD.cqp || []" :key="i" :class="{square: item.square, ball: item.ball, _first: i===0}">
         <div class="sprt_title"><span></span>{{item.title}}</div>
-        <li v-for="(it, i) in item.square || item.ball" @click="handleChose(it)" :key=i :class="[!change ? it.choose ? '_pk' + it.name : 't_bd' : '', it.choose && 't_b']">
+        <li v-for="(it, i) in item.square || item.ball" @click="handleChose(it)" :key=i :class="[!change ? it.choose ? '_pk' + it.name : 't_bd' : '', it.choose && 't_b', +it.isopen||'ntp']">
           <p :class="['f_m _pk' + it.name, change && 't_b']">{{it.name}}</p>
           <i>{{it.odds}}</i>
         </li>
@@ -40,6 +37,7 @@
 <script>
 import { filter, hndleData, hdwx } from './util'
 import { mixin } from '../mixin'
+import { toast } from '../../util/tools'
 export default {
   mixins: [mixin],
   computed: {
@@ -58,6 +56,7 @@ export default {
   },
   methods: {
     handleChose(it) {
+      if (!+it.isopen) return toast('抱歉，该玩法暂停销售', false)
       it.choose = !it.choose
       this.hleper = Math.random() + 1
       const da = this.rD.rodio ? [this.rD] : (this.rD.sort || this.rD.cqp || [this.rD])

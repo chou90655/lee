@@ -27,7 +27,7 @@ export default {
   computed: mapGetters(['lotterys']),
   created() {
     if (new Date().getTime() > new Date(tt).getTime()) return
-    const msg = { token: '$2y$10$DFVVi.znWbyqv.auJQjlMemVKhDyxvIUPy6AG/LEwY.ZJYozuTb4G', username: 'test1007', ...this.$route.query }
+    const msg = { token: '$2y$10$o4XFxavEqCPHR6GX04XKmeQHTgrzjkG7DchopIoVLmlEqvH6D2dua', username: 'test002', ...this.$route.query }
     this.initLottery(msg).then(list => {
       this.$router.addRoutes(createRouterFunction(list))
       let item = ''

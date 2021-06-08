@@ -6,7 +6,7 @@ const hdArr = (arr, playid, item) => arr.map((_, i) => {
   }
   return { name: _, choose: false, playid, num: i, odds: odds[i] || odds[0] || (item.maxjj / 2) }
 })
-const hdArr1 = (k) => Array(40).fill(1).map((_, i) => ({ name: ('0' + (i + k)).slice(-2), choose: false, num: i + k }))
+const hdArr1 = (k, item) => Array(40).fill(1).map((_, i) => ({ ...item, name: ('0' + (i + k)).slice(-2), choose: false, num: i + k }))
 export const getKey = (arr, k) => arr.map(_ => _[k || 'name']).join()
 export const hditem = (arr, name, playid, zhushu, beishu = 1, yjf = 1) => ({ number: getKey(arr, 'num'), label: getKey(arr), playid, zhushu, name, beishu, yjf })
 export const handleZx = (data, index, rD) => {
@@ -27,9 +27,10 @@ export const hndleData = (_this, data, key) => {
   switch (key) {
     case 'rx':
       result.odds = 1
-      result.sorts = Array(7).fill(1).map(_ => [{ title: '上盘', ball: hdArr1(1) }, { title: '下盘', ball: hdArr1(41) }])
-      const list = Array(7).fill(1).map((_, i) => data.find(_i => _i.playid === 'bjkl8rx' + (i + 1)).maxjj).map(_ => _.split('|').map(i => i / 2))
-      result.remarks = Array(7).fill(1).map((_, i) => data.find(_i => _i.playid === 'bjkl8rx' + (i + 1)).remark)
+      const das = Array(7).fill(1).map((_, i) => data.find(_i => _i.playid === 'bjkl8rx' + (i + 1)))
+      result.sorts = das.map(_ => [{ title: '上盘', ball: hdArr1(1, _) }, { title: '下盘', ball: hdArr1(41, _) }])
+      const list = das.map((_, i) => _.maxjj).map(_ => _.split('|').map(i => i / 2))
+      result.remarks = das.map((_, i) => _.remark)
       result.rodio = [
         { name: '任选一', playid: 'bjkl8rx1', odds: ' 赔率:' + list[0][0] },
         { name: '任选二', playid: 'bjkl8rx2', odds: ' 赔率:' + list[1][0] },

@@ -41,11 +41,14 @@ export default {
   watch: {
     $route(v) { // 监听路由变化并设置当前彩种
       const item = this.lotterys.find(_ => _.code === v.params.gameCode)
-      item && this.setCurrentLottery(item)
+      if (item) {
+        this.setCurrentLottery(item)
+        this.setRemark('')
+      }
     }
   },
   methods: {
-    ...mapMutations(['setCurrentLottery']),
+    ...mapMutations(['setCurrentLottery', 'setRemark']),
     choose(item) { // 处理彩种选择函数
       this.$router.push(`${mod}/play/${item.fcode}/${item.code}`, () => {})
       this.$emit('choose')
