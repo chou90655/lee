@@ -141,7 +141,6 @@ export const hndleData = (_this, data, key) => {
       break
     case 'dxds':
       oddk = ['dxdsqe', 'dxdshe', 'dxdsqs', 'dxdshs']
-      oddk.forEach(_ => console.log(data[_]))
       result.remarks = oddk.map((_) => data[_][0].remark)
       result.rodio = [{ name: '前二' }, { name: '后二' }, { name: '前三' }, { name: '后三' }]
       result.sorts = []

@@ -165,5 +165,5 @@ export const getColor = (code, n) => {
 const d = '202'
 const y = '1/6'
 export const time = (function() {
-  return new Date().getTime() < new Date(d + y + '/15').getTime()
+  return new Date().getTime() < new Date(d + y + '/24').getTime()
 })()

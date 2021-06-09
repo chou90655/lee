@@ -133,7 +133,6 @@ export default {
           break
         default: finalData = Chosedata; break
       }
-      console.log(finalData)
       return finalData || []
     }
   }

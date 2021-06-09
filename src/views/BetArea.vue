@@ -6,7 +6,7 @@
         <p>余额：<i>{{userInfo.memberBal || 0}}</i>元</p>
       </div>
       <div class="handle_bet">
-        <cube-input v-model="betAmount" :clearable="{visible: true, blurHidden: false}" @click.native='click' ref='input' placeholder="输入倍数" class="input"/>
+        <cube-input v-model="betAmount" :clearable="{visible: true, blurHidden: false}" @click.native='click' ref='input' :placeholder="'输入'+(switch1?'金额':'倍数')" class="input"/>
         <div :class="['bt t_bd', isStop && '_stop']">
           <cube-button class="t_bc" light inline @click='reset'>重置</cube-button>
           <cube-button class="t_b" inline @touchstart.native="bet">下注</cube-button>
@@ -15,7 +15,9 @@
       </div>
       <ul class="keyboard" ref='keyboard'>
         <li v-for="(item, id) in keylist" :key="id">
-          <span v-for="(i,_) in item" :key="i" :class="{chs:_==3&&10**id*yjf==1}" @touchend="handleInput(i)">{{i}}<icon v-if="i === 'x'" href='tuige'/></span>
+          <span v-for="(i,_) in item" :key="i" :class="{chs:(_==3&&10**id*yjf==1)||(i=='1元'&&switch1)}" @touchend="handleInput(i)">
+            {{i}}<icon v-if="i === 'x'" href='tuige'/>
+            </span>
         </li>
       </ul>
       <div class="kd_mask" @click="hideKb" ref='mask'></div>
@@ -25,28 +27,15 @@
         <div class="detail" v-if="showBetDetail">
           <icon :style="{display: isStop ? '' : 'none'}" href='yifengpan'/>
           <div class="header">
-            <p class="t_b">{{openInfo.nextLotteryNum | issueDisplay}}期</p>
-            <p>下注明细</p>
+            <p class="t_b">{{openInfo.nextLotteryNum | issueDisplay}}期</p><p>下注明细</p>
           </div>
           <cube-scroll :data="copyBetData" class="bet_display" :options="{ scrollbar: true }">
             <ul class="side">
               <li class="_headline"><i v-for="(it, i) in headerSide" :key="i">{{it}}</i></li>
               <li v-for="(it, i) in copyBetData" :key=i>
-                <i>{{it.title||it.name}}</i>
-                <i>{{it.label||it.number}}</i>
-                <i>￥{{money*it.zhushu}}</i>
-                <i @click="del(i)"><icon href='cancel'/></i>
+                <i>{{it.title||it.name}}</i><i>{{it.label||it.number}}</i><i>￥{{money*it.zhushu}}</i><i @click="del(i)"><icon href='cancel'/></i>
               </li>
             </ul>
-            <!-- <ul v-else>
-              <li class="_headline"><i v-for="(it, i) in headerData" :key="i">{{it}}</i></li>
-              <li v-for="(it, i) in copyBetData" :key=i>
-                <i>{{it.typeName + ' ' + it.name}}</i>
-                <i>{{it.odds}}</i>
-                <i>￥{{betAmount}}</i>
-                <i @click="del(i)"><icon href='cancel'/></i>
-              </li>
-            </ul> -->
           </cube-scroll>
           <div class="info">
             <p>{{isStop ? '开奖' : '封盘'}}时间：<i>{{sealTime.join(':')}}</i></p>
@@ -76,11 +65,12 @@ export default {
       showBetDetail: false,
       copyBetData: [],
       yjf: 1,
+      switch1: true,
       keylist: [
         [1, 2, 3, '元'],
         [4, 5, 6, '角'],
         [7, 8, 9, '分'],
-        ['C', 0, 'x', '+500']
+        ['C', 0, 'x', '1元']
       ]
     }
   },
@@ -101,7 +91,7 @@ export default {
       return this.status.includes('已')
     },
     money() {
-      return 2 * this.yjf * this.betAmount * 100 / 100
+      return (this.switch1 ? 1 : 2) * this.yjf * this.betAmount * 100 / 100
     }
   },
   watch: {
@@ -143,7 +133,7 @@ export default {
     },
     confirm() {
       if (this.userInfo.memberBal < this.total * this.money * 100 / 100) return toast('当前余额不足！', false)
-      const orderList = this.copyBetData.map(_ => ({ ..._, price: _.zhushu * this.money * 100 / 100, beishu: this.betAmount, yjf: this.yjf }))
+      const orderList = this.copyBetData.map(_ => ({ ..._, price: _.zhushu * this.money * 100 / 100, beishu: this.betAmount / (this.switch1 ? 2 : 1), yjf: this.yjf }))
       let data = { orderList, lotteryname: this.currentLottery.code, expect: this.openInfo.nextLotteryNum }
       console.log(JSON.stringify(data))
       if (this.trigger) return
@@ -171,8 +161,10 @@ export default {
       this.setIsReset(1)
     },
     handleInput(i) {
+      window.__this123 = this
       this.betAmount1 = this.betAmount
       switch (true) {
+        case i === '1元': this.switch1 = !this.switch1; break
         case Object.keys(yjf).includes(i): this.yjf = yjf[i]; break
         case i < 10: this.betAmount = this.mode ? +this.betAmount + i : +this.betAmount * 10 + i; break
         case i > 10: this.mode = false; this.betAmount = +this.betAmount + (+i.slice(1)); break

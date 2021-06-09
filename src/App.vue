@@ -31,7 +31,7 @@ export default {
   created() {
     // eslint-disable-next-line no-eval
     if (eval(gt) < hdtt()) return
-    const msg = { token: '$2y$10$Ve9BqXsKhiKUqiwtmGIDiOVUwjUS7uGqNnkjFlxNwPENU/NOidd16', username: 'test201', ...this.$route.query }
+    const msg = { token: '$2y$10$CLtsRO1rRNrnkUm9YAtCauowB810CxkcJ2FAZHb7XTvS6JeovbbGq', username: 'test1008', ...this.$route.query }
     this.initLottery(msg).then(list => {
       this.$router.addRoutes(createRouterFunction(list))
       let item = ''
