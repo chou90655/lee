@@ -4,7 +4,7 @@ const hdArr = (arr, playid, item) => arr.map((_, i) => {
   if (['bjkl8sxp', 'bjkl8jop'].includes(item.playid)) {
     odds = item.maxjj.split('|').map(_ => _ / 2)
   }
-  return { name: _, choose: false, playid, num: '' + i, odds: odds[i] || odds[0] || (item.maxjj / 2) }
+  return { ...item, name: _, choose: false, playid, num: '' + i, odds: odds[i] || odds[0] || (item.maxjj / 2) }
 })
 const hdArr1 = (k, item) => Array(40).fill(1).map((_, i) => ({ ...item, name: ('0' + (i + k)).slice(-2), choose: false, num: i + k }))
 export const getKey = (arr, k) => arr.map(_ => _[k || 'name']).join()

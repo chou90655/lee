@@ -182,7 +182,6 @@ export default {
 </script>
 <style lang="stylus" scoped>
   .bet_area
-    height 94px
     .t_b:active
       opacity .8
     .inner

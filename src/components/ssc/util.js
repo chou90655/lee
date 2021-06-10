@@ -49,6 +49,7 @@ export const filter = (data) => {
       case tcode.includes('lmp_zs'): handleLs(res.zsq, _); break // 中三球
       case tcode.includes('lmp_hs'): handleLs(res.hsq, _); break // 后三球
       case tcode.includes('dweid'):res.dwd = yxfs(_); break // 定位胆
+      case ['wxzhixds'].includes(tcode): res[_.playid] = [_]; break // 单式 五星
       case ['exzhixfsh', 'exzhixfsq', 'sxzhixfsz', 'sxzhixfsq', 'sxzhixfsh', 'sxzhixdsh', 'sxzhixdsq', 'sxzhixdsz'].includes(tcode): res[_.playid] = yxfs(_); break // 后二 前二 前三 中三 后三
       case ['kuaduqe', 'exzuxfsh'].includes(tcode): res[_.playid] = yxfs(_); break // 后二 前二 前三 中三 后三 组选
       case ['exzuxfsq', 'kuaduhe', 'kuaduhs', 'kuaduqs', 'kuaduzs'].includes(tcode): res[_.playid] = yxfs(_); break // 后二 前二 前三 中三 后三 跨度
@@ -88,13 +89,14 @@ export const hndleData = (_this, data, key) => {
       result.sorts.push([{ ball: copy(data.bdw4x2m) }]) // 二码不定位
       break
     case 'wx':
-      oddk = ['wxzhixfs', 'wxzxyel', 'wxzxls', 'wxzxsl', 'wxzxel', 'wxzxyl', 'wxzxw', 'bdw5x1m', 'bdw5x2m', 'bdw5x3m', 'qwyffs', 'qwhscs', 'qwsxbx', 'qwsjfc']
+      oddk = ['wxzhixfs', 'wxzhixds', 'wxzxyel', 'wxzxls', 'wxzxsl', 'wxzxel', 'wxzxyl', 'wxzxw', 'bdw5x1m', 'bdw5x2m', 'bdw5x3m', 'qwyffs', 'qwhscs', 'qwsxbx', 'qwsjfc']
       result.remarks = oddk.map((_) => data[_][0].remark)
-      result.rodio = ['复式', '组选120', '组选60', '组选30', '组选20', '组选10', '组选5', '一码不定位',
-        '二码不定位', '三码不定位', '一帆风顺', '好事成双', '三星报喜', '四季发财'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
+      result.rodio = ['复式', '单式', '组选120', '组选60', '组选30', '组选20', '组选10', '组选5', '一码不定位',
+        '二码不定位', '三码不定位', '一帆风顺', '好事成双', '三星报喜', '四季发财'].map((name, i) => ({ name, odds: i === 1 ? '' : data[oddk[i]][0].odds }))
       result.sorts = []
       result.odds = 1
       result.sorts.push(['万位', '千位', '百位', '十位', '个位'].map(_ => ({ title: _, ball: copy(data.wxzhixfs) }))) // 复式
+      result.sorts.push([{ single: 1 }]) // 单式
       result.sorts.push([{ ball: copy(data.wxzxyel) }]) // 组选120
       result.sorts.push([{ title: '二重号位', ball: copy(data.wxzxls) }, { title: '单号位', ball: copy(data.wxzxls) }])// 组选60
       result.sorts.push([{ title: '二重号位', ball: copy(data.wxzxsl) }, { title: '单号位', ball: copy(data.wxzxsl) }])// 组选30

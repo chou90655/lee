@@ -1,5 +1,6 @@
 
 import { mapState, mapMutations } from '../util/tools'
+import Single from './single.vue'
 export const resultMixin = {
   computed: { ...mapState(['openInfo']) }
 }
@@ -49,6 +50,7 @@ export const mixin = {
       }
     }
   },
+  components: { Single },
   props: {
     play: String,
     change: Number

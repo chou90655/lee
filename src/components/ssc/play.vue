@@ -1,12 +1,11 @@
 <template>
   <div class="display">
     <cube-scroll v-if='rD.rodio' :data="rD.rodio" class="rodio" direction="horizontal" ref='rodio'>
-      <ul>
-        <li v-for="(it, i) in rD.rodio" :class="{t_bc: rodioIndex === i}" @click="rodioIndex = i" :key=i>{{it.name}}</li>
-      </ul>
+      <ul><li v-for="(it, i) in rD.rodio" :class="{t_bc: rodioIndex === i}" @click="rodioIndex = i" :key=i>{{it.name}}</li></ul>
     </cube-scroll>
-    <cube-scroll class="main_play" :options="options" ref=mainPlay>
-      <p v-if="rD.odds" class="odds t_bc"> 赔率：{{rD.rodio ? rD.rodio[rodioIndex].odds : rD.odds}}</p>
+    <single v-if="rD.sorts&&rD.sorts[rodioIndex][0].single"></single>
+    <cube-scroll v-else class="main_play" :options="options" ref=mainPlay>
+      <p v-if="rD.rodio ? rD.rodio[rodioIndex].odds : rD.odds" class="odds t_bc"> 赔率：{{rD.rodio ? rD.rodio[rodioIndex].odds : rD.odds}}</p>
       <ul v-if='rD.ball || (rD.balls && rD.balls[rodioIndex])' :class="['ball', rD.odds && 'hasOdd']">
         <li v-for="(it, i) in rD.ball || (rD.balls && rD.balls[rodioIndex])" @click="handleChose(it)" :key=i :class="{t_b: change && it.choose, ntp:!+it.isopen}">
           <p :class="it.choose && !change ? 't_b': 't_bd'">{{it.name}}</p>
@@ -33,7 +32,9 @@
 import { filter, hndleData, hdwx, hdsprd, hdarrdl } from './util'
 import { mixin } from '../mixin'
 import { toast } from '../../util/tools'
+import single from '../single.vue'
 export default {
+  components: { single },
   mixins: [mixin],
   computed: {
     rD() {
@@ -60,7 +61,6 @@ export default {
       this.hleper = Math.random() + 1
       this.setBetData(this.CalcLen(this.rD.data.filter(_ => _.choose)))
     },
-
     CalcLen(Chosedata) {
       const { sort, ball, sorts } = this.rD
       const da = ball ? [this.rD] : sort || sorts[this.rodioIndex]

@@ -1,5 +1,5 @@
 <template>
-  <div id="e_l" ref="e_l" :class="['e_l', tran && 'tran', showlsit && 'ready']">
+  <div id="e_l" ref="e_l" :class="['e_l', tran && 'tran', showlsit && 'ready']" :style="{height}">
     <lottery-list @choose='tran = 0' :path='path' v-if="showlsit"/>
     <transition name="page-move">
       <router-view></router-view>
@@ -21,12 +21,13 @@ export default {
     return {
       tran: 0,
       path: '',
-      showlsit: 0
+      showlsit: 0,
+      height: document.documentElement.clientHeight + 'px'
     }
   },
   computed: mapGetters(['lotterys']),
   beforeCreate() {
-    sessionStorage.clear()
+    // sessionStorage.clear()
   },
   created() {
     // eslint-disable-next-line no-eval
@@ -93,7 +94,6 @@ export default {
 #e_l
   height 100%
   display flex
-  flex-wrap: nowrap
   &.ready
     transform translateX(-85.33%)
   &.tran
