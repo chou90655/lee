@@ -93,9 +93,14 @@ export default {
 <style lang="stylus" scoped>
 #e_l
   height 100%
+  width 695px
+  position absolute
+  overflow hidden
   display flex
+  top 0
+  left 0
   &.ready
-    transform translateX(-85.33%)
+    transform translateX(-320px)
   &.tran
     transform translateX(0)
   .mask
@@ -103,7 +108,7 @@ export default {
     width 100%
     height 100%
     background rgba(0,0,0,0.6)
-    left 85.33%
+    left 320px
     z-index 100
     top 0
 </style>

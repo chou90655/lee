@@ -3,7 +3,7 @@
     <cube-scroll v-if='rD.rodio' :data="rD.rodio" class="rodio" direction="horizontal" ref='rodio'>
       <ul><li v-for="(it, i) in rD.rodio" :class="{t_bc: rodioIndex === i}" @click="rodioIndex = i" :key=i>{{it.name}}</li></ul>
     </cube-scroll>
-    <single v-if="rD.sorts&&rD.sorts[rodioIndex][0].single"></single>
+    <single v-if="rD.rodio&&rD.sorts[rodioIndex][0].sg" @data='hddata' :data="rD.sorts[rodioIndex][0]"></single>
     <cube-scroll v-else class="main_play" :options="options" ref=mainPlay>
       <p v-if="rD.rodio ? rD.rodio[rodioIndex].odds : rD.odds" class="odds t_bc"> 赔率：{{rD.rodio ? rD.rodio[rodioIndex].odds : rD.odds}}</p>
       <ul v-if='rD.ball || (rD.balls && rD.balls[rodioIndex])' :class="['ball', rD.odds && 'hasOdd']">
@@ -52,6 +52,9 @@ export default {
     }
   },
   methods: {
+    hddata(da) {
+      this.setBetData([{ ...this.rD.sorts[this.rodioIndex][0].data, number: da.map(_ => _.split('').join()).join('|'), zhushu: da.length }])
+    },
     handleChose(it) {
       if (!+it.isopen) return toast('抱歉，该玩法暂停销售', false)
       if ((['qs', 'zs', 'hs'].includes(this.play) && this.rodioIndex === 6) || (['qe', 'he'].includes(this.play) && this.rodioIndex === 5)) {

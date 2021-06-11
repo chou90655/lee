@@ -102,12 +102,11 @@ export default {
 </script>
 <style lang="stylus" scoped>
   .layout
-    flex-shrink 0
-    background-color #fff
-    width 100%
+    width 375px
     box-shadow -3px 0 8px rgba(0,0,0,.3)
     z-index: 1
     position relative
+    height 100%
     header
       font-size 18px
       height 48px

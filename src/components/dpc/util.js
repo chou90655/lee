@@ -14,6 +14,7 @@ export const filter = (data) => {
     const heArr = ['pl3h2zxfs', 'pl3h2kd', 'pl3hx2fs', 'pl3h2zxbd'] // h二 组选复式 跨度 直选复式 包胆
     switch (true) {
       case [...qeArr, ...heArr, ...sxArr].includes(tcode): res[tcode] = hdnb(_); break
+      case ['pl3zxds', 'pl3zuxhh', 'pl3zsds', 'pl3zlds', 'pl3hx2ds', 'pl3h2zxds', 'pl3qx2ds', 'pl3q2zxds'].includes(tcode): res[_.playid] = [_]; break // 单式
       case ['pl3hzzx'].includes(tcode): res[tcode] = hdnb(_, 28); break // 三星直选和值
       case ['pl3zuxhz'].includes(tcode): res[tcode] = hdnb(_, 27).slice(1); break // 三星组选和值
       case ['pl3q2zuxhz', 'pl3h2zuxhz'].includes(tcode): res[tcode] = hdnb(_, 18).slice(1); break // 2组选和值
@@ -29,27 +30,31 @@ export const hndleData = (_this, data, key) => {
   _this.storeData = data
   let oddk
   switch (key) {
-    case 'he':
-      oddk = ['pl3hx2fs', 'pl3h2zxhz', 'pl3h2kd', 'pl3h2zxfs', 'pl3h2zuxhz', 'pl3h2zxbd']
+    case 'he': // 'pl3hx2ds','pl3h2zxds','pl3qx2ds','pl3q2zxds'
+      oddk = ['pl3hx2fs', 'pl3hx2ds', 'pl3h2zxhz', 'pl3h2kd', 'pl3h2zxfs', 'pl3h2zxds', 'pl3h2zuxhz', 'pl3h2zxbd']
       result.remarks = oddk.map((_) => data[_][0].remark)
-      result.rodio = [{ name: '直选复式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选和值' }, { name: '包胆', sg: 1 }] // 前二
+      result.rodio = [{ name: '直选复式' }, { name: '直选单式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选单式' }, { name: '组选和值' }, { name: '包胆', sg: 1 }] // 前二
       result.sorts = []
       result.sorts.push(['十位', '个位'].map(title => ({ title, ball: copy(data.pl3hx2fs) }))) // 直选复式
+      result.sorts.push([{ sg: 1, data: data.pl3hx2ds[0], l: 2 }]) // 单式
       result.sorts.push([{ ball: copy(data.pl3h2zxhz) }]) // 直选和值
       result.sorts.push([{ ball: copy(data.pl3h2kd) }]) // 跨度
       result.sorts.push([{ ball: copy(data.pl3h2zxfs) }]) // 组选复式
+      result.sorts.push([{ sg: 1, data: data.pl3h2zxds[0], l: 2 }]) // 单式
       result.sorts.push([{ ball: copy(data.pl3h2zuxhz) }]) // 前二 组选和值
       result.sorts.push([{ ball: copy(data.pl3h2zxbd) }]) // 包胆
       break
     case 'qe':
-      oddk = ['pl3qx2fs', 'pl3q2zxhz', 'pl3q2kd', 'pl3q2zxfs', 'pl3q2zuxhz', 'pl3q2zxbd']
+      oddk = ['pl3qx2fs', 'pl3qx2ds', 'pl3q2zxhz', 'pl3q2kd', 'pl3q2zxfs', 'pl3q2zxds', 'pl3q2zuxhz', 'pl3q2zxbd']
       result.remarks = oddk.map((_) => data[_][0].remark)
-      result.rodio = [{ name: '直选复式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选和值' }, { name: '包胆', sg: 1 }] // 前二
+      result.rodio = [{ name: '直选复式' }, { name: '直选单式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选单式' }, { name: '组选和值' }, { name: '包胆', sg: 1 }] // 前二
       result.sorts = []
       result.sorts.push(['百位', '十位'].map(title => ({ title, ball: copy(data.pl3qx2fs) }))) // 直选复式
+      result.sorts.push([{ sg: 1, data: data.pl3qx2ds[0], l: 2 }]) // 单式
       result.sorts.push([{ ball: copy(data.pl3q2zxhz) }]) // 直选和值
       result.sorts.push([{ ball: copy(data.pl3q2kd) }]) // 跨度
       result.sorts.push([{ ball: copy(data.pl3q2zxfs) }]) // 组选复式
+      result.sorts.push([{ sg: 1, data: data.pl3q2zxds[0], l: 2 }]) // 单式
       result.sorts.push([{ ball: copy(data.pl3q2zuxhz) }]) // 前二 组选和值
       result.sorts.push([{ ball: copy(data.pl3q2zxbd) }]) // 包胆
       break
@@ -65,18 +70,23 @@ export const hndleData = (_this, data, key) => {
       result.sorts.push([{ ball: copy(data.pl3ymbdw) }]) // 一码
       result.sorts.push([{ ball: copy(data.pl3rmbdw) }]) // 二码
       break
-    case 'sx':
-      oddk = ['pl3zxfs', 'pl3hzzx', 'pl3kd', 'pl3zuxhz', 'pl3zux3', 'pl3zux6', 'pl3zuxbd']
+    case 'sx': // 'pl3zxds', 'pl3zuxhh', 'pl3zsds', 'pl3zlds'
+      oddk = ['pl3zxfs', 'pl3zxds', 'pl3hzzx', 'pl3kd', 'pl3zuxhz', 'pl3zux3', 'pl3zux6', 'pl3zuxbd', 'pl3zuxhh', 'pl3zsds', 'pl3zlds']
       result.remarks = oddk.map((_) => data[_][0].remark)
-      result.rodio = [{ name: '直选复式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选和值' }, { name: '组三' }, { name: '组六' }, { name: '包胆', sg: 1 }]
+      result.rodio = [{ name: '直选复式' }, { name: '直选单式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选和值' }, { name: '组三' }, { name: '组六' }, { name: '包胆', bd: 1 },
+        { name: '混合组选' }, { name: '组三单式' }, { name: '组六单式' }]
       result.sorts = []
       result.sorts.push(['百位', '十位', '个位'].map(title => ({ title, ball: copy(data.pl3zxfs) }))) // 直选复式
+      result.sorts.push([{ sg: 1, data: data.pl3zxds[0], l: 3 }]) // 单式
       result.sorts.push([{ ball: copy(data.pl3hzzx) }]) // 直选和值
       result.sorts.push([{ ball: copy(data.pl3kd) }]) // 跨度
       result.sorts.push([{ ball: copy(data.pl3zuxhz) }]) // 三星组选和值
       result.sorts.push([{ ball: copy(data.pl3zux3) }]) // 组三
       result.sorts.push([{ ball: copy(data.pl3zux6) }]) // 组六
       result.sorts.push([{ ball: copy(data.pl3zuxbd) }]) // 包胆
+      result.sorts.push([{ sg: 1, data: data.pl3zuxhh[0], l: 3 }]) // 单式
+      result.sorts.push([{ sg: 1, data: data.pl3zsds[0], l: 3 }]) // 单式
+      result.sorts.push([{ sg: 1, data: data.pl3zlds[0], l: 3 }]) // 单式
       break
     case 'lm':
       oddk = ['dxdsq2', 'dxdsh2']

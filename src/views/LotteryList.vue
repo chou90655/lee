@@ -62,8 +62,8 @@ export default {
 
 <style lang="stylus" scoped>
   .drawer
-    flex-shrink 0
-    width 85.33%
+    width 320px
+    height 100%
     header
       height 50px
       line-height 50px
