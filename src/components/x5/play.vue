@@ -57,10 +57,11 @@ export default {
     handleChose(it, j) {
       if (!+it.isopen) return toast('抱歉，该玩法暂停销售', false)
       const { rodio, sorts } = this.rD
+      const dd = !it.choose
       if (rodio && rodio[this.rodioIndex] && rodio[this.rodioIndex].hc) {
         sorts[this.rodioIndex].forEach(_ => ((_.ball || _.square)[j].choose = false))
       }
-      it.choose = !it.choose
+      it.choose = dd
       this.hleper = Math.random() + 1
       this.setBetData(this.CalcLen(this.rD.data.filter(_ => _.choose)))
     },

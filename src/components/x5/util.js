@@ -72,7 +72,7 @@ export const hndleData = (_this, data, key) => {
     case 'em': // 'x5qszxds','x5qsds','x5qezxds','x5qeds'
       oddk = ['x5qefs', 'x5qeds', 'x5qezx', 'x5qezxds', 'x5qedt']
       result.remarks = Array(5).fill(1).map((_, i) => data[oddk[i]][0].remark)
-      result.rodio = ['直选复式', '直选单式', '组选复式', '组选单式', '组选胆拖'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds, hc: i === 2 }))
+      result.rodio = ['直选复式', '直选单式', '组选复式', '组选单式', '组选胆拖'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds, hc: i === 4 }))
       result.sorts = []
       result.odds = 1
       result.sorts.push(['第一位', '第二位'].map(_ => ({ title: _, ball: copy(data.x5qefs) }))) // 直选复式
@@ -84,7 +84,7 @@ export const hndleData = (_this, data, key) => {
     case 'sm':
       oddk = ['x5qsfs', 'x5qsds', 'x5qszx', 'x5qszxds', 'x5qsdt']
       result.remarks = Array(5).fill(1).map((_, i) => data[oddk[i]][0].remark)
-      result.rodio = ['直选复式', '直选单式', '组选复式', '组选单式', '组选胆拖'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds, hc: i === 2 }))
+      result.rodio = ['直选复式', '直选单式', '组选复式', '组选单式', '组选胆拖'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds, hc: i === 4 }))
       result.sorts = []
       result.odds = 1
       result.sorts.push(['第一位', '第二位', '第三位'].map(_ => ({ title: _, ball: copy(data.x5qsfs) }))) // 直选复式
