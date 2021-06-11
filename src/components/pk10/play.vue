@@ -3,7 +3,8 @@
     <cube-scroll v-if='rD.rodio' :data="rD.rodio" class="rodio" direction="horizontal" ref='rodio'>
       <ul><li v-for="(it, i) in rD.rodio" :class="{t_bc: rodioIndex === i}" @click="rodioIndex = i" :key=i>{{it.name}}</li></ul>
     </cube-scroll>
-    <cube-scroll class="main_play" :options="options" ref=mainPlay>
+    <single v-if="rD.rodio&&rD.sorts[rodioIndex][0]&&rD.sorts[rodioIndex][0].sg" @data='hddata' :data="rD.sorts[rodioIndex][0]"></single>
+    <cube-scroll v-else class="main_play" :options="options" ref=mainPlay>
       <p v-if="rD.odds" class="odds t_bc"> 赔率：{{rD.rodio ? rD.rodio[rodioIndex].odds : rD.odds}}</p>
       <ul v-if='rD.ball || (rD.balls && rD.balls[rodioIndex])' :class="['ball', change && 'change', rD.odds && 'hasOdd']">
         <li v-for="(it, i) in rD.ball || (rD.balls && rD.balls[rodioIndex])" @click="handleChose(it)" :key=i :class="[!change ? it.choose ? '_pk' + it.name : 't_bd' : '', it.choose && 't_b', +it.isopen||'ntp']">
@@ -24,7 +25,7 @@
           <i :class="[it.choose ? 't_bc' : '', !change && 't_bd']">{{it.odds}}</i>
         </li>
       </ul>
-      <ul v-for="(item, i) in rD.cqp || []" :key="i" :class="{square: item.square, ball: item.ball, _first: i===0}">
+      <ul v-for="(item, i) in rD.cqp ||(rD.cqps && rD.cqps[rodioIndex])|| []" :key="i" :class="{square: item.square, ball: item.ball, _first: i===0}">
         <div class="sprt_title"><span></span>{{item.title}}</div>
         <li v-for="(it, i) in item.square || item.ball" @click="handleChose(it)" :key=i :class="[!change ? it.choose ? '_pk' + it.name : 't_bd' : '', it.choose && 't_b', +it.isopen||'ntp']">
           <p :class="['f_m _pk' + it.name, change && 't_b']">{{it.name}}</p>
@@ -56,11 +57,14 @@ export default {
     }
   },
   methods: {
+    hddata(da) {
+      this.setBetData([{ ...this.rD.sorts[this.rodioIndex][0].data, number: da.map(_ => _.join()).join('|'), zhushu: da.length }])
+    },
     handleChose(it) {
       if (!+it.isopen) return toast('抱歉，该玩法暂停销售', false)
       it.choose = !it.choose
       this.hleper = Math.random() + 1
-      const da = this.rD.rodio ? [this.rD] : (this.rD.sort || this.rD.cqp || [this.rD])
+      const da = this.rD.cqps ? this.rD.cqps[0] : this.rD.rodio ? [this.rD] : (this.rD.sort || this.rD.cqp || [this.rD])
       let data = []
       switch (true) {
         case ['lm', 'gyh', 'gyj', 'swh', '1z5', '6z10'].includes(this.play):data = this.rD.data.filter(_ => _.choose).map(_ => ({ ..._, number: _.name, zhushu: 1 })); break

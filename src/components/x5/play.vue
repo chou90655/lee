@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     hddata(da) {
-      this.setBetData([{ ...this.rD.sorts[this.rodioIndex][0].data, number: da.map(_ => _.split('').join()).join('|'), zhushu: da.length }])
+      this.setBetData([{ ...this.rD.sorts[this.rodioIndex][0].data, number: da.map(_ => _.join()).join('|'), zhushu: da.length }])
     },
     handleChose(it, j) {
       if (!+it.isopen) return toast('抱歉，该玩法暂停销售', false)
@@ -72,15 +72,15 @@ export default {
         case 'sm' :
           switch (this.rodioIndex) {
             case 0: finalData = hdwx(da, Array(3).fill({ n: 1, t: 7 })); break
-            case 1: finalData = hdwx(da, Array(1).fill({ n: 3 })); break
-            case 2: finalData = hdwx(da, [{ n: 1 }, { n: 2 }]); break
+            case 2: finalData = hdwx(da, Array(1).fill({ n: 3 })); break
+            case 4: finalData = hdwx(da, [{ n: 1 }, { n: 2 }]); break
           }
           break
         case 'em' :
           switch (this.rodioIndex) {
             case 0: finalData = hdwx(da, Array(2).fill({ n: 1, t: 7 })); break
-            case 1: finalData = hdwx(da, Array(1).fill({ n: 2 })); break
-            case 2: finalData = hdwx(da, [{ n: 1 }, { n: 1 }]); break
+            case 2: finalData = hdwx(da, Array(1).fill({ n: 2 })); break
+            case 4: finalData = hdwx(da, [{ n: 1 }, { n: 1 }]); break
           }
           break
         case 'rxdt' :

@@ -15,6 +15,7 @@ export default {
     { 'label': '定位胆', 'value': 'dwd' },
     { 'label': '趣味型', 'value': 'qwx' },
     { 'label': '任选复式', 'value': 'rxfs' },
+    { 'label': '任选单式', 'value': 'rxds' },
     { 'label': '任选胆拖', 'value': 'rxdt' }
   ],
 

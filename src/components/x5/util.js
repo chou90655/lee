@@ -20,6 +20,7 @@ export const filter = (data) => {
       case ['x5czw'].includes(tcode): res[tcode] = hdczw(_); break //  猜中位
       case tcode.includes('x5rx') && !tcode.includes('x5rxds'): res[tcode] = yxfs(_); break // 任选复式
       case tcode.includes('x5dt'): res[tcode] = yxfs(_); break // 胆拖
+      case tcode.includes('x5rxds'): res[tcode] = [_]; break // 任选单式
     }
   })
   return res
@@ -44,6 +45,12 @@ export const hndleData = (_this, data, key) => {
       result.odds = 1
       result.sorts = oddk.map(_ => [{ ball: copy(data[_]) }])
       break
+    case 'rxds':
+      oddk = ['x5rxds1z1', 'x5rxds2z2', 'x5rxds3z3', 'x5rxds4z4', 'x5rxds5z5', 'x5rxds6z5', 'x5rxds7z5', 'x5rxds8z5']
+      result.remarks = Array(8).fill(1).map((_, i) => data[oddk[i]][0].remark)
+      result.rodio = ['一中一', '二中二', '三中三', '四中四', '五中五', '六中五', '七中五', '八中五'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds }))
+      result.sorts = oddk.map((_, i) => [{ sg: 1, data: data[_][0], l: i + 1, bal: 1, max: 11 }])
+      break
     case 'qwx':
       oddk = ['x5dds', 'x5czw']
       result.rodio = ['定单双', '猜中位'].map((name, i) => ({ name }))
@@ -64,26 +71,26 @@ export const hndleData = (_this, data, key) => {
       break
     case 'em': // 'x5qszxds','x5qsds','x5qezxds','x5qeds'
       oddk = ['x5qefs', 'x5qeds', 'x5qezx', 'x5qezxds', 'x5qedt']
-      result.remarks = Array(3).fill(1).map((_, i) => data[oddk[i]][0].remark)
+      result.remarks = Array(5).fill(1).map((_, i) => data[oddk[i]][0].remark)
       result.rodio = ['直选复式', '直选单式', '组选复式', '组选单式', '组选胆拖'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds, hc: i === 2 }))
       result.sorts = []
       result.odds = 1
       result.sorts.push(['第一位', '第二位'].map(_ => ({ title: _, ball: copy(data.x5qefs) }))) // 直选复式
-      result.sorts.push([{ sg: 1, data: data.x5qeds[0], l: 3, bal: 1 }]) // 单式
+      result.sorts.push([{ sg: 1, data: data.x5qeds[0], l: 3, bal: 1, max: 11 }]) // 单式
       result.sorts.push([{ ball: copy(data.x5qezx) }]) // 组选复式
-      result.sorts.push([{ sg: 1, data: data.x5qezxds[0], l: 3, bal: 1 }]) // 单式
+      result.sorts.push([{ sg: 1, data: data.x5qezxds[0], l: 3, bal: 1, max: 11 }]) // 单式
       result.sorts.push(['胆码', '拖码'].map(_ => ({ title: _, ball: copy(data.x5qedt) }))) // 组选胆拖
       break
     case 'sm':
       oddk = ['x5qsfs', 'x5qsds', 'x5qszx', 'x5qszxds', 'x5qsdt']
-      result.remarks = Array(3).fill(1).map((_, i) => data[oddk[i]][0].remark)
+      result.remarks = Array(5).fill(1).map((_, i) => data[oddk[i]][0].remark)
       result.rodio = ['直选复式', '直选单式', '组选复式', '组选单式', '组选胆拖'].map((name, i) => ({ name, odds: data[oddk[i]][0].odds, hc: i === 2 }))
       result.sorts = []
       result.odds = 1
       result.sorts.push(['第一位', '第二位', '第三位'].map(_ => ({ title: _, ball: copy(data.x5qsfs) }))) // 直选复式
-      result.sorts.push([{ sg: 1, data: data.x5qsds[0], l: 3, bal: 1 }]) // 单式
+      result.sorts.push([{ sg: 1, data: data.x5qsds[0], l: 3, bal: 1, max: 11 }]) // 单式
       result.sorts.push([{ ball: copy(data.x5qszx) }]) // 组选复式
-      result.sorts.push([{ sg: 1, data: data.x5qszxds[0], l: 3, bal: 1 }]) // 单式
+      result.sorts.push([{ sg: 1, data: data.x5qszxds[0], l: 3, bal: 1, max: 11 }]) // 单式
       result.sorts.push(['胆码', '拖码'].map(_ => ({ title: _, ball: copy(data.x5qsdt) }))) // 组选胆拖
       break
   }

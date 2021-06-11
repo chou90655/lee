@@ -49,6 +49,7 @@ export const filter = (data) => { // ruleName
     _.odds = (+_.rate ? +_.rate : (+_.maxjj / 2))
     const tcode = _.playid
     switch (true) {
+      case ['bjpk10qian5ds', 'bjpk10qian4ds', 'bjpk10qian3ds', 'bjpk10qian2ds'].includes(tcode): res[_.playid] = [_]; break // 单式
       case ['bjpk10qian1', 'bjpk10qian2', 'bjpk10qian3', 'bjpk10qian4', 'bjpk10qian5', 'bjpk10dwd'].includes(tcode): res[_.playid] = hddfs(_); break // 前1,2,3,4,5复式 定位胆
       case tcode[6] === '0': handleYs(res[10], _, 1); break // 十名 两面
       case ysArr.includes(tcode[5]): handleYs(res[tcode[5]], _); break // 一九名 两面
@@ -66,12 +67,32 @@ export const hndleData = (_this, data, key) => {
   let result = {}
   if (!data) return result
   _this.storeData = data
-  switch (key) { // ['bjpk10qian1', 'bjpk10qian2', 'bjpk10qian3', 'bjpk10qian4', 'bjpk10qian5', 'bjpk10dwd']
+  switch (key) { // 'bjpk10qian5ds', 'bjpk10qian4ds', 'bjpk10qian3ds', 'bjpk10qian2ds'
     case 'bjpk10qian1':result.ball = data[key]; result.remark = data[key][0].remark; break
-    case 'bjpk10qian2':result.cqp = rank.slice(0, 2).map(title => ({ title, ball: copy(data[key]) })); result.remark = data[key][0].remark; break
-    case 'bjpk10qian3':result.cqp = rank.slice(0, 3).map(title => ({ title, ball: copy(data[key]) })); result.remark = data[key][0].remark; break
-    case 'bjpk10qian4':result.cqp = rank.slice(0, 4).map(title => ({ title, ball: copy(data[key]) })); result.remark = data[key][0].remark; break
-    case 'bjpk10qian5':result.cqp = rank.slice(0, 5).map(title => ({ title, ball: copy(data[key]) })); result.remark = data[key][0].remark; break
+    case 'bjpk10qian2':
+      result.rodio = ['复式', '单式'].map(name => ({ name }))
+      result.cqps = [rank.slice(0, 2).map(title => ({ title, ball: copy(data[key]) }))]
+      result.sorts = [[], [{ sg: 1, data: data.bjpk10qian2ds[0], l: 2, bal: 1, max: 10 }]]
+      result.remarks = [data[key][0].remark, data.bjpk10qian2ds[0].remark]
+      break
+    case 'bjpk10qian3':
+      result.rodio = ['复式', '单式'].map(name => ({ name }))
+      result.cqps = [rank.slice(0, 3).map(title => ({ title, ball: copy(data[key]) }))]
+      result.sorts = [[], [{ sg: 1, data: data.bjpk10qian3ds[0], l: 3, bal: 1, max: 10 }]]
+      result.remarks = [data[key][0].remark, data.bjpk10qian3ds[0].remark]
+      break
+    case 'bjpk10qian4':
+      result.rodio = ['复式', '单式'].map(name => ({ name }))
+      result.cqps = [rank.slice(0, 4).map(title => ({ title, ball: copy(data[key]) }))]
+      result.sorts = [[], [{ sg: 1, data: data.bjpk10qian4ds[0], l: 4, bal: 1, max: 10 }]]
+      result.remarks = [data[key][0].remark, data.bjpk10qian4ds[0].remark]
+      break
+    case 'bjpk10qian5':
+      result.rodio = ['复式', '单式'].map(name => ({ name }))
+      result.cqps = [rank.slice(0, 5).map(title => ({ title, ball: copy(data[key]) }))]
+      result.sorts = [[], [{ sg: 1, data: data.bjpk10qian5ds[0], l: 5, bal: 1, max: 10 }]]
+      result.remarks = [data[key][0].remark, data.bjpk10qian5ds[0].remark]
+      break
     case 'bjpk10dwd':result.cqp = rank.map(title => ({ title, ball: copy(data[key]) })); result.remark = data[key][0].remark; break
     case '1z5':
       result.remarks = rank.slice(0, 5).map((_, i) => data['hm' + (i + 1)][0].remark)

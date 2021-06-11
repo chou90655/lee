@@ -67,33 +67,33 @@ export default {
         case 'he' :
           switch (this.rodioIndex) {
             case 0: data = hdwx(da, Array(2).fill({ n: 1 })); break
-            case 1: data = hdwx(da, [{ n: 1, k: 'qezxhz', t: 5 }]); break
-            case 2: data = hdwx(da, [{ n: 1, k: 'qekd', t: 5 }]); break
-            case 3: data = hdwx(da, [{ n: 2 }]); break
-            case 4: data = hdwx(da, [{ n: 1, k: 'qezuxhz', t: 5 }]); break
-            case 5: data = hdwx(da, [{ n: 1, num: 9 }]); break
+            case 2: data = hdwx(da, [{ n: 1, k: 'qezxhz', t: 5 }]); break
+            case 3: data = hdwx(da, [{ n: 1, k: 'qekd', t: 5 }]); break
+            case 4: data = hdwx(da, [{ n: 2 }]); break
+            case 6: data = hdwx(da, [{ n: 1, k: 'qezuxhz', t: 5 }]); break
+            case 7: data = hdwx(da, [{ n: 1, num: 9 }]); break
           }
           break
         case 'qe' :
           switch (this.rodioIndex) {
             case 0: data = hdwx(da, Array(2).fill({ n: 1 })); break
-            case 1: data = hdwx(da, [{ n: 1, k: 'qezxhz', t: 5 }]); break
-            case 2: data = hdwx(da, [{ n: 1, k: 'qekd', t: 5 }]); break
-            case 3: data = hdwx(da, [{ n: 2 }]); break
-            case 4: data = hdwx(da, [{ n: 1, k: 'qezuxhz', t: 5 }]); break
-            case 5: data = hdwx(da, [{ n: 1, num: 9 }]); break
+            case 2: data = hdwx(da, [{ n: 1, k: 'qezxhz', t: 5 }]); break
+            case 3: data = hdwx(da, [{ n: 1, k: 'qekd', t: 5 }]); break
+            case 4: data = hdwx(da, [{ n: 2 }]); break
+            case 6: data = hdwx(da, [{ n: 1, k: 'qezuxhz', t: 5 }]); break
+            case 7: data = hdwx(da, [{ n: 1, num: 9 }]); break
           }
           break
         case 'bdw' :data = hdwx(da, [{ n: this.rodioIndex + 1 }]); break
         case 'sx' :
           switch (this.rodioIndex) {
             case 0: data = hdwx(da, Array(3).fill({ n: 1 })); break
-            case 1: data = hdwx(da, [{ n: 1, k: 'sxzxhz', t: 5 }]); break
-            case 2: data = hdwx(da, [{ n: 1, k: 'sxzxkd', t: 5 }]); break
-            case 3: data = hdwx(da, [{ n: 1, k: 'sxzuxhz', t: 5 }]); break
-            case 4: data = hdwx(da, [{ n: 2, t: 6 }]); break
-            case 5: data = hdwx(da, [{ n: 3 }]); break
-            case 6: data = hdwx(da, [{ n: 1, num: 54 }]); break
+            case 2: data = hdwx(da, [{ n: 1, k: 'sxzxhz', t: 5 }]); break
+            case 3: data = hdwx(da, [{ n: 1, k: 'sxzxkd', t: 5 }]); break
+            case 4: data = hdwx(da, [{ n: 1, k: 'sxzuxhz', t: 5 }]); break
+            case 5: data = hdwx(da, [{ n: 2, t: 6 }]); break
+            case 6: data = hdwx(da, [{ n: 3 }]); break
+            case 7: data = hdwx(da, [{ n: 1, num: 54 }]); break
           }
           break
         default: data = []; break

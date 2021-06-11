@@ -33,7 +33,7 @@ export const hndleData = (_this, data, key) => {
     case 'he': // 'pl3hx2ds','pl3h2zxds','pl3qx2ds','pl3q2zxds'
       oddk = ['pl3hx2fs', 'pl3hx2ds', 'pl3h2zxhz', 'pl3h2kd', 'pl3h2zxfs', 'pl3h2zxds', 'pl3h2zuxhz', 'pl3h2zxbd']
       result.remarks = oddk.map((_) => data[_][0].remark)
-      result.rodio = [{ name: '直选复式' }, { name: '直选单式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选单式' }, { name: '组选和值' }, { name: '包胆', sg: 1 }] // 前二
+      result.rodio = [{ name: '直选复式' }, { name: '直选单式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选单式' }, { name: '组选和值' }, { name: '包胆', bd: 1 }] // 前二
       result.sorts = []
       result.sorts.push(['十位', '个位'].map(title => ({ title, ball: copy(data.pl3hx2fs) }))) // 直选复式
       result.sorts.push([{ sg: 1, data: data.pl3hx2ds[0], l: 2 }]) // 单式
@@ -47,7 +47,7 @@ export const hndleData = (_this, data, key) => {
     case 'qe':
       oddk = ['pl3qx2fs', 'pl3qx2ds', 'pl3q2zxhz', 'pl3q2kd', 'pl3q2zxfs', 'pl3q2zxds', 'pl3q2zuxhz', 'pl3q2zxbd']
       result.remarks = oddk.map((_) => data[_][0].remark)
-      result.rodio = [{ name: '直选复式' }, { name: '直选单式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选单式' }, { name: '组选和值' }, { name: '包胆', sg: 1 }] // 前二
+      result.rodio = [{ name: '直选复式' }, { name: '直选单式' }, { name: '直选和值' }, { name: '跨度' }, { name: '组选复式' }, { name: '组选单式' }, { name: '组选和值' }, { name: '包胆', bd: 1 }] // 前二
       result.sorts = []
       result.sorts.push(['百位', '十位'].map(title => ({ title, ball: copy(data.pl3qx2fs) }))) // 直选复式
       result.sorts.push([{ sg: 1, data: data.pl3qx2ds[0], l: 2 }]) // 单式

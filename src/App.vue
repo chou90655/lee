@@ -27,7 +27,7 @@ export default {
   },
   computed: mapGetters(['lotterys']),
   beforeCreate() {
-    // sessionStorage.clear()
+    sessionStorage.clear()
   },
   created() {
     // eslint-disable-next-line no-eval

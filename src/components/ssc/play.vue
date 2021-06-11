@@ -57,7 +57,7 @@ export default {
     },
     handleChose(it) {
       if (!+it.isopen) return toast('抱歉，该玩法暂停销售', false)
-      if ((['qs', 'zs', 'hs'].includes(this.play) && this.rodioIndex === 6) || (['qe', 'he'].includes(this.play) && this.rodioIndex === 5)) {
+      if ((['qs', 'zs', 'hs'].includes(this.play) && this.rodioIndex === 7) || (['qe', 'he'].includes(this.play) && this.rodioIndex === 7)) {
         this.rD.sorts[this.rodioIndex][0].ball.forEach(_ => (_.choose = false))
         it.choose = !0
       } else it.choose = !it.choose
@@ -85,53 +85,53 @@ export default {
         case ['qe', 'he'].includes(this.play):
           switch (this.rodioIndex) {
             case 0: finalData = hdwx(da, Array(2).fill({ n: 1 })); break
-            case 1: finalData = hdwx(da, [{ n: 1, k: 'zxhz2', t: 5 }]); break
-            case 2: finalData = hdwx(da, [{ n: 1, k: 'zxkd2', t: 5 }]); break
-            case 3: finalData = hdwx(da, [{ n: 2 }]); break
-            case 4: finalData = hdwx(da, [{ n: 1, k: 'zuxhz2', t: 5 }]); break
-            case 5: finalData = hdwx(da, [{ n: 1, num: 9 }]); break // 包胆
+            case 2: finalData = hdwx(da, [{ n: 1, k: 'zxhz2', t: 5 }]); break
+            case 3: finalData = hdwx(da, [{ n: 1, k: 'zxkd2', t: 5 }]); break
+            case 4: finalData = hdwx(da, [{ n: 2 }]); break
+            case 6: finalData = hdwx(da, [{ n: 1, k: 'zuxhz2', t: 5 }]); break
+            case 7: finalData = hdwx(da, [{ n: 1, num: 9 }]); break // 包胆
           }
           break
         case ['qs', 'zs', 'hs'].includes(this.play):
           switch (this.rodioIndex) {
             case 0: finalData = hdwx(da, Array(3).fill({ n: 1 })); break
-            case 1: finalData = hdwx(da, [{ n: 1, k: 'zxhz3', t: 5 }]); break
-            case 2: finalData = hdwx(da, [{ n: 1, k: 'zxkd3', t: 5 }]); break
-            case 3: finalData = hdwx(da, [{ n: 1, k: 'zuxhz3', t: 5 }]); break
-            case 4: finalData = hdwx(da, [{ n: 2, t: 6 }]); break
-            case 5: finalData = hdwx(da, [{ n: 3 }]); break
-            case 6: finalData = hdwx(da, [{ n: 1, num: 54 }]); break // 包胆
-            case 7: finalData = hdwx(da, [{ n: 1 }]); break
-            case 8: finalData = hdwx(da, [{ n: 2 }]); break
+            case 2: finalData = hdwx(da, [{ n: 1, k: 'zxhz3', t: 5 }]); break
+            case 3: finalData = hdwx(da, [{ n: 1, k: 'zxkd3', t: 5 }]); break
+            case 4: finalData = hdwx(da, [{ n: 1, k: 'zuxhz3', t: 5 }]); break
+            case 5: finalData = hdwx(da, [{ n: 2, t: 6 }]); break
+            case 6: finalData = hdwx(da, [{ n: 3 }]); break
+            case 7: finalData = hdwx(da, [{ n: 1, num: 54 }]); break // 包胆
+            case 8: finalData = hdwx(da, [{ n: 1 }]); break
+            case 9: finalData = hdwx(da, [{ n: 2 }]); break
           }
           break
         case this.play === 'sx':
           switch (this.rodioIndex) {
             case 0: finalData = hdwx(da, Array(4).fill({ n: 1 })); break
-            case 1: finalData = hdwx(da, [{ n: 4 }]); break
-            case 2: finalData = hdwx(da, [{ n: 1, t: 7 }, { n: 2, t: 7 }]); break
-            case 3: finalData = hdwx(da, [{ n: 2 }]); break
-            case 4: finalData = hdwx(da, [{ n: 1, t: 7 }, { n: 1, t: 7 }]); break
-            case 5: finalData = hdwx(da, [{ n: 1 }]); break
-            case 6: finalData = hdwx(da, [{ n: 2 }]); break
+            case 2: finalData = hdwx(da, [{ n: 4 }]); break
+            case 3: finalData = hdwx(da, [{ n: 1, t: 7 }, { n: 2, t: 7 }]); break
+            case 4: finalData = hdwx(da, [{ n: 2 }]); break
+            case 5: finalData = hdwx(da, [{ n: 1, t: 7 }, { n: 1, t: 7 }]); break
+            case 6: finalData = hdwx(da, [{ n: 1 }]); break
+            case 7: finalData = hdwx(da, [{ n: 2 }]); break
           }
           break
         case this.play === 'wx':
           switch (this.rodioIndex) {
             case 0: finalData = hdwx(da, Array(5).fill({ n: 1 })); break
-            case 1: finalData = hdwx(da, [{ n: 5 }]); break
-            case 2: finalData = hdwx(da, [{ n: 1 }, { n: 4 }]); break
-            case 3: finalData = hdwx(da, [{ n: 2 }, { n: 1 }]); break
-            case 4: finalData = hdwx(da, [{ n: 1 }, { n: 2 }]); break
-            case 5: finalData = hdwx(da, [{ n: 1 }, { n: 1 }]); break
+            case 2: finalData = hdwx(da, [{ n: 5 }]); break
+            case 3: finalData = hdwx(da, [{ n: 1 }, { n: 4 }]); break
+            case 4: finalData = hdwx(da, [{ n: 2 }, { n: 1 }]); break
+            case 5: finalData = hdwx(da, [{ n: 1 }, { n: 2 }]); break
             case 6: finalData = hdwx(da, [{ n: 1 }, { n: 1 }]); break
-            case 7: finalData = hdwx(da, [{ n: 1 }]); break // 定位
-            case 8: finalData = hdwx(da, [{ n: 2 }]); break
-            case 9: finalData = hdwx(da, [{ n: 3 }]); break
-            case 10: finalData = hdwx(da, [{ n: 1 }]); break // 一帆风顺
-            case 11: finalData = hdwx(da, [{ n: 1 }]); break
+            case 7: finalData = hdwx(da, [{ n: 1 }, { n: 1 }]); break
+            case 8: finalData = hdwx(da, [{ n: 1 }]); break // 定位
+            case 9: finalData = hdwx(da, [{ n: 2 }]); break
+            case 10: finalData = hdwx(da, [{ n: 3 }]); break
+            case 11: finalData = hdwx(da, [{ n: 1 }]); break // 一帆风顺
             case 12: finalData = hdwx(da, [{ n: 1 }]); break
             case 13: finalData = hdwx(da, [{ n: 1 }]); break
+            case 14: finalData = hdwx(da, [{ n: 1 }]); break
           }
           break
         default: finalData = Chosedata; break
