@@ -4,6 +4,7 @@ import cubeUi from 'cube-ui'
 const { Toast } = cubeUi
 Vue.use(Toast)
 
+export const api = {}
 export const mod = process.env.VUE_APP_REGIST_MODULE
 
 export const filt = (arr) => arr.filter(_ => _.choose)

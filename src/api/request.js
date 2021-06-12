@@ -1,6 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
-import { toast } from '../util/tools'
+import { toast, api } from '../util/tools'
 import Store from '../store'
 
 const request = axios.create({
@@ -9,6 +9,7 @@ const request = axios.create({
   headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
 })
 request.interceptors.request.use(config => {
+  config.baseURL = api.url || process.env.VUE_APP_LOTTERY_BASE_API
   const { userInfo } = Store.state
   config.headers.token = userInfo.token
   config.data = qs.stringify({ ...config.data, username: userInfo.username })
