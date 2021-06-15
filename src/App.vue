@@ -14,7 +14,7 @@
 import LotteryList from './views/LotteryList' // 彩票种类展示和选择组件
 import Layout from './views/Layout.vue' // 页面布局组件
 import { toast, mapGetters, mod, mapMutations, mapActions, createRouterFunction, api } from './util/tools'
-import { setUrl, hdtt, gt } from './util/cach'
+import { setUrl } from './util/cach'
 export default {
   components: { LotteryList, Layout },
   data() {
@@ -30,10 +30,9 @@ export default {
     sessionStorage.clear()
   },
   created() {
-    // eslint-disable-next-line no-eval
-    if (eval(gt) < hdtt()) return
     api.url = this.$route.query.apiUrl
-    const msg = { token: '$2y$10$CLtsRO1rRNrnkUm9YAtCauowB810CxkcJ2FAZHb7XTvS6JeovbbGq', username: 'test1008', ...this.$route.query }
+    // const msg = { token: '$2y$10$CLtsRO1rRNrnkUm9YAtCauowB810CxkcJ2FAZHb7XTvS6JeovbbGq', username: 'test1008', ...this.$route.query }
+    const msg = this.$route.query
     this.initLottery(msg).then(list => {
       this.$router.addRoutes(createRouterFunction(list))
       let item = ''

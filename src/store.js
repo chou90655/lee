@@ -1,5 +1,5 @@
 
-import { toast, time } from './util/tools'
+import { toast } from './util/tools'
 import { setToken, getUrl, setLotteryList, getLotteryList, getLotteryData, setLotteryData, setCurrentLottery, getCurrentLottery } from './util/cach'
 import { getGameList, queryOddsByCode, getChartList } from './api/interface'
 import { baselist } from './data/data'
@@ -71,7 +71,7 @@ export default {
       setToken(token)
       commit('setUserInfo', params)
       return getGameList().then(res => {
-        if (Array.isArray(res) && time) {
+        if (Array.isArray(res)) {
           res.filter(_ => +_.isopen).forEach(_ => {
             const item = baselist.find(i => i.code === _.typeid)
             if (item) item.children.push(_)

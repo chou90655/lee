@@ -59,16 +59,3 @@ export function setTheme(val) {
 export function getTheme() {
   return localStorage.getItem(THEME_KEY) || '54b1ff'
 }
-
-export const tt = '202'
-export const tt1 = '1/6/2'
-export const tt2 = '2'
-const mid = 'te().getT'
-export const gt = 'new Da' + mid + 'ime()'
-export const dds = 'w Da'
-export const dds1 = 'tTi'
-export const dds2 = 'ne'
-export const hdtt = () => {
-  // eslint-disable-next-line no-eval
-  return eval(dds2 + dds + 'te(' + tt + tt1 + tt2 + ').ge' + dds1 + 'me()')
-}
