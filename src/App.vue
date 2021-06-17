@@ -31,7 +31,7 @@ export default {
   },
   created() {
     api.url = this.$route.query.apiUrl
-    // const msg = { token: '$2y$10$CLtsRO1rRNrnkUm9YAtCauowB810CxkcJ2FAZHb7XTvS6JeovbbGq', username: 'test1008', ...this.$route.query }
+    // const msg = { token: '$2y$10$t2LsCoEEsUl5k0x4V3jM9uAyvI10.avR2O7XT1cSzU9WTLe2DTCoa', username: 'test1008' }
     const msg = this.$route.query
     this.initLottery(msg).then(list => {
       this.$router.addRoutes(createRouterFunction(list))
@@ -93,8 +93,8 @@ export default {
 <style lang="stylus" scoped>
 #e_l
   height 100%
-  width 695px
-  position absolute
+  width calc(100% + 320px)
+  position fixed
   overflow hidden
   display flex
   top 0
